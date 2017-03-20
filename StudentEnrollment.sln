@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7D3BA388-7E0B-45B6-9669-735692493B82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4DF5DCA-AC50-42CD-9DE6-BC65F702B879}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "StudentEnrollment", "src\StudentEnrollment\StudentEnrollment.xproj", "{5154AE6E-580D-4930-AD55-52B4E6F2A0CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5154AE6E-580D-4930-AD55-52B4E6F2A0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5154AE6E-580D-4930-AD55-52B4E6F2A0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5154AE6E-580D-4930-AD55-52B4E6F2A0CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5154AE6E-580D-4930-AD55-52B4E6F2A0CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5154AE6E-580D-4930-AD55-52B4E6F2A0CA} = {7D3BA388-7E0B-45B6-9669-735692493B82}
+	EndGlobalSection
+EndGlobal
