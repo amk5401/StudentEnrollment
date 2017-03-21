@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 namespace StudentEnrollment.Models
 {
     public class Instructor
-    {
+    { 
     }
 }
