@@ -19,6 +19,7 @@ namespace StudentEnrollment
                 .Build();
 
             host.Run();
+            //Madison test commit
         }
     }
 }
