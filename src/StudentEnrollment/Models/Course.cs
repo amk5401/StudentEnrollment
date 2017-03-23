@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Couse
+    public class Course
     {
         public int ID { get; set; }
         public String CourseCode { get; set; }
