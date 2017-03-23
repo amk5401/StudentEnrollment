@@ -5,7 +5,12 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Admin
+    public class Admin : User
     { 
+        public Admin(int id, String username, String email, String firstName, String lastName) 
+            : base(id, username, email, firstName, lastName)
+        {
+
+        }
     }
 }

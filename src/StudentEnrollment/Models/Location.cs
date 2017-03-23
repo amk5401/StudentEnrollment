@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Prerequisite
+    public class Location
     {
-        public Prerequisite()
+        public Location()
         {
 
         }
-        public int Course_ID { get; set; }
-        public int Day_of_week { get; set; }
     }
 }

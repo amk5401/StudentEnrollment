@@ -7,9 +7,16 @@ namespace StudentEnrollment.Models
 {
     public class Term
     {
-        public int ID { get; set; }
-        public String Code { get; set; }
-        public DateTime Start_Date { get; set; }
-        public DateTime End_Date { get; set; }
+        public Term(int id, String code, DateTime startDate, DateTime endDate)
+        {
+            ID = id;
+            Code = code;
+            StartDate = startDate;
+            EndDate = endDate;
+        }
+        public int ID { get; }
+        public String Code { get; }
+        public DateTime StartDate { get; }
+        public DateTime EndDate { get; }
     }
 }
