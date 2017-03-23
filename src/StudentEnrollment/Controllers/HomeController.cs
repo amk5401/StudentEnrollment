@@ -10,6 +10,12 @@ namespace StudentEnrollment.Controllers
     {
         public IActionResult Index()
         {
+            Models.Instructor i1 = new StudentEnrollment.Models.Instructor(5, "gj888", "gj888@rit.edu", "George", "Johnson");
+            Models.Instructor i2 = new StudentEnrollment.Models.Instructor(4, "gj888", "gj888@rit.edu", "Bob", "Smith");
+
+            List<StudentEnrollment.Models.Instructor> list = new List<Models.Instructor> { i1, i2};
+            ViewData["Instructor"] = new StudentEnrollment.Models.Instructor(5, "gj888", "gj888@rit.edu", "George", "Johnson");
+            ViewData["InstructorList"] = list;
             return View();
         }
 
