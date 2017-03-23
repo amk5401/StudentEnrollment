@@ -22,11 +22,12 @@ namespace StudentEnrollment.Controllers
         void deleteSection(Section section);
         //HashSet<Section, Grade> getStudentGrades(Student student);
         Section[] getStudentSections(Student student);
+        Student[] getSectionStudents(Section section);
         Section[] getInstructorSections(Instructor student);
         Book getBook(int ID);
         void createBook(Book book);
         Book[] getSectionBooks(Section section);
-        Room getRoom(int ID);
+        Location getLocation(int ID);
         Term getCurrentTerm();
         Term getTerm(int ID);
         void createTerm(Term term);

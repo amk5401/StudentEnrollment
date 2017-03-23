@@ -23,6 +23,7 @@ namespace StudentEnrollment.Models
         public int Credits { get; } 
         public int MinGPA { get; }
         public int[] Prerequisites { get; }
+        // TODO: Add in availability property ASAP
 
 
     }
