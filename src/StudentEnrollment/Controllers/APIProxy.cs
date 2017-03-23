@@ -86,7 +86,7 @@ namespace StudentEnrollment.Controllers
             throw new NotImplementedException();
         }
 
-        Room Proxy.getRoom(int ID)
+        Location Proxy.getLocation(int ID)
         {
             throw new NotImplementedException();
         }

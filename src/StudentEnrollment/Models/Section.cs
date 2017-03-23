@@ -17,6 +17,7 @@ namespace StudentEnrollment.Models
             Location = location;
             StudentsInSection = studentsInSection;
         }
+
         public Course Course { get; }
         public Instructor Instructor { get; }
         public int ID { get; }
