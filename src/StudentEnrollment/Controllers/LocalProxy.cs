@@ -74,6 +74,26 @@ namespace StudentEnrollment.Controllers
             return admin;
         }
 
+        Student Proxy.getStudent(int ID)
+        {
+            Student student = null;
+            if (students.Exists(x => x.ID == ID))
+            {
+                student = students.Find(x => x.ID.Equals(ID));
+            }
+            return student;
+        }
+
+        Instructor Proxy.getInstructor(int ID)
+        {
+            Instructor instructor = null;
+            if (instructors.Exists(x => x.ID == ID))
+            {
+                instructor = instructors.Find(x => x.ID.Equals(ID));
+            }
+            return instructor;
+        }
+
         Book Proxy.getBook(int ID)
         {
             Book book = null;
@@ -130,6 +150,11 @@ namespace StudentEnrollment.Controllers
             {
                 return null;
             }
+        }
+
+        Student[] Proxy.getSectionStudents(Section section)
+        {
+            throw new NotImplementedException();
         }
 
         Section[] Proxy.getInstructorSections(Instructor instructor)

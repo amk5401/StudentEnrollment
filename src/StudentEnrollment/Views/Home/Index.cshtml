@@ -1,11 +1,12 @@
 ﻿
 @{
 
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "API Tester";
     var testInstructor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
     var list = ViewData["InstructorList"] as List<StudentEnrollment.Models.Instructor>;
+    var functions = ViewData["Functions"] as Dictionary<string, string>;
 }
-
+@*
 <p>Test</p>
 @testInstructor.FirstName
 @testInstructor.LastName
@@ -19,6 +20,39 @@
     </div>
 
 }
+*@
+<h2>@ViewData["Title"].</h2>
+<form>
+    <div class="form-group">
+        <label for="function">Select function:</label>
+        <select class="form-control" id="function">
+            @foreach (var item in functions)
+            {
+                <option>@item.Key</option>
+            }
+        </select>
+    </div>
+    @foreach (var item in functions)
+    {
+    <div class="form-group @item.Key" style="display: none;">
+        <label for="parameters">Parameters:</label>
+        <input type="text" class="form-control" id="parameters" placeholder="@item.Value">
+    </div>
+    }
+    <button type="submit" id="submit" value="Submit" class="btn btn-default">Submit</button>
+</form>
 
-
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var oldMethod = 'getStudent';
+        $('.' + oldMethod).css('display', 'block');
+        $('#function').change(function () {
+            var method = $('#function').find(":selected").text();
+            $('.' + method).css('display', 'block');
+            $('.' + oldMethod).css('display', 'none');
+            oldMethod = method;
+        });
+    });
+</script>
 

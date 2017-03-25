@@ -23,7 +23,7 @@ namespace StudentEnrollment.Controllers
         //HashSet<Section, Grade> getStudentGrades(Student student);
         Section[] getStudentSections(Student student);
         Student[] getSectionStudents(Section section);
-        Section[] getInstructorSections(Instructor student);
+        Section[] getInstructorSections(Instructor instructor);
         Book getBook(int ID);
         void createBook(Book book);
         Book[] getSectionBooks(Section section);

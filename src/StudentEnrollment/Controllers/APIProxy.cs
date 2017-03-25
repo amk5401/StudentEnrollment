@@ -111,6 +111,11 @@ namespace StudentEnrollment.Controllers
             throw new NotImplementedException();
         }
 
+        Student[] Proxy.getSectionStudents(Section section)
+        {
+            throw new NotImplementedException();
+        }
+
         Term Proxy.getTerm(int ID)
         {
             throw new NotImplementedException();
