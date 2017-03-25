@@ -22,10 +22,10 @@
 }
 *@
 <h2>@ViewData["Title"].</h2>
-<form>
+<form action="Home/TestApi" method="post">
     <div class="form-group">
         <label for="function">Select function:</label>
-        <select class="form-control" id="function">
+        <select class="form-control" id="function" name="function">
             @foreach (var item in functions)
             {
                 <option>@item.Key</option>
@@ -36,7 +36,7 @@
     {
     <div class="form-group @item.Key" style="display: none;">
         <label for="parameters">Parameters:</label>
-        <input type="text" class="form-control" id="parameters" placeholder="@item.Value">
+        <input type="text" class="form-control" id="parameters" name="parameters" placeholder="@item.Value">
     </div>
     }
     <button type="submit" id="submit" value="Submit" class="btn btn-default">Submit</button>

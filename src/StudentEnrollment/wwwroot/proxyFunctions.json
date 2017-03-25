@@ -1,5 +1,6 @@
 ﻿{
   "getStudent": "int ID",
+  "getInstructor": "int ID",
   "getAdmin": "int ID",
   "getCourse": "int ID",
   "getCourseList": "n/a",
