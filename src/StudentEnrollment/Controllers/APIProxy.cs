@@ -6,10 +6,16 @@ using StudentEnrollment.Models;
 
 namespace StudentEnrollment.Controllers
 {
+
     public class APIProxy : Proxy
     {
 
         private static String API_URL = "http://vm344f.se.rit.edu/API/API.php";
+
+        public Student[] getSectionStudents(Section section)
+        {
+            throw new NotImplementedException();
+        }
 
         void Proxy.createBook(Book book)
         {

@@ -173,5 +173,20 @@ namespace StudentEnrollment.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public Student getStudent(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instructor getInstructor(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Student[] getSectionStudents(Section section)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
