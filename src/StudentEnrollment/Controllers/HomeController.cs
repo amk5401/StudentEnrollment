@@ -33,8 +33,8 @@ namespace StudentEnrollment.Controllers
 
         public ActionResult TestApi(string function, string parameters)
         {
-            Models.Instructor i1 = new StudentEnrollment.Models.Instructor(5, "gj888", "gj888@rit.edu", "George", "Johnson");
-            Models.Instructor i2 = new StudentEnrollment.Models.Instructor(4, "gj888", "gj888@rit.edu", "Bob", "Smith");
+            Models.Student s = new StudentEnrollment.Models.Student(1, "rs4296", "rs4296@rit.edu", "Rob", "Stone", 5, float.Parse("3.5"), new List<Section>());
+            Models.Instructor i = new StudentEnrollment.Models.Instructor(1, "gj888", "gj888@rit.edu", "Bob", "Smith");
 
             ViewData["Function"] = function;
             ViewData["Parameters"] = parameters;
@@ -65,8 +65,19 @@ namespace StudentEnrollment.Controllers
                         case "getTerm": result = p.getTerm(Int32.Parse(parameters)); break;
                     }
                 }
+                catch (FormatException fex)
+                {
+                    result = "The input needs to be an integer.";
+                    System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + fex);
+                }
+                catch (InvalidCastException icex)
+                {
+                    result = "Your input was not properly formatted for that object type.";
+                    System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + icex);
+                }
                 catch (Exception ex)
                 {
+                    result = "An unkown error occured.";
                     System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + ex);
                 }
             }

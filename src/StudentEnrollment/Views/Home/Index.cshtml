@@ -35,8 +35,7 @@
     @foreach (var item in functions)
     {
     <div class="form-group @item.Key" style="display: none;">
-        <label for="parameters">Parameters:</label>
-        <input type="text" class="form-control" id="parameters" name="parameters" placeholder="@item.Value">
+        <label for="parameters">Parameters (@item.Value):</label>
     </div>
     }
     <button type="submit" id="submit" value="Submit" class="btn btn-default">Submit</button>
@@ -47,10 +46,17 @@
     jQuery(document).ready(function () {
         var oldMethod = 'getStudent';
         $('.' + oldMethod).css('display', 'block');
+        $('.' + oldMethod).append(
+            ('<input type="text" class="form-control" id="parameters" name="parameters"/>'));
         $('#function').change(function () {
             var method = $('#function').find(":selected").text();
             $('.' + method).css('display', 'block');
+            $('.' + method).append(
+                ('<input type="text" class="form-control" id="parameters" name="parameters"/>'));
+
             $('.' + oldMethod).css('display', 'none');
+            $('.' + oldMethod).find('input').remove();
+
             oldMethod = method;
         });
     });
