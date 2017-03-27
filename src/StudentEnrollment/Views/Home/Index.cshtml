@@ -24,6 +24,10 @@
 <h2>@ViewData["Title"].</h2>
 <form action="Home/TestApi" method="post">
     <div class="form-group">
+        <input type="radio" name="proxyType" value="Local" checked="checked"> Local Proxy<br>
+        <input type="radio" name="proxyType" value="API"> API Proxy<br>
+    </div>
+    <div class="form-group">
         <label for="function">Select function:</label>
         <select class="form-control" id="function" name="function">
             @foreach (var item in functions)

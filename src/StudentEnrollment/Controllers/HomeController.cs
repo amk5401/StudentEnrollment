@@ -31,15 +31,23 @@ namespace StudentEnrollment.Controllers
             return View();
         }
 
-        public ActionResult TestApi(string function, string parameters)
+        public ActionResult TestApi(string function, string parameters, string proxyType)
         {
             Models.Student s = new StudentEnrollment.Models.Student(1, "rs4296", "rs4296@rit.edu", "Rob", "Stone", 5, float.Parse("3.5"), new List<Section>());
             Models.Instructor i = new StudentEnrollment.Models.Instructor(1, "gj888", "gj888@rit.edu", "Bob", "Smith");
 
             ViewData["Function"] = function;
             ViewData["Parameters"] = parameters;
-
-            Proxy p = new LocalProxy();
+            ViewData["ProxyType"] = proxyType;
+            Proxy p;
+            if (proxyType == "Local")
+            {
+                p = new LocalProxy();
+            }
+            else
+            {
+                p = new APIProxy();
+            }
             dynamic result = "The function returned void.";
             if (function != null && parameters != null)
             {
@@ -74,6 +82,11 @@ namespace StudentEnrollment.Controllers
                 {
                     result = "Your input was not properly formatted for that object type.";
                     System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + icex);
+                }
+                catch (NotImplementedException niex)
+                {
+                    result = "This function is currently not implemented by this proxy.";
+                    System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + niex);
                 }
                 catch (Exception ex)
                 {
