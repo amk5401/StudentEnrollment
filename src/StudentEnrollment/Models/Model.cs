@@ -5,11 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Location : Model
+    public interface Model
     {
-        public Location()
-        {
-
-        }
     }
 }

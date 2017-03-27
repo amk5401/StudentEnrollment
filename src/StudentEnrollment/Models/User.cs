@@ -2,7 +2,7 @@
 
 namespace StudentEnrollment.Models
 {
-    public abstract class User
+    public abstract class User : Model
     {
         public User(int id, String username, String email, String firstName, String lastName)
         {

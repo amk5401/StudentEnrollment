@@ -2,131 +2,157 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
 using StudentEnrollment.Models;
 
 namespace StudentEnrollment.Controllers
 {
     public class APIProxy : Proxy
     {
-
+        static HttpClient client = new HttpClient();
         private static String API_URL = "http://vm344f.se.rit.edu/API/API.php";
+        private static List<String> teams = new List<String> { "general", "student_enrollment", "book_store", "human_resources", "facility_management", "cool_eval", "grading" };
+        
 
-        void Proxy.createBook(Book book)
+        static async Task<String> CallAPI(string path)
+        {
+            HttpResponseMessage response = await client.GetAsync(path);
+            String responseText = null;
+            if (response.IsSuccessStatusCode)
+            {
+                responseText = await response.Content.ReadAsStringAsync();
+            }
+            return responseText;
+        }
+
+
+        public Student[] getSectionStudents(Section section)
+        {
+            throw new NotImplementedException();
+            //HttpWebRequest http = (HttpWebRequest)WebRequest.Create("http://vm344f.se.rit.edu/API/API.php?team=general&function=test");
+            //WebResponse response = http.res;
+
+            //MemoryStream stream = response.GetResponseStream();
+            //StreamReader sr = new StreamReader(stream);
+            //string content = sr.ReadToEnd();
+        }
+
+        public void createBook(Book book)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.createCourse(Course course)
+        public void createCourse(Course course)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.createSection(Section section)
+        public void createSection(Section section)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.createStudent(Student student)
+        public void createStudent(Student student)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.createTerm(Term term)
+        public void createTerm(Term term)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.deleteSection(Section section)
+        public void deleteSection(Section section)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.enrollStudent(Student student, Section section)
+        public void enrollStudent(Student student, Section section)
         {
             throw new NotImplementedException();
         }
 
-        Admin Proxy.getAdmin(int ID)
+        public Admin getAdmin(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Book Proxy.getBook(int ID)
+        public Book getBook(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Course Proxy.getCourse(int ID)
+        public Course getCourse(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Course[] Proxy.getCourseList()
+        public Course[] getCourseList()
         {
             throw new NotImplementedException();
         }
 
-        Section[] Proxy.getCourseSections(Course course)
+        public Section[] getCourseSections(Course course)
         {
             throw new NotImplementedException();
         }
 
-        Term Proxy.getCurrentTerm()
+        public Term getCurrentTerm()
         {
             throw new NotImplementedException();
         }
 
-        Instructor Proxy.getInstructor(int ID)
+        public Instructor getInstructor(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Section[] Proxy.getInstructorSections(Instructor student)
+        public Section[] getInstructorSections(Instructor student)
         {
             throw new NotImplementedException();
         }
 
-        Location Proxy.getLocation(int ID)
+        public Location getLocation(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Section Proxy.getSection(int ID)
+        public Section getSection(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Book[] Proxy.getSectionBooks(Section section)
+        public Book[] getSectionBooks(Section section)
         {
             throw new NotImplementedException();
         }
 
-        Student Proxy.getStudent(int ID)
+        public Student getStudent(int ID)
         {
             throw new NotImplementedException();
         }
 
-        Section[] Proxy.getStudentSections(Student student)
+        public Section[] getStudentSections(Student student)
         {
             throw new NotImplementedException();
         }
 
-        Term Proxy.getTerm(int ID)
+        public Term getTerm(int ID)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.toggleCourse(int ID)
+        public void toggleCourse(int ID)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.waitlistStudent(Student student, Section section)
+        public void waitlistStudent(Student student, Section section)
         {
             throw new NotImplementedException();
         }
 
-        void Proxy.withdrawStudent(Student student, Section section)
+        public void withdrawStudent(Student student, Section section)
         {
             throw new NotImplementedException();
         }

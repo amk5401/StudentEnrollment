@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Book
+    public class Book : Model
     {
         public Book(int id, int isbn, String title)
         {

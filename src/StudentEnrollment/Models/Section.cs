@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Section
+    public class Section : Model
     {
         public Section(int id, int maxStudents, Term term, Instructor instructor, Course course, Location location, List<Student> studentsInSection)
         {

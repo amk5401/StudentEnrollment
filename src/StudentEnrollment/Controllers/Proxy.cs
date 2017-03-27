@@ -19,14 +19,13 @@ namespace StudentEnrollment.Controllers
         Section getSection(int ID);
         Section[] getCourseSections(Course course);
         void createSection(Section section);
-        void deleteSection(Section section);
         //HashSet<Section, Grade> getStudentGrades(Student student);
         Section[] getStudentSections(Student student);
         Student[] getSectionStudents(Section section);
         Section[] getInstructorSections(Instructor student);
-        Book getBook(int ID);
-        void createBook(Book book);
-        Book[] getSectionBooks(Section section);
+        //Book getBook(int ID); R2
+        //void createBook(Book book); R2
+        //Book[] getSectionBooks(Section section); R2
         Location getLocation(int ID);
         Term getCurrentTerm();
         Term getTerm(int ID);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Prerequisite
+    public class Prerequisite : Model
     {
         public Prerequisite()
         {

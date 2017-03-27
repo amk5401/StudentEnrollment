@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Schedule
+    public class Schedule : Model
     {
         public Schedule()
         {
