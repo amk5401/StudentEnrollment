@@ -12,10 +12,5 @@ namespace StudentEnrollment.Models
         {
 
         }
-
-        //static Admin buildFromJson(String json)
-        //{
-        //    return new Admin()
-        //}
     }
 }

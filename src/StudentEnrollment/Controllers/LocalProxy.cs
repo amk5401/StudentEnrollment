@@ -47,11 +47,6 @@ namespace StudentEnrollment.Controllers
             this.terms.Add(term);
         }
 
-        public void deleteSection(Section section)
-        {
-            this.sections.Remove(section);
-        }
-
         public void enrollStudent(Student student, Section section)
         {
             if (studentClasses.ContainsKey(student))

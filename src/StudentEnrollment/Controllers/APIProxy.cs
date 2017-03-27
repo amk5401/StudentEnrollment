@@ -14,9 +14,9 @@ namespace StudentEnrollment.Controllers
         private static List<String> teams = new List<String> { "general", "student_enrollment", "book_store", "human_resources", "facility_management", "cool_eval", "grading" };
         
 
-        static async Task<String> CallAPI(string path)
+        static async Task<String> CallAPI(string uri)
         {
-            HttpResponseMessage response = await client.GetAsync(path);
+            HttpResponseMessage response = await client.GetAsync(uri);
             String responseText = null;
             if (response.IsSuccessStatusCode)
             {
@@ -28,6 +28,8 @@ namespace StudentEnrollment.Controllers
 
         public Student[] getSectionStudents(Section section)
         {
+
+
             throw new NotImplementedException();
             //HttpWebRequest http = (HttpWebRequest)WebRequest.Create("http://vm344f.se.rit.edu/API/API.php?team=general&function=test");
             //WebResponse response = http.res;
@@ -37,10 +39,10 @@ namespace StudentEnrollment.Controllers
             //string content = sr.ReadToEnd();
         }
 
-        public void createBook(Book book)
-        {
-            throw new NotImplementedException();
-        }
+        //public void createBook(Book book)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void createCourse(Course course)
         {
@@ -62,10 +64,6 @@ namespace StudentEnrollment.Controllers
             throw new NotImplementedException();
         }
 
-        public void deleteSection(Section section)
-        {
-            throw new NotImplementedException();
-        }
 
         public void enrollStudent(Student student, Section section)
         {
@@ -119,6 +117,8 @@ namespace StudentEnrollment.Controllers
 
         public Section getSection(int ID)
         {
+            Task<String> responseTask = CallAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID);
+            String data = responseTask.Result;
             throw new NotImplementedException();
         }
 
