@@ -12,20 +12,19 @@ namespace StudentEnrollment.Controllers
         List<Admin> admins = new List<Admin>();
         List<Instructor> instructors = new List<Instructor>();
 
-        List<Book> books = new List<Book>();
+        public List<Book> books = new List<Book>();
         List<Course> courses = new List<Course>();
         List<Section> sections = new List<Section>();
+
+        public void createBook(Book book)
+        {
+            this.books.Add(book);
+        }
+
         List<Term> terms = new List<Term>();
 
         Dictionary<Student, List<Section>> studentClasses = new Dictionary<Student, List<Section>>();
         Dictionary<Section, List<Book>> sectionBooks = new Dictionary<Section, List<Book>>();
-
-        
-
-        void Proxy.createBook(Book book)
-        {
-            this.books.Add(book);
-        }
 
         void Proxy.createCourse(Course course)
         {
