@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentEnrollment.Models
 {
-    public class Term
+    public class Term : Model
     {
         public Term(int id, String code, DateTime startDate, DateTime endDate)
         {
