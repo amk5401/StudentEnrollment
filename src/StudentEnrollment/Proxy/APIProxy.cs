@@ -11,12 +11,27 @@ namespace StudentEnrollment.Proxy
     {
         static HttpClient client = new HttpClient();
         private static String API_URL = "http://vm344f.se.rit.edu/API/API.php";
-        private static List<String> teams = new List<String> { "general", "student_enrollment", "book_store", "human_resources", "facility_management", "cool_eval", "grading" };
-        
 
-        static async Task<String> CallAPI(string uri)
+        static async Task<String> GetFromAPI(string uri)
         {
             HttpResponseMessage response = await client.GetAsync(uri);
+            String responseText = null;
+            if (response.IsSuccessStatusCode)
+            {
+                responseText = await response.Content.ReadAsStringAsync();
+            }
+            return responseText;
+        }
+
+        static async Task<String> PostToAPI(string uri, Dictionary<String, String> postParemeters)
+        {
+            var postData = new List<KeyValuePair<string, string>>();
+            foreach (String key in postParemeters.Keys)
+            {
+                postData.Add(new KeyValuePair<string, string>(key, postParemeters[key]));
+            }
+            HttpContent content = new FormUrlEncodedContent(postData);
+            var response = await client.PostAsync("http://localhost:44268/api/test", content);
             String responseText = null;
             if (response.IsSuccessStatusCode)
             {
@@ -40,14 +55,14 @@ namespace StudentEnrollment.Proxy
 
         public void createCourse(Course course)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=studentEnrollment&function=postCourse&courseCode={1}&courseName={2}&credits={3}&minGPA={4}", 
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postCourse&courseCode={1}&courseName={2}&credits={3}&minGPA={4}",
                                                         API_URL, course.CourseCode, course.Name, course.Credits, course.MinGPA)).Result;
             // TODO: See what comes back from JSON
         }
 
         public void createSection(Section section)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=studentEnrollment&function=postSection&courseID={1}&professorID={2}&maxStudents={3}&termID={4}&classroomID={5}",
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postSection&courseID={1}&professorID={2}&maxStudents={3}&termID={4}&classroomID={5}",
                                                         API_URL, section.Course.ID, section.Instructor.ID, section.MaxStudents, section.Term.ID, section.Location.ID)).Result;
             // TODO: See what comes back from JSON
         }
@@ -57,28 +72,28 @@ namespace StudentEnrollment.Proxy
          * */
         public void createStudent(Student student)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=studentEnrollment&function=postStudent&userID={1}&yearLevel={2}&gpa={3}",
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postStudent&userID={1}&yearLevel={2}&gpa={3}",
                                                     API_URL, student.ID, student.YearLevel, student.GPA)).Result;
             // TODO: See what comes back from JSON
         }
 
         public void createTerm(Term term)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=studentEnrollment&function=postTerm&termCode={1}&startDate={2}&endDate={3}",
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postTerm&termCode={1}&startDate={2}&endDate={3}",
                                                     API_URL, term.Code, term.StartDate, term.EndDate)).Result;
             // TODO: See what comes back from JSON
         }
 
         public void enrollStudent(Student student, Section section)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=student_enrollment&function=enrollStudent&studentID={1}&sectionID={2}",
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=enrollStudent&studentID={1}&sectionID={2}",
                                                     API_URL, student.ID, section.ID)).Result;
             // TODO: See what comes back from JSON
         }
 
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=general&function=getAdmin&adminID={1}",
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getAdmin&adminID={1}",
                                                     API_URL, ID)).Result;
             Admin admin = null;
             try
@@ -94,7 +109,7 @@ namespace StudentEnrollment.Proxy
 
         public Book getBook(int ID)
         {
-            String json = APIProxy.CallAPI(String.Format("{0}/team=book_store&function=getBook&bookID={1}",
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=book_store&function=getBook&bookID={1}",
                                                     API_URL, ID)).Result;
             Book book = null;
             try
@@ -110,7 +125,18 @@ namespace StudentEnrollment.Proxy
 
         public Course getCourse(int ID)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getCourse&courseID={1}",
+                                        API_URL, ID)).Result;
+            Course course = null;
+            try
+            {
+                course = (Course)ModelFactory.createModelFromJson("course", json);
+            }
+            catch (InvalidCastException)
+            {
+
+            }
+            return course;
         }
 
         public Course[] getCourseList()
@@ -145,7 +171,7 @@ namespace StudentEnrollment.Proxy
 
         public Section getSection(int ID)
         {
-            Task<String> responseTask = CallAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID);
+            Task<String> responseTask = GetFromAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID);
             String data = responseTask.Result;
             Section section = null;
             try
