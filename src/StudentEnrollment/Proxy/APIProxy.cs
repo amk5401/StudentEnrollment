@@ -43,9 +43,15 @@ namespace StudentEnrollment.Proxy
 
         public Student[] getSectionStudents(Section section)
         {
-            throw new NotImplementedException();
-            //String json = APIProxy.CallAPI(String.Format("{0}/team=studentEnrollment&function=getSectionEnrolled&sectionID={1}", API_URL, section.ID)).Result;
-            //ModelFactory.buildIDListFromJSON(json);
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=getSectionEnrolled&sectionID={1}",
+                                                        API_URL, section.ID)).Result;
+            String[] studentIDs = ModelFactory.createIDListFromJson("student", json);
+            List<Student> students = new List<Student>();
+            foreach (String studentID in studentIDs)
+            {
+                students.Add(getStudent(Convert.ToInt32(studentID)));
+            }
+            return students.ToArray();
         }
 
         //public void createBook(Book book)
@@ -216,6 +222,11 @@ namespace StudentEnrollment.Proxy
         }
 
         public void withdrawStudent(Student student, Section section)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void createBook(Book book)
         {
             throw new NotImplementedException();
         }

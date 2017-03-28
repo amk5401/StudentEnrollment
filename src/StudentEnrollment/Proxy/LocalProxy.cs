@@ -213,5 +213,20 @@ namespace StudentEnrollment.Proxy
         {
             throw new NotImplementedException();
         }
+
+        public Book getBook(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void createBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Book[] getSectionBooks(Section section)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
