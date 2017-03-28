@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using StudentEnrollment.Models;
 using Newtonsoft.Json;
 
-namespace StudentEnrollment.Controllers
+namespace StudentEnrollment.Models
 {
     public static class ModelFactory
     {

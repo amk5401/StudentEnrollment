@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using StudentEnrollment.Models;
 
-namespace StudentEnrollment.Controllers
+namespace StudentEnrollment.Proxy
 {
     public class APIProxy : Proxy
     {
@@ -28,7 +28,7 @@ namespace StudentEnrollment.Controllers
 
         public Student[] getSectionStudents(Section section)
         {
-            throw new NotImplementedException;
+            throw new NotImplementedException();
             //String json = APIProxy.CallAPI(String.Format("{0}/team=studentEnrollment&function=getSectionEnrolled&sectionID={1}", API_URL, section.ID)).Result;
             //ModelFactory.buildIDListFromJSON(json);
         }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace StudentEnrollment.Controllers
+namespace StudentEnrollment.Proxy
 {
     public class LocalProxy : Proxy
     {

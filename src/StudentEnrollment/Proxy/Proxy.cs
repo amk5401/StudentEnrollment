@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StudentEnrollment.Models;
 
-namespace StudentEnrollment.Controllers
+namespace StudentEnrollment.Proxy
 {
     interface Proxy
     {
