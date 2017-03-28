@@ -28,11 +28,18 @@ namespace StudentEnrollment.Controllers
             {
                 foreach(var course in item.courses)
                 {
+                    //int[] prereqs = {0,0 };
+                    //courses.Add(new Course(course.id, course.courseCode, course.name, course.credits, course.minGPA, prereqs));
                     Console.WriteLine("Creating course: " + course.name);
                 }
                 foreach (var student in item.students)
                 {
+                    //students.Add(new Student(student.id, student.username, student.email, student.firstName, student.lastName, student.yearLevel, student.gpa, student.enrolledSections));
                     Console.WriteLine("Creating student: " + student.name);
+                }
+                foreach(var loc in item.locations)
+                {
+
                 }
             }
 
