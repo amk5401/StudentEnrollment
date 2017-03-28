@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using StudentEnrollment.Models;
+using Microsoft.AspNetCore.Hosting.Internal;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace StudentEnrollment.Controllers
 {
@@ -20,7 +21,22 @@ namespace StudentEnrollment.Controllers
         Dictionary<Student, List<Section>> studentClasses = new Dictionary<Student, List<Section>>();
         Dictionary<Section, List<Book>> sectionBooks = new Dictionary<Section, List<Book>>();
 
+        public LocalProxy(String filePath)
+        {
+            dynamic initialJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath+"/jsonData/models.json"));
+            foreach (var item in initialJSON)
+            {
+                foreach(var course in item.courses)
+                {
+                    Console.WriteLine("Creating course: " + course.name);
+                }
+                foreach (var student in item.students)
+                {
+                    Console.WriteLine("Creating student: " + student.name);
+                }
+            }
 
+        }
 
         //public void createBook(Book book)
         //{

@@ -1,0 +1,28 @@
+[
+  {
+    "courses": [
+      {
+        "name": "course1",
+        "id": 0
+      },
+      {
+        "name": "course2",
+        "id": 0
+      }
+
+    ]
+  },
+  {
+    "students": [
+      {
+        "name": "Bob",
+        "id": 0
+      },
+      {
+        "name": "John",
+        "id": 1
+      }
+
+    ]
+  }
+]

@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
 
 namespace StudentEnrollment.Controllers
 {
     public class HomeController : Controller
     {
+        public LocalProxy localProxy;
+        private IHostingEnvironment hostingEnv;
+
+        public HomeController(IHostingEnvironment env)
+        {
+            hostingEnv = env;
+        }
+
         public IActionResult Index()
         {
+            localProxy = new LocalProxy(hostingEnv.WebRootPath);
+            
+
             Models.Instructor i1 = new StudentEnrollment.Models.Instructor(5, "gj888", "gj888@rit.edu", "George", "Johnson");
             Models.Instructor i2 = new StudentEnrollment.Models.Instructor(4, "gj888", "gj888@rit.edu", "Bob", "Smith");
 
