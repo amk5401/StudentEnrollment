@@ -7,9 +7,11 @@ namespace StudentEnrollment.Models
 {
     public class Location : Model
     {
-        public Location()
-        {
+        public int ID { get; }
 
+        public Location(int id)
+        {
+            this.ID = id;
         }
     }
 }
