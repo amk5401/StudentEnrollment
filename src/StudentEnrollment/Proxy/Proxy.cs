@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StudentEnrollment.Models;
 
-namespace StudentEnrollment.Controllers
+namespace StudentEnrollment.Proxy
 {
     interface Proxy
     {
@@ -23,9 +23,9 @@ namespace StudentEnrollment.Controllers
         Section[] getStudentSections(Student student);
         Student[] getSectionStudents(Section section);
         Section[] getInstructorSections(Instructor student);
-        //Book getBook(int ID); R2
-        //void createBook(Book book); R2
-        //Book[] getSectionBooks(Section section); R2
+        Book getBook(int ID);
+        void createBook(Book book);
+        Book[] getSectionBooks(Section section);
         Location getLocation(int ID);
         Term getCurrentTerm();
         Term getTerm(int ID);

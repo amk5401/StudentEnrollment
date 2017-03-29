@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using StudentEnrollment.Models;
+using Microsoft.AspNetCore.Hosting.Internal;
+using System.IO;
+using Newtonsoft.Json;
 
-namespace StudentEnrollment.Controllers
+namespace StudentEnrollment.Proxy
 {
     public class LocalProxy : Proxy
     {
@@ -20,7 +21,29 @@ namespace StudentEnrollment.Controllers
         Dictionary<Student, List<Section>> studentClasses = new Dictionary<Student, List<Section>>();
         Dictionary<Section, List<Book>> sectionBooks = new Dictionary<Section, List<Book>>();
 
+        public LocalProxy(String filePath)
+        {
+            dynamic initialJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath+"/jsonData/models.json"));
+            foreach (var item in initialJSON)
+            {
+                foreach(var course in item.courses)
+                {
+                    //int[] prereqs = {0,0 };
+                    //courses.Add(new Course(course.id, course.courseCode, course.name, course.credits, course.minGPA, prereqs));
+                    Console.WriteLine("Creating course: " + course.name);
+                }
+                foreach (var student in item.students)
+                {
+                    //students.Add(new Student(student.id, student.username, student.email, student.firstName, student.lastName, student.yearLevel, student.gpa, student.enrolledSections));
+                    Console.WriteLine("Creating student: " + student.name);
+                }
+                foreach(var loc in item.locations)
+                {
 
+                }
+            }
+
+        }
 
         //public void createBook(Book book)
         //{
@@ -187,6 +210,21 @@ namespace StudentEnrollment.Controllers
         }
 
         public Student[] getSectionStudents(Section section)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Book getBook(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void createBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Book[] getSectionBooks(Section section)
         {
             throw new NotImplementedException();
         }
