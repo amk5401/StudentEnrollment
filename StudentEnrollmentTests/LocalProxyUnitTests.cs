@@ -21,7 +21,7 @@ namespace StudentEnrollmentTests
             Assert.AreEqual(book1, proxy.books[0]);
             Assert.AreNotEqual(book2, proxy.books[0]);
 
-
+            //create object, post to database, try getting it back
             
 
         }
