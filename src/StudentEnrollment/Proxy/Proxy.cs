@@ -28,7 +28,7 @@ namespace StudentEnrollment.Proxy
         Book[] getSectionBooks(Section section);
         Location getLocation(int ID);
         Term getCurrentTerm();
-        Term getTerm(int ID);
+        Term getTerm(String ID);
         void createTerm(Term term);
         void enrollStudent(Student student, Section section);
         void waitlistStudent(Student student, Section section);

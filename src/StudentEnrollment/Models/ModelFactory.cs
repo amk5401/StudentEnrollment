@@ -17,11 +17,28 @@ namespace StudentEnrollment.Models
             switch (modelType)
             {
                 case "student": model = createStudent(json); break;
+                case "instructor": model = createInstructor(json); break;
+                case "admin": model = createAdmin(json); break;
                 case "course": model = createCourse(json); break;
                 case "section": model = createSection(json); break;
                 case "book": model = createBook(json); break;
+                case "term": model = createTerm(json); break;
             }
             return model;
+        }
+
+        public static Model[] createModelArrayFromJson(String modelType, String json)
+        {
+            if (modelType == null || modelType.Equals("")) return null;
+
+            Model[] models = null;
+            switch (modelType)
+            {
+                case "course": models = createCourseArrayFromJson(json); break;
+                case "section": models = createSectionArrayFromJson(json); break;
+                case "term": models = createSectionArrayFromJson(json); break;
+            }
+            return models;
         }
 
         public static String[] createIDListFromJson(String modelType, String json)
@@ -36,7 +53,45 @@ namespace StudentEnrollment.Models
             return idList;
         }
 
-        /* ID List Creation Methods */
+        /* Model Array Creation Methods */
+
+        private static Course[] createCourseArrayFromJson(String json)
+        {
+            dynamic jsonObject = JsonConvert.DeserializeObject(json);
+            List<Course> courseList = new List<Course>(); 
+            foreach(var jsonCourse in jsonObject)
+            {
+                Course course = createCourse(jsonCourse);
+                courseList.Add(course);
+            }
+            return courseList.ToArray();
+        }
+
+        private static Section[] createSectionArrayFromJson(String json)
+        {
+            dynamic jsonObject = JsonConvert.DeserializeObject(json);
+            List<Section> sectionList = new List<Section>();
+            foreach (var jsonCourse in jsonObject)
+            {
+                Section section = createSection(jsonCourse);
+                sectionList.Add(section);
+            }
+            return sectionList.ToArray();
+        }
+
+        private static Term[] createTermArrayFromJson(String json)
+        {
+            dynamic jsonObject = JsonConvert.DeserializeObject(json);
+            List<Term> termList = new List<Term>();
+            foreach (var jsonCourse in jsonObject)
+            {
+                Term section = createTerm(jsonCourse);
+                termList.Add(section);
+            }
+            return termList.ToArray();
+        }
+
+        /* ID Array Creation Methods */
 
         private static String[] createPrereqIDList(String json)
         {
@@ -58,6 +113,28 @@ namespace StudentEnrollment.Models
             float gpa = contents.gpa;
             List<Section> enrolledSections = contents.enrolledSections;
             return new Student(id, username, email, firstName, lastName, yearLevel, gpa, enrolledSections);
+        }
+
+        private static Instructor createInstructor(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            string firstName = contents.firstName;
+            string lastName = contents.lastName;
+            int id = contents.id;
+            String username = contents.username;
+            String email = contents.email;
+            return new Instructor(id, username, email, firstName, lastName);
+        }
+
+        private static Admin createAdmin(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            string firstName = contents.firstName;
+            string lastName = contents.lastName;
+            int id = contents.id;
+            String username = contents.username;
+            String email = contents.email;
+            return new Admin(id, username, email, firstName, lastName);
         }
 
         private static Course createCourse(String json)
@@ -93,6 +170,19 @@ namespace StudentEnrollment.Models
             int isbn = contents.ISBN;
             String title = contents.TITLE;
             return new Book(id, isbn, title);
+        }
+
+        private static Term createTerm(String json) // TODO: Verify that shady date logic
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            int id = Convert.ToInt32(contents.ID);
+            String termCode = contents.termCode;
+            String start = contents.startDate;
+            String end = contents.endDate;
+            // SQL Date Format: YYYY-MM-DD
+            DateTime startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
+            DateTime endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
+            return new Term(id, termCode, startDate, endDate);
         }
 
     }

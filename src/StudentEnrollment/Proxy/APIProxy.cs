@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using StudentEnrollment.Models;
+using Newtonsoft.Json;
 
 namespace StudentEnrollment.Proxy
 {
@@ -31,7 +32,7 @@ namespace StudentEnrollment.Proxy
                 postData.Add(new KeyValuePair<string, string>(key, postParemeters[key]));
             }
             HttpContent content = new FormUrlEncodedContent(postData);
-            var response = await client.PostAsync("http://localhost:44268/api/test", content);
+            var response = await client.PostAsync(uri, content);
             String responseText = null;
             if (response.IsSuccessStatusCode)
             {
@@ -43,8 +44,7 @@ namespace StudentEnrollment.Proxy
 
         public Student[] getSectionStudents(Section section)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=getSectionEnrolled&sectionID={1}",
-                                                        API_URL, section.ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=studentEnrollment&function=getSectionEnrolled&sectionID={1}", API_URL, section.ID)).Result;
             String[] studentIDs = ModelFactory.createIDListFromJson("student", json);
             List<Student> students = new List<Student>();
             foreach (String studentID in studentIDs)
@@ -54,22 +54,31 @@ namespace StudentEnrollment.Proxy
             return students.ToArray();
         }
 
-        //public void createBook(Book book)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void createBook(Book book) // TODO: Waiting on the bookstore team for parameters
+        {
+            throw new NotImplementedException();
+        }
 
         public void createCourse(Course course)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postCourse&courseCode={1}&courseName={2}&credits={3}&minGPA={4}",
-                                                        API_URL, course.CourseCode, course.Name, course.Credits, course.MinGPA)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("courseCode", course.CourseCode);
+            postData.Add("courseName", course.Name);
+            postData.Add("credits", Convert.ToString(course.Credits));
+            postData.Add("minGPA", Convert.ToString(course.MinGPA));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postCourse", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
         public void createSection(Section section)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postSection&courseID={1}&professorID={2}&maxStudents={3}&termID={4}&classroomID={5}",
-                                                        API_URL, section.Course.ID, section.Instructor.ID, section.MaxStudents, section.Term.ID, section.Location.ID)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("courseID", Convert.ToString(section.Course.ID));
+            postData.Add("professorID", Convert.ToString(section.Instructor.ID));
+            postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
+            postData.Add("termID", Convert.ToString(section.Term.ID));
+            postData.Add("classroomID", Convert.ToString(section.Location.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postSection=", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
@@ -78,157 +87,157 @@ namespace StudentEnrollment.Proxy
          * */
         public void createStudent(Student student)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postStudent&userID={1}&yearLevel={2}&gpa={3}",
-                                                    API_URL, student.ID, student.YearLevel, student.GPA)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("userID", Convert.ToString(student.ID));
+            postData.Add("yearLevel", Convert.ToString(student.YearLevel));
+            postData.Add("gpa", Convert.ToString(student.GPA));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postStudent", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
         public void createTerm(Term term)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=studentEnrollment&function=postTerm&termCode={1}&startDate={2}&endDate={3}",
-                                                    API_URL, term.Code, term.StartDate, term.EndDate)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("termCode", term.Code);
+            postData.Add("startDate", (term.StartDate).ToString("YYYY-mm-dd"));
+            postData.Add("endDate", (term.EndDate).ToString("YYYY-mm-dd"));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postTerm", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
         public void enrollStudent(Student student, Section section)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=enrollStudent&studentID={1}&sectionID={2}",
-                                                    API_URL, student.ID, section.ID)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("studentID", Convert.ToString(student.ID));
+            postData.Add("sectionID", Convert.ToString(section.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=enrollStudent", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getAdmin&adminID={1}",
-                                                    API_URL, ID)).Result;
-            Admin admin = null;
-            try
-            {
-                admin = (Admin)ModelFactory.createModelFromJson("admin", json);
-            }
-            catch (InvalidCastException)
-            {
-
-            }
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdminUser&adminID={1}", API_URL, ID)).Result;
+            Admin admin = (Admin)ModelFactory.createModelFromJson("admin", json);
             return admin;
         }
 
         public Book getBook(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=book_store&function=getBook&bookID={1}",
-                                                    API_URL, ID)).Result;
-            Book book = null;
-            try
-            {
-                book = (Book)ModelFactory.createModelFromJson("book", json);
-            }
-            catch (InvalidCastException)
-            {
-
-            }
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=book_store&function=getBook&bookID={1}", API_URL, ID)).Result;
+            Book book = book = (Book)ModelFactory.createModelFromJson("book", json);
             return book;
         }
 
         public Course getCourse(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getCourse&courseID={1}",
-                                        API_URL, ID)).Result;
-            Course course = null;
-            try
-            {
-                course = (Course)ModelFactory.createModelFromJson("course", json);
-            }
-            catch (InvalidCastException)
-            {
-
-            }
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getCourse&courseID={1}", API_URL, ID)).Result;
+            Course course = course = (Course)ModelFactory.createModelFromJson("course", json);
             return course;
         }
 
         public Course[] getCourseList()
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseList", API_URL)).Result;
+            Course[] courses = (Course[])ModelFactory.createModelArrayFromJson("course", json);
+            return courses;
         }
 
         public Section[] getCourseSections(Course course)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseSections&courseID={1}", API_URL, course.ID)).Result;
+            Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
+            return sections;
         }
 
         public Term getCurrentTerm()
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getTerms", API_URL)).Result;
+            List<Term> terms = ((Term[])ModelFactory.createModelArrayFromJson("term", json)).ToList();
+            DateTime currentDate = DateTime.Now;
+            Term currentTerm = null;
+            if (terms.Exists(x => x.StartDate <= currentDate && x.EndDate >= currentDate))
+            {
+                currentTerm = terms.Find(x => x.StartDate <= currentDate && x.EndDate >= currentDate);
+            }
+            return currentTerm;
         }
 
         public Instructor getInstructor(int ID)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
+            Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
+            return instructor;
         }
 
-        public Section[] getInstructorSections(Instructor student)
+        public Section[] getInstructorSections(Instructor instructor)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, instructor.ID)).Result;
+            Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
+            return sections;
         }
 
-        public Location getLocation(int ID)
+        public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
         {
             throw new NotImplementedException();
         }
 
         public Section getSection(int ID)
         {
-            Task<String> responseTask = GetFromAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID);
-            String data = responseTask.Result;
-            Section section = null;
-            try
-            {
-                section = (Section)ModelFactory.createModelFromJson("section", data);
-            }
-            catch (InvalidCastException)
-            {
-
-            }
+            String json = GetFromAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID).Result;
+            Section section = (Section)ModelFactory.createModelFromJson("section", json);
             return section;
         }
 
-        public Book[] getSectionBooks(Section section)
+        public Book[] getSectionBooks(Section section) // TODO: Make sure the function doesn't change to getSectionBook(S). Making assumption this is singular
         {
-            throw new NotImplementedException();
+            //String json = GetFromAPI(String.Format("{0}?team=book_store&function=getSectionBook&sectionID={1}", API_URL, section.ID)).Result;
+            //Book book = (Book)ModelFactory.createModelFromJson("book", json);
+            //return book;
+            throw new NotImplementedException();           
         }
 
         public Student getStudent(int ID)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getStudentUser&userID={1}", API_URL, ID)).Result;
+            Student student = (Student)ModelFactory.createModelFromJson("student", json);
+            return student;
         }
 
         public Section[] getStudentSections(Student student)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
+            Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
+            return sections;
         }
 
-        public Term getTerm(int ID)
+        public Term getTerm(String termCode)
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getTerm&userID={1}", API_URL, termCode)).Result;
+            Term term = (Term)ModelFactory.createModelFromJson("term", json);
+            return term;
         }
 
-        public void toggleCourse(int ID)
+        public void toggleCourse(int ID) // Make sure this is what is supposed to be in the API
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=toggleSection&sectionID={1}", API_URL, ID)).Result;
         }
 
         public void waitlistStudent(Student student, Section section)
         {
-            throw new NotImplementedException();
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("studentID", Convert.ToString(student.ID));
+            postData.Add("sectionID", Convert.ToString(section.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=waitlistStudent", API_URL), postData).Result;
+            // See what comes back from the API
         }
 
         public void withdrawStudent(Student student, Section section)
         {
-            throw new NotImplementedException();
-        }
-
-        public void createBook(Book book)
-        {
-            throw new NotImplementedException();
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("studentID", Convert.ToString(student.ID));
+            postData.Add("sectionID", Convert.ToString(section.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=withdrawStudent", API_URL), postData).Result;
+            // See what comes back from the API
         }
     }
 }

@@ -23,7 +23,7 @@ namespace StudentEnrollment.Proxy
 
         public LocalProxy(String filePath)
         {
-            dynamic initialJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath+"/jsonData/models.json"));
+            dynamic initialJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/models.json"));
             foreach (var item in initialJSON)
             {
                 foreach(var course in item.courses)
@@ -184,7 +184,7 @@ namespace StudentEnrollment.Proxy
             }
         }
 
-        public Term getTerm(int ID)
+        public Term getTerm(String ID)
         {
             throw new NotImplementedException();
         }
