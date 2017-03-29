@@ -13,7 +13,5 @@ namespace StudentEnrollment.Models
 
         }
 
-        public Section[] TeachingSections { get; set; }
-
     }
 }

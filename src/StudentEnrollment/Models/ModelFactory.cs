@@ -146,13 +146,6 @@ namespace StudentEnrollment.Models
             int credits = contents.CREDITS;
             int minGPA = contents.MIN_GPA;
             bool availability = contents.AVAILABILITY;
-
-            List<int> prereqs = new List<int>();
-            foreach (var pre in contents.prereqs)
-            {
-                int test = pre;
-                prereqs.Add(test);
-            }
             return new Course(id, courseCode, name, credits, minGPA, availability);
         }
 

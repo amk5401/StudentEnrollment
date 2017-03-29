@@ -62,8 +62,6 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getCourse&courseID={1}", API_URL, ID)).Result;
             Course course = (Course)ModelFactory.createModelFromJson("course", json);
 
-            setCourseReferences(course);
-
             return course;
         }
 
@@ -71,11 +69,6 @@ namespace StudentEnrollment.Proxy
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseList", API_URL)).Result;
             Course[] courses = (Course[])ModelFactory.createModelArrayFromJson("course", json);
-
-            foreach (Course course in courses)
-            {
-                setCourseReferences(course);
-            }
 
             return courses;
         }
@@ -97,8 +90,6 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
 
-            setInstructorReferences(instructor);
-
             return instructor;
         }
         public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
@@ -110,16 +101,12 @@ namespace StudentEnrollment.Proxy
             String json = GetFromAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID).Result;
             Section section = (Section)ModelFactory.createModelFromJson("section", json);
 
-            setSectionReferences(section);
-
             return section;
         }
         public Student getStudent(int ID)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getStudentUser&userID={1}", API_URL, ID)).Result;
             Student student = (Student)ModelFactory.createModelFromJson("student", json);
-
-            setStudentReferences(student);
 
             return student;
         }
@@ -162,11 +149,6 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseSections&courseID={1}", API_URL, course.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
 
-            foreach (Section section in sections)
-            {
-                setSectionReferences(section);
-            }
-
             return sections;
         }
 
@@ -175,22 +157,12 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, instructor.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
 
-            foreach (Section section in sections)
-            {
-                setSectionReferences(section);
-            }
-
             return sections;
         }
         public Section[] getStudentSections(Student student)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
-
-            foreach (Section section in sections)
-            {
-                setSectionReferences(section);
-            }
 
             return sections;
         }
@@ -226,10 +198,10 @@ namespace StudentEnrollment.Proxy
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("courseID", Convert.ToString(section.Course.ID));
-            postData.Add("professorID", Convert.ToString(section.Instructor.ID));
+            postData.Add("professorID", Convert.ToString(section.InstructorID));
             postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
-            postData.Add("termID", Convert.ToString(section.Term.ID));
-            postData.Add("classroomID", Convert.ToString(section.Location.ID));
+            postData.Add("termID", Convert.ToString(section.TermID));
+            postData.Add("classroomID", Convert.ToString(section.LocationID));
             String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postSection=", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
@@ -255,29 +227,6 @@ namespace StudentEnrollment.Proxy
             postData.Add("endDate", (term.EndDate).ToString("YYYY-mm-dd"));
             String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postTerm", API_URL), postData).Result;
             // TODO: See what comes back from JSON
-        }
-        #endregion
-
-        #region Reference Setting
-        //Methods for setting references between models
-        public void setStudentReferences(Student student)
-        {
-            student.EnrolledSections = getStudentSections(student);
-        }
-        public void setSectionReferences(Section section)
-        {
-            section.StudentsInSection = getSectionStudents(section);
-            section.Instructor = getInstructor(section.InstructorID);
-            section.Course = getCourse(section.CourseID);
-            section.Location = getLocation(section.LocationID);
-        }
-        public void setInstructorReferences(Instructor instructor)
-        {
-            instructor.TeachingSections = getInstructorSections(instructor);
-        }
-        public void setCourseReferences(Course course)
-        {
-            course.Prerequisites = getCoursePrereqs(course);
         }
         #endregion
 

@@ -41,14 +41,6 @@ namespace StudentEnrollment.Proxy
         void createStudent(Student student);
 
 
-        //Reference Setting
-        //Methods for setting references between models
-        void setStudentReferences(Student student);
-        void setInstructorReferences(Instructor instructor);
-        void setCourseReferences(Course course);
-        void setSectionReferences(Section section);
-
-
         //Interaction 
         //Methods for interactions between models
         void enrollStudent(Student student, Section section);

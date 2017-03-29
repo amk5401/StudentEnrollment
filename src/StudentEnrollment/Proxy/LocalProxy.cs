@@ -10,18 +10,27 @@ namespace StudentEnrollment.Proxy
 {
     public class LocalProxy : Proxy
     {
-        List<Student> students = new List<Student>();
-        List<Admin> admins = new List<Admin>();
-        List<Instructor> instructors = new List<Instructor>();
+        List<Student> studentsList = new List<Student>();
+        List<Admin> adminsList = new List<Admin>();
+        List<Instructor> instructorsList = new List<Instructor>();
 
-        List<Book> books = new List<Book>();
-        List<Course> courses = new List<Course>();
-        List<Section> sections = new List<Section>();
-        List<Term> terms = new List<Term>();
-        List<Location> locations = new List<Location>();
+        List<Book> booksList = new List<Book>();
+        List<Course> coursesList = new List<Course>();
+        List<Section> sectionsList = new List<Section>();
+        List<Term> termsList = new List<Term>();
+        List<Location> locationsList = new List<Location>();
 
-        Dictionary<Student, List<Section>> studentClasses = new Dictionary<Student, List<Section>>();
-        Dictionary<Section, List<Book>> sectionBooks = new Dictionary<Section, List<Book>>();
+        //Student ID, List of Section IDs
+        Dictionary<int, List<int>> sectionsInStudentDict = new Dictionary<int, List<int>>();
+
+        //Section ID, List of Student IDs
+        Dictionary<int, List<int>> studentsInSectionDict = new Dictionary<int, List<int>>();
+
+        //Section ID, List of Book IDs
+        Dictionary<int, List<Book>> booksInSectionDict = new Dictionary<int, List<Book>>();
+
+        //Course ID, List of Course IDs
+        Dictionary<int, List<int>> prereqsInCourseDict = new Dictionary<int, List<int>>();
 
         String filePath;
 
@@ -29,14 +38,13 @@ namespace StudentEnrollment.Proxy
         {
             this.filePath = filePath;
 
-            //createStudent(new Student(8, "b", "b", "bob", "johnson", 4, 2.3f, new List<Section>()));
 
             //Read in students.json
             dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/students.json"));
             foreach (var student in studentsJSON)
             {
-                JObject modelJSON = student;
-                this.students.Add((Student)ModelFactory.createModelFromJson("student", modelJSON.ToString()));
+                JObject modelJSON = student;     
+                this.studentsList.Add((Student)ModelFactory.createModelFromJson("student", modelJSON.ToString()););
             }
 
             //Read in instructor.json
@@ -44,7 +52,7 @@ namespace StudentEnrollment.Proxy
             foreach (var instructor in instructorsJSON)
             {
                 JObject modelJSON = instructor;
-                this.instructors.Add((Instructor)ModelFactory.createModelFromJson("instructor", modelJSON.ToString()));
+                this.instructorsList.Add((Instructor)ModelFactory.createModelFromJson("instructor", modelJSON.ToString()));
             }
 
             //Read in admins.json
@@ -52,23 +60,42 @@ namespace StudentEnrollment.Proxy
             foreach (var admin in adminJSON)
             {
                 JObject modelJSON = admin;
-                this.admins.Add((Admin)ModelFactory.createModelFromJson("admin", modelJSON.ToString()));
+                this.adminsList.Add((Admin)ModelFactory.createModelFromJson("admin", modelJSON.ToString()));
             }
 
             //Read in courses.json
             dynamic coursesJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/courses.json"));
             foreach (var course in coursesJSON.courses)
             {
+                List<int> prereqs = new List<int>();
+                foreach (var pre in course.prereqs)
+                {
+                    prereqs.Add(pre);
+                }
+
                 JObject modelJSON = course;
-                this.courses.Add((Course)ModelFactory.createModelFromJson("course", modelJSON.ToString()));
+                Course newCourse = (Course)ModelFactory.createModelFromJson("course", modelJSON.ToString());
+
+                this.coursesList.Add(newCourse);
+                this.prereqsInCourseDict.Add(newCourse.ID, prereqs);
             }
 
             //Read in sections.json
             dynamic sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/sections.json"));
             foreach (var section in sectionsJSON)
             {
+                List<int> books = new List<int>();
+                foreach (var book in section.books)
+                {
+                    books.Add(book);
+                }
+
                 JObject modelJSON = section;
-                this.sections.Add((Section)ModelFactory.createModelFromJson("section", modelJSON.ToString()));
+                Section newSection = (Section)ModelFactory.createModelFromJson("section", modelJSON.ToString());
+
+                this.sectionsList.Add(newSection);
+                this.prereqsInCourseDict.Add(newSection.ID, books);
+
             }
 
             //Read in terms.json
@@ -76,7 +103,7 @@ namespace StudentEnrollment.Proxy
             foreach (var term in termsJSON)
             {
                 JObject modelJSON = term;
-                this.terms.Add((Term)ModelFactory.createModelFromJson("term", modelJSON.ToString()));
+                this.termsList.Add((Term)ModelFactory.createModelFromJson("term", modelJSON.ToString()));
             }
 
             //Read in locations.json
@@ -84,7 +111,7 @@ namespace StudentEnrollment.Proxy
             foreach (var location in locationsJSON)
             {
                 JObject modelJSON = location;
-                this.locations.Add((Location)ModelFactory.createModelFromJson("location", modelJSON.ToString()));
+                this.locationsList.Add((Location)ModelFactory.createModelFromJson("location", modelJSON.ToString()));
             }
 
             //Read in books.json
@@ -92,10 +119,34 @@ namespace StudentEnrollment.Proxy
             foreach (var book in booksJSON)
             {
                 JObject modelJSON = book;
-                this.books.Add((Book)ModelFactory.createModelFromJson("book", modelJSON.ToString()));
+                this.booksList.Add((Book)ModelFactory.createModelFromJson("book", modelJSON.ToString()));
             }
 
-            //Update references
+            //Create Reference Dictionaries
+            dynamic students_sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/instructors.json"));
+            foreach (var item in students_sectionsJSON)
+            {
+                int studentID = item.studentID;
+                int sectionID = item.sectionID;
+
+                if (sectionsInStudentDict.ContainsKey(studentID))
+                {
+                    sectionsInStudentDict[studentID].Add(sectionID);
+                }
+                else
+                {
+                    sectionsInStudentDict.Add(studentID, new List<int> { sectionID });
+                }
+
+                if (studentsInSectionDict.ContainsKey(sectionID))
+                {
+                    studentsInSectionDict[sectionID].Add(studentID);
+                }
+                else
+                {
+                    studentsInSectionDict.Add(sectionID, new List<int> { studentID });
+                }
+            }
 
 
         }
@@ -104,50 +155,53 @@ namespace StudentEnrollment.Proxy
         public Admin getAdmin(int ID)
         {
             Admin admin = null;
-            if (admins.Exists(x => x.ID == ID))
+            if (adminsList.Exists(x => x.ID == ID))
             {
-                admin = admins.Find(x => x.ID.Equals(ID));
+                admin = adminsList.Find(x => x.ID.Equals(ID));
             }
             return admin;
         }
         public Course getCourse(int ID)
         {
             Course course = null;
-            if (courses.Exists(x => x.ID == ID))
+            if (coursesList.Exists(x => x.ID == ID))
             {
-                course = courses.Find(x => x.ID.Equals(ID));
+                course = coursesList.Find(x => x.ID.Equals(ID));
             }
             return course;
         }
 
         public Course[] getCourseList()
         {
-            return courses.ToArray();
+            return coursesList.ToArray();
         }
         public Section getSection(int ID)
         {
             Section section = null;
-            if (sections.Exists(x => x.ID == ID))
+            if (sectionsList.Exists(x => x.ID == ID))
             {
-                section = sections.Find(x => x.ID.Equals(ID));
+                section = sectionsList.Find(x => x.ID.Equals(ID));
             }
             return section;
         }
         public Location getLocation(int ID)
         {
-            throw new NotImplementedException();
+            Location location = null;
+            if (sectionsList.Exists(x => x.ID == ID))
+            {
+                location = locationsList.Find(x => x.ID.Equals(ID));
+            }
+            return location;
         }
 
         public Term getCurrentTerm()
         {
-            if (terms.Exists(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate)))
+            Term term = null;
+            if (termsList.Exists(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate)))
             {
-                return terms.Find(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate));
+                term = termsList.Find(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate));
             }
-            else
-            {
-                return null;
-            }
+            return term;
         }
 
         public Term getTerm(String termCode)
@@ -156,16 +210,31 @@ namespace StudentEnrollment.Proxy
         }
         public Student getStudent(int ID)
         {
-            throw new NotImplementedException();
+            Student student = null;
+            if (studentsList.Exists(x => x.ID == ID))
+            {
+                student = studentsList.Find(x => x.ID.Equals(ID));
+            }
+            return student;
         }
 
         public Instructor getInstructor(int ID)
         {
-            throw new NotImplementedException();
+            Instructor instructor = null;
+            if (instructorsList.Exists(x => x.ID == ID))
+            {
+                instructor = instructorsList.Find(x => x.ID.Equals(ID));
+            }
+            return instructor;
         }
         public Book getBook(int ID)
         {
-            throw new NotImplementedException();
+            Book book = null;
+            if (booksList.Exists(x => x.ID == ID))
+            {
+                book = booksList.Find(x => x.ID.Equals(ID));
+            }
+            return book;
         }
         #endregion
 
@@ -174,56 +243,73 @@ namespace StudentEnrollment.Proxy
         //Returning arrays of Model objects from tables of IDs
         public Section[] getCourseSections(Course course)
         {
-            return sections.FindAll(x => x.Course.Equals(course)).ToArray();
+            return sectionsList.FindAll(x => x.Course.Equals(course)).ToArray();
         }
 
         public Section[] getStudentSections(Student student)
         {
-            foreach (Section section in sections)
-            {
-                foreach (Student s in section.StudentsInSection)
-                {
-                    if (s.ID == student.ID)
-                    {
 
-                    }
+            if (sectionsInStudentDict.ContainsKey(student.ID))
+            {
+                List<int> sectionIDs = sectionsInStudentDict[student.ID];
+                List<Section> sectionsTemp = new List<Section>();
+                foreach (int id in sectionIDs)
+                {
+                    sectionsTemp.Add(getSection(id));
                 }
+                return sectionsTemp.ToArray();
             }
-            if (studentClasses.ContainsKey(student))
-            {
-                return studentClasses[student].ToArray();
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public Section[] getInstructorSections(Instructor instructor)
         {
-            return sections.FindAll(x => x.Instructor.Equals(instructor)).ToArray();
+            return sectionsList.FindAll(x => x.InstructorID.Equals(instructor.ID)).ToArray();
         }
+        //TODO:
         public Student[] getSectionStudents(Section section)
         {
-            List<Student> students = new List<Student>();
-            foreach (String studentID in section.StudentsInSectionIDs)
+            if (studentsInSectionDict.ContainsKey(section.ID))
             {
-                students.Add(getStudent(Convert.ToInt32(studentID)));
+                List<int> studentIDs = studentsInSectionDict[section.ID];
+                List<Student> studentsTemp = new List<Student>();
+                foreach (int id in studentIDs)
+                {
+                    studentsTemp.Add(getStudent(id));
+                }
+                return studentsTemp.ToArray();
             }
-            return students.ToArray();
+            return null;
         }
+
         public Course[] getCoursePrereqs(Course course)
         {
-            List<Course> courses = new List<Course>();
-            foreach (String courseID in course.PrerequsiteIDs)
+            if (prereqsInCourseDict.ContainsKey(course.ID))
             {
-                courses.Add(getCourse(Convert.ToInt32(courseID)));
+                List<int> prereqIDs = prereqsInCourseDict[course.ID];
+                List<Course> prereqsTemp = new List<Course>();
+                foreach (int id in prereqIDs)
+                {
+                    prereqsTemp.Add(getCourse(id));
+                }
+                return prereqsTemp.ToArray();
             }
-            return courses.ToArray();
+            return null;
         }
+
         public Book[] getSectionBooks(Section section)
         {
-            throw new NotImplementedException();
+            if (booksInSectionDict.ContainsKey(section.ID))
+            {
+                List<int> bookIDs = prereqsInCourseDict[section.ID];
+                List<Book> booksTemp = new List<Book>();
+                foreach (int id in bookIDs)
+                {
+                    booksTemp.Add(getBook(id));
+                }
+                return booksTemp.ToArray();
+            }
+            return null;
         }
         
         #endregion
@@ -233,7 +319,7 @@ namespace StudentEnrollment.Proxy
         //Methods for adding data to the database
         public void createCourse(Course course)
         {
-            this.courses.Add(course);
+            this.coursesList.Add(course);
         }
 
         public void createSection(Section section)
@@ -241,9 +327,9 @@ namespace StudentEnrollment.Proxy
             JObject newStudent = new JObject(
                 new JProperty("ID", section.ID),
                 new JProperty("COURSE_ID", section.Course.ID),
-                new JProperty("TERM_ID", section.Term.ID),
-                new JProperty("PROFESSOR_ID", section.Instructor.ID),
-                new JProperty("CLASSROOM_ID", section.Location.ID)
+                new JProperty("TERM_ID", section.TermID),
+                new JProperty("PROFESSOR_ID", section.InstructorID),
+                new JProperty("CLASSROOM_ID", section.LocationID)
              //new JProperty("location", student.LastName)
              );
 
@@ -252,65 +338,21 @@ namespace StudentEnrollment.Proxy
             newJSON.Add(newStudent);
 
             File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());
-            this.sections.Add(section);
+            this.sectionsList.Add(section);
         }
 
         public void createStudent(Student student)
         {
-            JObject newStudent = new JObject(
-                new JProperty("id", student.ID),
-                new JProperty("username", student.Username),
-                new JProperty("email", student.Email),
-                new JProperty("firstName", student.FirstName),
-                new JProperty("lastName", student.LastName),
-                new JProperty("yearLevel", student.YearLevel),
-                new JProperty("gpa", student.GPA),
-                new JProperty("enrolledSections", student.EnrolledSections)
-             );
-
-            dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(this.filePath + "/jsonData/students.json"));
-            JArray newJSON = studentsJSON;
-            newJSON.Add(newStudent);
-
-            File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());
-
-            this.students.Add(student);
+            this.studentsList.Add(student);
         }
 
         public void createTerm(Term term)
         {
-            this.terms.Add(term);
+            this.termsList.Add(term);
         }
         public void createBook(Book book)
         {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-
-        #region Reference Setting
-        //Methods for setting references between models
-        public void setStudentReferences(Student student)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void setInstructorReferences(Instructor instructor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void setCourseReferences(Course course)
-        {
-            course.Prerequisites = getCoursePrereqs(course);
-        }
-
-        public void setSectionReferences(Section section)
-        {
-            section.StudentsInSection = getSectionStudents(section);
-            section.Instructor = getInstructor(section.InstructorID);
-            section.Course = getCourse(section.CourseID);
-            section.Location = getLocation(section.LocationID);
+            this.booksList.Add(book);
         }
         #endregion
 
@@ -319,19 +361,33 @@ namespace StudentEnrollment.Proxy
         //Methods for interactions between models
         public void enrollStudent(Student student, Section section)
         {
-            if (studentClasses.ContainsKey(student))
+            if (sectionsInStudentDict.ContainsKey(student.ID))
             {
-                studentClasses[student].Add(section);
+                sectionsInStudentDict[student.ID].Add(section.ID);
             }
             else
             {
-                studentClasses.Add(student, new List<Section> { section });
+                sectionsInStudentDict.Add(student.ID, new List<int> { section.ID });
+            }
+
+            if (studentsInSectionDict.ContainsKey(section.ID))
+            {
+                studentsInSectionDict[section.ID].Add(student.ID);
+            }
+            else
+            {
+                studentsInSectionDict.Add(section.ID, new List<int> { student.ID });
             }
         }
         public void toggleCourse(int ID)
         {
-            Course course = this.getCourse(ID);
-            // TODO: finish when course has the availability property added in the API's schema
+            Course course = getCourse(ID);
+            Course changedCourse = new Course(course.ID, course.CourseCode, course.Name, course.Credits, course.MinGPA, !course.Availability);
+
+            coursesList.Remove(course);
+            coursesList.Add(changedCourse);
+
+            //TODO: toggling off sections
         }
         public void waitlistStudent(Student student, Section section)
         {
@@ -339,7 +395,15 @@ namespace StudentEnrollment.Proxy
         }
         public void withdrawStudent(Student student, Section section)
         {
-            throw new NotImplementedException();
+            if (sectionsInStudentDict.ContainsKey(student.ID))
+            {
+                sectionsInStudentDict[student.ID].Remove(section.ID);
+            }
+
+            if (studentsInSectionDict.ContainsKey(section.ID))
+            {
+                studentsInSectionDict[section.ID].Remove(student.ID);
+            }
         }
         #endregion
     }
