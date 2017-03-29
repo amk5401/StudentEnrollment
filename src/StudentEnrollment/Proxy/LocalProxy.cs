@@ -248,7 +248,7 @@ namespace StudentEnrollment.Proxy
             }
         }
 
-        public Term getTerm(int ID)
+        public Term getTerm(String termCode)
         {
             throw new NotImplementedException();
         }
