@@ -99,12 +99,138 @@ namespace StudentEnrollment.Proxy
 
 
         }
-
-        /*public void createBook(Book book)
+        #region Model Getters
+        //Methods for Retreiving data from API
+        public Admin getAdmin(int ID)
         {
-            this.books.Add(book);
-        }*/
+            Admin admin = null;
+            if (admins.Exists(x => x.ID == ID))
+            {
+                admin = admins.Find(x => x.ID.Equals(ID));
+            }
+            return admin;
+        }
+        public Course getCourse(int ID)
+        {
+            Course course = null;
+            if (courses.Exists(x => x.ID == ID))
+            {
+                course = courses.Find(x => x.ID.Equals(ID));
+            }
+            return course;
+        }
 
+        public Course[] getCourseList()
+        {
+            return courses.ToArray();
+        }
+        public Section getSection(int ID)
+        {
+            Section section = null;
+            if (sections.Exists(x => x.ID == ID))
+            {
+                section = sections.Find(x => x.ID.Equals(ID));
+            }
+            return section;
+        }
+        public Location getLocation(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Term getCurrentTerm()
+        {
+            if (terms.Exists(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate)))
+            {
+                return terms.Find(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate));
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Term getTerm(String termCode)
+        {
+            throw new NotImplementedException();
+        }
+        public Student getStudent(int ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Instructor getInstructor(int ID)
+        {
+            throw new NotImplementedException();
+        }
+        public Book getBook(int ID)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+
+        #region Shared Data Tables
+        //Returning arrays of Model objects from tables of IDs
+        public Section[] getCourseSections(Course course)
+        {
+            return sections.FindAll(x => x.Course.Equals(course)).ToArray();
+        }
+
+        public Section[] getStudentSections(Student student)
+        {
+            foreach (Section section in sections)
+            {
+                foreach (Student s in section.StudentsInSection)
+                {
+                    if (s.ID == student.ID)
+                    {
+
+                    }
+                }
+            }
+            if (studentClasses.ContainsKey(student))
+            {
+                return studentClasses[student].ToArray();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Section[] getInstructorSections(Instructor instructor)
+        {
+            return sections.FindAll(x => x.Instructor.Equals(instructor)).ToArray();
+        }
+        public Student[] getSectionStudents(Section section)
+        {
+            List<Student> students = new List<Student>();
+            foreach (String studentID in section.StudentsInSectionIDs)
+            {
+                students.Add(getStudent(Convert.ToInt32(studentID)));
+            }
+            return students.ToArray();
+        }
+        public Course[] getCoursePrereqs(Course course)
+        {
+            List<Course> courses = new List<Course>();
+            foreach (String courseID in course.PrerequsiteIDs)
+            {
+                courses.Add(getCourse(Convert.ToInt32(courseID)));
+            }
+            return courses.ToArray();
+        }
+        public Book[] getSectionBooks(Section section)
+        {
+            throw new NotImplementedException();
+        }
+        
+        #endregion
+
+
+        #region Creation Methods
+        //Methods for adding data to the database
         public void createCourse(Course course)
         {
             this.courses.Add(course);
@@ -118,7 +244,7 @@ namespace StudentEnrollment.Proxy
                 new JProperty("TERM_ID", section.Term.ID),
                 new JProperty("PROFESSOR_ID", section.Instructor.ID),
                 new JProperty("CLASSROOM_ID", section.Location.ID)
-                //new JProperty("location", student.LastName)
+             //new JProperty("location", student.LastName)
              );
 
             dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(this.filePath + "/jsonData/students.json"));
@@ -155,7 +281,42 @@ namespace StudentEnrollment.Proxy
         {
             this.terms.Add(term);
         }
+        public void createBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
+
+        #region Reference Setting
+        //Methods for setting references between models
+        public void setStudentReferences(Student student)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setInstructorReferences(Instructor instructor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setCourseReferences(Course course)
+        {
+            course.Prerequisites = getCoursePrereqs(course);
+        }
+
+        public void setSectionReferences(Section section)
+        {
+            section.StudentsInSection = getSectionStudents(section);
+            section.Instructor = getInstructor(section.InstructorID);
+            section.Course = getCourse(section.CourseID);
+            section.Location = getLocation(section.LocationID);
+        }
+        #endregion
+
+
+        #region Interaction Methods
+        //Methods for interactions between models
         public void enrollStudent(Student student, Section section)
         {
             if (studentClasses.ContainsKey(student))
@@ -167,152 +328,19 @@ namespace StudentEnrollment.Proxy
                 studentClasses.Add(student, new List<Section> { section });
             }
         }
-
-        public Admin getAdmin(int ID)
-        {
-            Admin admin = null;
-            if (admins.Exists(x => x.ID == ID))
-            {
-                admin = admins.Find(x => x.ID.Equals(ID));
-            }
-            return admin;
-        }
-
-        //public Book getBook(int ID)
-        //{
-        //    Book book = null;
-        //    if (books.Exists(x => x.ID == ID))
-        //    {
-        //        book = books.Find(x => x.ID.Equals(ID));
-        //    }
-        //    return book;
-        //}
-
-        public Course getCourse(int ID)
-        {
-            Course course = null;
-            if (courses.Exists(x => x.ID == ID))
-            {
-                course = courses.Find(x => x.ID.Equals(ID));
-            }
-            return course;
-        }
-
-        public Course[] getCourseList()
-        {
-            return courses.ToArray();
-        }
-
         public void toggleCourse(int ID)
         {
             Course course = this.getCourse(ID);
             // TODO: finish when course has the availability property added in the API's schema
         }
-
-        public Section getSection(int ID)
-        {
-            Section section = null;
-            if (sections.Exists(x => x.ID == ID))
-            {
-                section = sections.Find(x => x.ID.Equals(ID));
-            }
-            return section;
-        }
-
-        public Section[] getCourseSections(Course course)
-        {
-            return sections.FindAll(x => x.Course.Equals(course)).ToArray();
-        }
-
-        public Section[] getStudentSections(Student student)
-        {
-            if (studentClasses.ContainsKey(student))
-            {
-                return studentClasses[student].ToArray();
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public Section[] getInstructorSections(Instructor instructor)
-        {
-            return sections.FindAll(x => x.Instructor.Equals(instructor)).ToArray();
-        }
-
-        //public Book[] getSectionBooks(Section section)
-        //{
-        //    if (sectionBooks.ContainsKey(section))
-        //    {
-        //        return sectionBooks[section].ToArray();
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
-
-        public Location getLocation(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Term getCurrentTerm()
-        {
-            if (terms.Exists(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate)))
-            {
-                return terms.Find(x => (x.StartDate <= DateTime.Now) && (DateTime.Now <= x.EndDate));
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public Term getTerm(String termCode)
-        {
-            throw new NotImplementedException();
-        }
-
         public void waitlistStudent(Student student, Section section)
         {
             throw new NotImplementedException();
         }
-
         public void withdrawStudent(Student student, Section section)
         {
             throw new NotImplementedException();
         }
-
-        public Student getStudent(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Instructor getInstructor(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Student[] getSectionStudents(Section section)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Book getBook(int ID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void createBook(Book book)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Book[] getSectionBooks(Section section)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

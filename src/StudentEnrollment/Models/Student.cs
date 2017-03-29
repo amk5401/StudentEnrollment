@@ -13,8 +13,17 @@ namespace StudentEnrollment.Models
             GPA = gpa;
             //EnrolledSections = enrolledSections;
         }
+        //LocalProxy Constructor
+        public Student(int id, String username, String email, String firstName, String lastName, int yearLevel, float gpa, String[] enrolledSectionIDs)
+            : base(id, username, email, firstName, lastName)
+        {
+            YearLevel = yearLevel;
+            GPA = gpa;
+            EnrolledSectionIDs = enrolledSectionIDs;
+        }
         public int YearLevel { get; set; }
         public float GPA { get; set; }
+        public String[] EnrolledSectionIDs { get; }
         public Section[] EnrolledSections { get; set; }
     }
 }
