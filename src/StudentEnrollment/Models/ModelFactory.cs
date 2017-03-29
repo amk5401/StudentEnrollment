@@ -63,13 +63,20 @@ namespace StudentEnrollment.Models
         private static Course createCourse(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
+
             int id = contents.id;
             string courseCode = contents.courseCode;
             string name = contents.name;
             int credits = contents.credits;
             int minGPA = contents.minGPA;
-            int[] prereqs = contents.prereqs;
-            return new Course(id, courseCode, name, credits, minGPA, prereqs);
+
+            List<int> prereqs = new List<int>();
+            foreach (var pre in contents.prereqs)
+            {
+                int test = pre;
+                prereqs.Add(test);
+            }
+            return new Course(id, courseCode, name, credits, minGPA, prereqs.ToArray());
         }
 
         private static Section createSection(String json)
