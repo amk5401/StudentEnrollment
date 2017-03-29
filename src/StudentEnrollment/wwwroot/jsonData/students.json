@@ -1,0 +1,45 @@
+[
+  {
+    "id": 5,
+    "username": "bob32",
+    "email": "bob@email.com",
+    "firstName": "Bob",
+    "lastName": "Johnson",
+    "yearLevel": 2,
+    "gpa": 3.5,
+    "enrolledSections": [
+      7,
+      5
+    ]
+  },
+  {
+    "id": 6,
+    "username": "joejoe",
+    "email": "joe@email.com",
+    "firstName": "Joe",
+    "lastName": "Smith",
+    "yearLevel": 3,
+    "gpa": 2.9,
+    "enrolledSections": []
+  },
+  {
+    "id": 8,
+    "username": "b",
+    "email": "b",
+    "firstName": "bob",
+    "lastName": "johnson",
+    "yearLevel": 4,
+    "gpa": 2.3,
+    "enrolledSections": []
+  },
+  {
+    "id": 8,
+    "username": "b",
+    "email": "b",
+    "firstName": "bob",
+    "lastName": "johnson",
+    "yearLevel": 4,
+    "gpa": 2.3,
+    "enrolledSections": []
+  }
+]

@@ -4,6 +4,7 @@ using StudentEnrollment.Models;
 using Microsoft.AspNetCore.Hosting.Internal;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace StudentEnrollment.Proxy
 {
@@ -17,38 +18,84 @@ namespace StudentEnrollment.Proxy
         List<Course> courses = new List<Course>();
         List<Section> sections = new List<Section>();
         List<Term> terms = new List<Term>();
+        List<Location> locations = new List<Location>();
 
         Dictionary<Student, List<Section>> studentClasses = new Dictionary<Student, List<Section>>();
         Dictionary<Section, List<Book>> sectionBooks = new Dictionary<Section, List<Book>>();
 
+        String filePath;
+
         public LocalProxy(String filePath)
         {
-            dynamic initialJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/models.json"));
-            foreach (var item in initialJSON)
-            {
-                foreach(var course in item.courses)
-                {
-                    //int[] prereqs = {0,0 };
-                    //courses.Add(new Course(course.id, course.courseCode, course.name, course.credits, course.minGPA, prereqs));
-                    Console.WriteLine("Creating course: " + course.name);
-                }
-                foreach (var student in item.students)
-                {
-                    //students.Add(new Student(student.id, student.username, student.email, student.firstName, student.lastName, student.yearLevel, student.gpa, student.enrolledSections));
-                    Console.WriteLine("Creating student: " + student.name);
-                }
-                foreach(var loc in item.locations)
-                {
+            this.filePath = filePath;
 
-                }
+            createStudent(new Student(8, "b", "b", "bob", "johnson", 4, 2.3f, new List<Section>()));
+
+            //Read in students.json
+            dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/students.json"));
+            foreach (var student in studentsJSON)
+            {
+                this.students.Add((Student)ModelFactory.createModelFromJson("student", student.ToString()));
             }
+
+            //Read in instructor.json
+            dynamic instructorsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/instructors.json"));
+            foreach (var instructor in instructorsJSON)
+            {
+                this.students.Add((Student)ModelFactory.createModelFromJson("instructor", instructor.ToString()));
+            }
+
+            //Read in admins.json
+            dynamic adminJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/admins.json"));
+            foreach (var admin in adminJSON)
+            {
+                this.admins.Add((Admin)ModelFactory.createModelFromJson("admin", admin.ToString()));
+            }
+
+            //Read in courses.json
+            dynamic coursesJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/courses.json"));
+            foreach (var course in coursesJSON.courses)
+            {
+                this.courses.Add((Course)ModelFactory.createModelFromJson("course", course.ToString()));
+            }
+
+            //Read in sections.json
+            dynamic sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/sections.json"));
+            foreach (var section in sectionsJSON)
+            {
+                this.sections.Add((Section)ModelFactory.createModelFromJson("section", section.ToString()));
+            }
+
+            //Read in terms.json
+            dynamic termsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/terms.json"));
+            foreach (var term in termsJSON)
+            {
+                this.terms.Add((Term)ModelFactory.createModelFromJson("term", term.ToString()));
+            }
+
+            //Read in locations.json
+            dynamic locationsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/locations.json"));
+            foreach (var location in locationsJSON)
+            {
+                this.locations.Add((Location)ModelFactory.createModelFromJson("location", location.ToString()));
+            }
+
+            //Read in books.json
+            dynamic booksJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/books.json"));
+            foreach (var book in booksJSON)
+            {
+                this.books.Add((Book)ModelFactory.createModelFromJson("book", book.ToString()));
+            }
+
+            //Update references
+
 
         }
 
-        //public void createBook(Book book)
-        //{
-        //    this.books.Add(book);
-        //}
+        /*public void createBook(Book book)
+        {
+            this.books.Add(book);
+        }*/
 
         public void createCourse(Course course)
         {
@@ -62,6 +109,23 @@ namespace StudentEnrollment.Proxy
 
         public void createStudent(Student student)
         {
+            JObject newStudent = new JObject(
+                new JProperty("id", student.ID),
+                new JProperty("username", student.Username),
+                new JProperty("email", student.Email),
+                new JProperty("firstName", student.FirstName),
+                new JProperty("lastName", student.LastName),
+                new JProperty("yearLevel", student.YearLevel),
+                new JProperty("gpa", student.GPA),
+                new JProperty("enrolledSections", student.EnrolledSections)
+             );
+
+            dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(this.filePath + "/jsonData/students.json"));
+            JArray newJSON = studentsJSON;
+            newJSON.Add(newStudent);
+
+            File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());
+
             this.students.Add(student);
         }
 
@@ -184,7 +248,7 @@ namespace StudentEnrollment.Proxy
             }
         }
 
-        public Term getTerm(String ID)
+        public Term getTerm(int ID)
         {
             throw new NotImplementedException();
         }
