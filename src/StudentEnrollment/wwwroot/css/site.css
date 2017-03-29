@@ -17,6 +17,10 @@ textarea {
     max-width: 280px;
 }
 
+table.myTable tr:hover td {
+background-color: #f1f1f1;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;

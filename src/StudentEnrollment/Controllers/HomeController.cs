@@ -35,6 +35,11 @@ namespace StudentEnrollment.Controllers
         {
             Models.Student s = new StudentEnrollment.Models.Student(1, "rs4296", "rs4296@rit.edu", "Rob", "Stone", 5, float.Parse("3.5"), new List<Section>());
             Models.Instructor i = new StudentEnrollment.Models.Instructor(1, "gj888", "gj888@rit.edu", "Bob", "Smith");
+            Models.Course c1 = new StudentEnrollment.Models.Course(1, "SWEN-344", "Web Engineering", 3, 2, new int[] { });
+            Models.Course c2 = new StudentEnrollment.Models.Course(2, "CS-420", "Data Mining", 3, 3, new int[] { });
+            Models.Course c3 = new StudentEnrollment.Models.Course(3, "SWEN-261", "Intro to SE", 3, 1, new int[] { });
+            Models.Course c4 = new StudentEnrollment.Models.Course(4, "CS-262", "Engineering of Software Subsystems", 3, 1, new int[] { });
+            List<StudentEnrollment.Models.Course> courses = new List<Models.Course> { c1, c2, c3, c4 };
 
             ViewData["Function"] = function;
             ViewData["Parameters"] = parameters;
@@ -49,7 +54,7 @@ namespace StudentEnrollment.Controllers
                 p = new APIProxy();
             }
             dynamic result = "The function returned void.";
-            if (function != null && parameters != null)
+            if (function != null)
             {
                 try
                 {
@@ -58,7 +63,7 @@ namespace StudentEnrollment.Controllers
                         case "getStudent": result = p.getStudent(Int32.Parse(parameters)); break;
                         case "getInstructor": result = p.getInstructor(Int32.Parse(parameters)); break;
                         case "getAdmin": result = p.getAdmin(Int32.Parse(parameters)); break;
-                        case "getCourse": result = p.getStudent(Int32.Parse(parameters)); break;
+                        case "getCourse": result = p.getCourse(Int32.Parse(parameters)); break;
                         case "getCourseList": result = p.getCourseList(); break;
                         case "getSection": result = p.getSection(Int32.Parse(parameters)); break;
                         case "getCourseSections": result = p.getCourseSections((Course)Convert.ChangeType(parameters, typeof(Course))); break;
@@ -75,30 +80,45 @@ namespace StudentEnrollment.Controllers
                 }
                 catch (FormatException fex)
                 {
-                    result = "The input needs to be an integer.";
+                    ViewData["Result"] = "The input needs to be an integer.";
                     System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + fex);
+                    return View();
                 }
                 catch (InvalidCastException icex)
                 {
-                    result = "Your input was not properly formatted for that object type.";
+                    ViewData["Result"] = "Your input was not properly formatted for that object type.";
                     System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + icex);
+                    return View();
                 }
                 catch (NotImplementedException niex)
                 {
-                    result = "This function is currently not implemented by this proxy.";
+                    ViewData["Result"] = "This function is currently not implemented by this proxy.";
                     System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + niex);
+                    return View();
                 }
                 catch (Exception ex)
                 {
-                    result = "An unkown error occured.";
+                    ViewData["Result"] = "An unkown error occured.";
                     System.Diagnostics.Debug.WriteLine("Function: " + function + " Parameter: " + parameters + " " + ex);
+                    return View();
                 }
+            }
+            if (result == null)
+            {
+                ViewData["Result"] = result;
+                return View();
+            }
+
+            // The function returned an object or a list of objects
+            if (result.GetType().IsArray)
+            {
+                ViewData["Result"] = string.Join(",", (object[])result);
             }
             else
             {
-                result = "One or more of the inputs was not defined.";
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                ViewData["Result"] = json;
             }
-            ViewData["Result"] = result;
             return View();
         }
 
