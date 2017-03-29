@@ -1,7 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StudentEnrollment.Models;
-using StudentEnrollment.Controllers;
+using StudentEnrollment.Proxy;
 using System.Collections.Generic;
 
 namespace StudentEnrollmentTests
@@ -10,7 +10,7 @@ namespace StudentEnrollmentTests
     public class LocalProxyUnitTests
     {
 
-        LocalProxy proxy = new LocalProxy();
+        /*LocalProxy proxy = new LocalProxy("path");
         [TestMethod]
         public void createBookUnitTest()
 
@@ -25,6 +25,8 @@ namespace StudentEnrollmentTests
             
 
         }
+        */
+
 
         public void createCourseUnitTest()
         {
@@ -131,6 +133,6 @@ namespace StudentEnrollmentTests
 
         }
 
-
+    
     }
 }
