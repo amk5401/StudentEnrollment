@@ -104,36 +104,35 @@ namespace StudentEnrollment.Models
         private static Student createStudent(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
-            string firstName = contents.firstName;
-            string lastName = contents.lastName;
-            int id = contents.id;
-            String username = contents.username;
-            String email = contents.email;
-            int yearLevel = contents.yearLevel;
-            float gpa = contents.gpa;
-            List<Section> enrolledSections = contents.enrolledSections;
-            return new Student(id, username, email, firstName, lastName, yearLevel, gpa, enrolledSections);
+            int id = contents.ID;
+            string firstName = contents.FIRSTNAME;
+            string lastName = contents.LASTNAME;
+            String username = contents.USERNAME;
+            String email = contents.EMAIL;
+            int yearLevel = contents.YEAR_LEVEL;
+            float gpa = contents.GPA;
+            return new Student(id, username, email, firstName, lastName, yearLevel, gpa);
         }
 
         private static Instructor createInstructor(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
-            string firstName = contents.firstName;
-            string lastName = contents.lastName;
-            int id = contents.id;
-            String username = contents.username;
-            String email = contents.email;
+            int id = contents.ID;
+            string firstName = contents.FIRSTNAME;
+            string lastName = contents.LASTNAME;
+            String username = contents.USERNAME;
+            String email = contents.EMAIL;
             return new Instructor(id, username, email, firstName, lastName);
         }
 
         private static Admin createAdmin(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
-            string firstName = contents.firstName;
-            string lastName = contents.lastName;
-            int id = contents.id;
-            String username = contents.username;
-            String email = contents.email;
+            int id = contents.ID;
+            string firstName = contents.FIRSTNAME;
+            string lastName = contents.LASTNAME;
+            String username = contents.USERNAME;
+            String email = contents.EMAIL;
             return new Admin(id, username, email, firstName, lastName);
         }
 
@@ -141,11 +140,12 @@ namespace StudentEnrollment.Models
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
 
-            int id = contents.id;
-            string courseCode = contents.courseCode;
-            string name = contents.name;
-            int credits = contents.credits;
-            int minGPA = contents.minGPA;
+            int id = contents.ID;
+            string courseCode = contents.COURSE_CODE;
+            string name = contents.NAME;
+            int credits = contents.CREDITS;
+            int minGPA = contents.MIN_GPA;
+            bool availability = contents.AVAILABILITY;
 
             List<int> prereqs = new List<int>();
             foreach (var pre in contents.prereqs)
@@ -153,21 +153,21 @@ namespace StudentEnrollment.Models
                 int test = pre;
                 prereqs.Add(test);
             }
-            return new Course(id, courseCode, name, credits, minGPA, prereqs.ToArray());
+            return new Course(id, courseCode, name, credits, minGPA, availability);
         }
 
         private static Section createSection(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
             int id = contents.ID;
-            int maxStudent = contents.MAX_STUDENTS;
-            string term = contents.TERM_ID;
-            int instructor = contents.PROFESSOR_ID;
+            int maxStudents = contents.MAX_STUDENTS;
+            int termID = contents.TERM_ID;
+            int instructorID = contents.PROFESSOR_ID;
             int classroomID = contents.CLASSROOM_ID;
             int courseID = contents.COURSE_ID;
-            int availability = contents.AVAILABILITY;
-            // TODO: replace null with object instances once all methods are created
-            return new Section(id, maxStudent, null, null, null, null, null);
+            bool availability = contents.AVAILABILITY;
+
+            return new Section(id, maxStudents, termID, instructorID, courseID, classroomID, availability);
         }
 
         private static Book createBook(String json)
@@ -183,9 +183,9 @@ namespace StudentEnrollment.Models
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
             int id = Convert.ToInt32(contents.ID);
-            String termCode = contents.termCode;
-            String start = contents.startDate;
-            String end = contents.endDate;
+            String termCode = contents.CODE;
+            String start = contents.START_DATE;
+            String end = contents.END_DATE;
             // SQL Date Format: YYYY-MM-DD
             DateTime startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
             DateTime endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));

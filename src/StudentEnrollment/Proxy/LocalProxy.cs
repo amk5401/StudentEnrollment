@@ -29,62 +29,70 @@ namespace StudentEnrollment.Proxy
         {
             this.filePath = filePath;
 
-            createStudent(new Student(8, "b", "b", "bob", "johnson", 4, 2.3f, new List<Section>()));
+            //createStudent(new Student(8, "b", "b", "bob", "johnson", 4, 2.3f, new List<Section>()));
 
             //Read in students.json
             dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/students.json"));
             foreach (var student in studentsJSON)
             {
-                this.students.Add((Student)ModelFactory.createModelFromJson("student", student.ToString()));
+                JObject modelJSON = student;
+                this.students.Add((Student)ModelFactory.createModelFromJson("student", modelJSON.ToString()));
             }
 
             //Read in instructor.json
             dynamic instructorsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/instructors.json"));
             foreach (var instructor in instructorsJSON)
             {
-                this.students.Add((Student)ModelFactory.createModelFromJson("instructor", instructor.ToString()));
+                JObject modelJSON = instructor;
+                this.instructors.Add((Instructor)ModelFactory.createModelFromJson("instructor", modelJSON.ToString()));
             }
 
             //Read in admins.json
             dynamic adminJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/admins.json"));
             foreach (var admin in adminJSON)
             {
-                this.admins.Add((Admin)ModelFactory.createModelFromJson("admin", admin.ToString()));
+                JObject modelJSON = admin;
+                this.admins.Add((Admin)ModelFactory.createModelFromJson("admin", modelJSON.ToString()));
             }
 
             //Read in courses.json
             dynamic coursesJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/courses.json"));
             foreach (var course in coursesJSON.courses)
             {
-                this.courses.Add((Course)ModelFactory.createModelFromJson("course", course.ToString()));
+                JObject modelJSON = course;
+                this.courses.Add((Course)ModelFactory.createModelFromJson("course", modelJSON.ToString()));
             }
 
             //Read in sections.json
             dynamic sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/sections.json"));
             foreach (var section in sectionsJSON)
             {
-                this.sections.Add((Section)ModelFactory.createModelFromJson("section", section.ToString()));
+                JObject modelJSON = section;
+                this.sections.Add((Section)ModelFactory.createModelFromJson("section", modelJSON.ToString()));
             }
 
             //Read in terms.json
             dynamic termsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/terms.json"));
             foreach (var term in termsJSON)
             {
-                this.terms.Add((Term)ModelFactory.createModelFromJson("term", term.ToString()));
+                JObject modelJSON = term;
+                this.terms.Add((Term)ModelFactory.createModelFromJson("term", modelJSON.ToString()));
             }
 
             //Read in locations.json
             dynamic locationsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/locations.json"));
             foreach (var location in locationsJSON)
             {
-                this.locations.Add((Location)ModelFactory.createModelFromJson("location", location.ToString()));
+                JObject modelJSON = location;
+                this.locations.Add((Location)ModelFactory.createModelFromJson("location", modelJSON.ToString()));
             }
 
             //Read in books.json
             dynamic booksJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/books.json"));
             foreach (var book in booksJSON)
             {
-                this.books.Add((Book)ModelFactory.createModelFromJson("book", book.ToString()));
+                JObject modelJSON = book;
+                this.books.Add((Book)ModelFactory.createModelFromJson("book", modelJSON.ToString()));
             }
 
             //Update references
@@ -104,6 +112,20 @@ namespace StudentEnrollment.Proxy
 
         public void createSection(Section section)
         {
+            JObject newStudent = new JObject(
+                new JProperty("ID", section.ID),
+                new JProperty("COURSE_ID", section.Course.ID),
+                new JProperty("TERM_ID", section.Term.ID),
+                new JProperty("PROFESSOR_ID", section.Instructor.ID),
+                new JProperty("CLASSROOM_ID", section.Location.ID)
+                //new JProperty("location", student.LastName)
+             );
+
+            dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(this.filePath + "/jsonData/students.json"));
+            JArray newJSON = studentsJSON;
+            newJSON.Add(newStudent);
+
+            File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());
             this.sections.Add(section);
         }
 

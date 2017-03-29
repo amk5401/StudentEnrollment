@@ -54,6 +54,18 @@ namespace StudentEnrollment.Proxy
             return students.ToArray();
         }
 
+        public Course[] getCoursePrereqs(Course course)
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=studentEnrollment&function=getPrereqs&courseID={1}", API_URL, course.ID)).Result;
+            String[] courseIDs = ModelFactory.createIDListFromJson("course", json);
+            List<Course> courses = new List<Course>();
+            foreach (String courseID in courseIDs)
+            {
+                courses.Add(getCourse(Convert.ToInt32(courseID)));
+            }
+            return courses.ToArray();
+        }
+
         public void createBook(Book book) // TODO: Waiting on the bookstore team for parameters
         {
             throw new NotImplementedException();
@@ -124,14 +136,17 @@ namespace StudentEnrollment.Proxy
         public Book getBook(int ID)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=book_store&function=getBook&bookID={1}", API_URL, ID)).Result;
-            Book book = book = (Book)ModelFactory.createModelFromJson("book", json);
+            Book book = (Book)ModelFactory.createModelFromJson("book", json);
             return book;
         }
 
         public Course getCourse(int ID)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getCourse&courseID={1}", API_URL, ID)).Result;
-            Course course = course = (Course)ModelFactory.createModelFromJson("course", json);
+            Course course = (Course)ModelFactory.createModelFromJson("course", json);
+
+            setCourseReferences(course);
+
             return course;
         }
 
@@ -139,13 +154,30 @@ namespace StudentEnrollment.Proxy
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseList", API_URL)).Result;
             Course[] courses = (Course[])ModelFactory.createModelArrayFromJson("course", json);
+
+            foreach(Course course in courses)
+            {
+                setCourseReferences(course);
+            }
+
             return courses;
+        }
+
+        public void setCourseReferences(Course course)
+        {
+            course.Prerequisites = getCoursePrereqs(course);
         }
 
         public Section[] getCourseSections(Course course)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseSections&courseID={1}", API_URL, course.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
+
+            foreach (Section section in sections)
+            {
+                setSectionReferences(section);
+            }
+
             return sections;
         }
 
@@ -166,6 +198,9 @@ namespace StudentEnrollment.Proxy
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
+
+            setInstructorReferences(instructor);
+
             return instructor;
         }
 
@@ -173,7 +208,18 @@ namespace StudentEnrollment.Proxy
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, instructor.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
+
+            foreach (Section section in sections)
+            {
+                setSectionReferences(section);
+            }
+
             return sections;
+        }
+
+        public void setInstructorReferences(Instructor instructor)
+        {
+            instructor.TeachingSections = getInstructorSections(instructor);
         }
 
         public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
@@ -185,7 +231,18 @@ namespace StudentEnrollment.Proxy
         {
             String json = GetFromAPI(API_URL + "?team=student_enrollment&function=getSection&sectionID=" + ID).Result;
             Section section = (Section)ModelFactory.createModelFromJson("section", json);
+
+            setSectionReferences(section);
+
             return section;
+        }
+
+        public void setSectionReferences(Section section)
+        {
+            section.StudentsInSection = getSectionStudents(section);
+            section.Instructor = getInstructor(section.InstructorID);
+            section.Course = getCourse(section.CourseID);
+            section.Location = getLocation(section.LocationID);
         }
 
         public Book[] getSectionBooks(Section section) // TODO: Make sure the function doesn't change to getSectionBook(S). Making assumption this is singular
@@ -200,13 +257,27 @@ namespace StudentEnrollment.Proxy
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getStudentUser&userID={1}", API_URL, ID)).Result;
             Student student = (Student)ModelFactory.createModelFromJson("student", json);
+
+            setStudentReferences(student);
+            
             return student;
+        }
+
+        public void setStudentReferences(Student student)
+        {
+            student.EnrolledSections = getStudentSections(student);
         }
 
         public Section[] getStudentSections(Student student)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
+
+            foreach (Section section in sections)
+            {
+                setSectionReferences(section);
+            }
+
             return sections;
         }
 
