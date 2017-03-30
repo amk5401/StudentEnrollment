@@ -1,0 +1,48 @@
+﻿@{
+    var courses = ViewData["Courses"] as List<StudentEnrollment.Models.Course>;
+}
+<h2>@ViewData["Title"]</h2>
+<table class="table myTable" style="cursor:pointer">
+    <thead>
+        <tr>
+            <th>Course Code</th>
+            <th>Name</th>
+            <th>Credits</th>
+            <th>Minimum GPA</th>
+            <th>Prerequisites</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in courses)
+    {
+        <tr id="@item.ID">
+            <td>@item.CourseCode</td>
+            <td>@item.Name</td>
+            <td>@item.Credits</td>
+            <td>@item.MinGPA</td>
+            @*<td>@if (item.Prerequisites.Length == 0)
+                {
+                    @("None");
+                }
+                else
+                {
+                    @foreach (var prereq in item.pre)
+                    {
+                        @courses[prereq-1].Name<br/>
+                    }
+                }
+            </td>*@
+        </tr>
+
+    }
+    </tbody>
+</table>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("table tr").click(function (e) {
+            window.location.href = "/Section/SectionList?courseID=" + $(this).attr("id");
+        });
+    });
+</script>

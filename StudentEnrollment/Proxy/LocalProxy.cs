@@ -34,9 +34,9 @@ namespace StudentEnrollment.Proxy
 
         String filePath;
 
-        public LocalProxy(String filePath)
+        public LocalProxy()
         {
-            this.filePath = filePath;
+            this.filePath = "/../Contents/jsonData";
 
 
             //Read in students.json

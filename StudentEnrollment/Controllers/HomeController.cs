@@ -16,7 +16,7 @@ namespace StudentEnrollment.Controllers
 
         public ActionResult Index()
         {
-            localProxy = new LocalProxy("/Content/jsonData/");
+            localProxy = new LocalProxy();
 
             ViewData["CourseList"] = localProxy.getCourseList();
 
