@@ -7,23 +7,23 @@ namespace StudentEnrollment.Models
 {
     public class Section : Model
     {
-        public Section(int id, int maxStudents, Term term, Instructor instructor, Course course, Location location, List<Student> studentsInSection)
+        public Section(int id, int maxStudents, int termID, int instructorID, int courseID, int locationID, bool availability)
         {
             ID = id;
             MaxStudents = maxStudents;
-            Term = term;
-            Course = course;
-            Instructor = instructor;
-            Location = location;
-            StudentsInSection = studentsInSection;
+            TermID = termID;
+            CourseID = courseID;
+            InstructorID = instructorID;
+            LocationID = locationID;
+            Availability = availability;
         }
-
-        public Course Course { get; }
-        public Instructor Instructor { get; }
+        public int CourseID { get; }
+        public Course Course { get; set; }
+        public int InstructorID { get; }
         public int ID { get; }
         public int MaxStudents { get; }
-        public Term Term { get; }
-        public Location Location { get; }
-        public List<Student> StudentsInSection { get; }
+        public int TermID { get; }
+        public int LocationID { get; }
+        public bool Availability { get; }
     }
 }

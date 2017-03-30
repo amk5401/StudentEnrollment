@@ -1,0 +1,48 @@
+[
+  {
+    "ID": 0,
+    "COURSE_CODE": "BW 101",
+    "NAME": "Intro to Basket Weaving",
+    "CREDITS": 3,
+    "MIN_GPA": 0,
+    "AVAILABILITY": true,
+    "prereqs": [ 1, 0, 2 ]
+  },
+  {
+    "ID": 1,
+    "COURSE_CODE": "BW 201",
+    "NAME": "Intermediate Basket Weaving",
+    "CREDITS": 3,
+    "MIN_GPA": 3.0,
+    "AVAILABILITY": true,
+    "prereqs": [ 0 ]
+  },
+  {
+    "ID": 2,
+    "COURSE_CODE": "BW 301",
+    "NAME": "Advanced Basket Weaving",
+    "CREDITS": 3,
+    "MIN_GPA": 3.0,
+    "AVAILABILITY": true,
+    "prereqs": [ 1 ]
+  },
+  {
+    "ID": 3,
+    "COURSE_CODE": "BW 105",
+    "NAME": "Underwater Crafts",
+    "CREDITS": 3,
+    "MIN_GPA": 0.0,
+    "AVAILABILITY": true,
+    "prereqs": []
+  },
+  {
+    "ID": 4,
+    "COURSE_CODE": "BW 305",
+    "NAME": "Underwater Basket Weaving",
+    "CREDITS": 3,
+    "MIN_GPA": 3.0,
+    "AVAILABILITY": true,
+    "prereqs": [ 2, 3 ]
+  }
+]
+

@@ -8,30 +8,44 @@ namespace StudentEnrollment.Proxy
 {
     interface Proxy
     {
+        //Model Getters
+        //Methods for retreiving data from API
+        Book getBook(int ID);
+        Course[] getCourseList();
+        Location getLocation(int ID);
+        Term getCurrentTerm();
+        Term getTerm(String ID);
         Student getStudent(int ID);
-        void createStudent(Student student);
         Instructor getInstructor(int ID);
         Admin getAdmin(int ID);
         Course getCourse(int ID);
-        void createCourse(Course course);
-        Course[] getCourseList();
-        void toggleCourse(int ID);
         Section getSection(int ID);
-        Section[] getCourseSections(Course course);
-        void createSection(Section section);
-        //HashSet<Section, Grade> getStudentGrades(Student student);
+
+
+        //Shared Data Tables
+        //Returning arrays of Model objects from tables of IDs
         Section[] getStudentSections(Student student);
         Student[] getSectionStudents(Section section);
         Section[] getInstructorSections(Instructor student);
-        Book getBook(int ID);
-        void createBook(Book book);
+        Section[] getCourseSections(Course course);
         Book[] getSectionBooks(Section section);
-        Location getLocation(int ID);
-        Term getCurrentTerm();
-        Term getTerm(int ID);
+        Course[] getCoursePrereqs(Course course);
+
+
+        //Creation Methods
+        //Methods for adding data to the database
+        void createBook(Book book);
         void createTerm(Term term);
+        void createSection(Section section);
+        void createCourse(Course course);
+        void createStudent(Student student);
+
+
+        //Interaction 
+        //Methods for interactions between models
         void enrollStudent(Student student, Section section);
         void waitlistStudent(Student student, Section section);
         void withdrawStudent(Student student, Section section);
+        void toggleCourse(int ID);
     }
 }

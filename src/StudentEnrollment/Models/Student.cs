@@ -7,14 +7,12 @@ namespace StudentEnrollment.Models
 {
     public class Student : User
     {
-        public Student(int id, String username, String email, String firstName, String lastName, int yearLevel, float gpa, List<Section> enrolledSections) 
+        public Student(int id, String username, String email, String firstName, String lastName, int yearLevel, float gpa) 
             : base(id, username, email, firstName, lastName){
             YearLevel = yearLevel;
             GPA = gpa;
-            EnrolledSections = enrolledSections;
         }
         public int YearLevel { get; set; }
         public float GPA { get; set; }
-        public List<Section> EnrolledSections { get; }
     }
 }
