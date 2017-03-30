@@ -9,3 +9,5 @@ The folder to publish to is C:\www\vm344e.se.rit.edu
 Make sure to publish as a Release config
 Select publish
 Test the page at www.vm344e.rit.edu
+
+Make sure that the /Content/jsonData/* files get moved into C:\www\vm344e.se.rit.edu\Content so that the dummy data is in the server environment.
