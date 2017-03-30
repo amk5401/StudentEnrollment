@@ -1,0 +1,21 @@
+[
+  {
+    "ID": 0,
+    "CAPACITY": 50,
+    "ROOM_NUM": 1,
+    "BUILDING_NUM": 100
+  },
+  {
+    "ID": 1,
+    "CAPACITY": 30,
+    "ROOM_NUM": 2,
+    "BUILDING_NUM": 200
+  },
+  {
+    "ID": 2,
+    "CAPACITY": 20,
+    "ROOM_NUM": 1,
+    "BUILDING_NUM": 102
+  }
+]
+
