@@ -205,9 +205,22 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\Instructor.cs" />
     <Compile Include="Proxy\LocalProxy.cs" />
     <Compile Include="Proxy\APIProxy.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\ModelFactory.cs" />
+    <Compile Include="Models\Prerequisite.cs" />
     <Compile Include="Proxy\Proxy.cs" />
+    <Compile Include="Models\Schedule.cs" />
+    <Compile Include="Models\Section.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Term.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
