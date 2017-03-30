@@ -23,6 +23,7 @@ namespace StudentEnrollment.Models
                 case "section": model = createSection(json); break;
                 case "book": model = createBook(json); break;
                 case "term": model = createTerm(json); break;
+                case "location": model = createLocation(json); break;
             }
             return model;
         }
@@ -163,6 +164,17 @@ namespace StudentEnrollment.Models
             return new Section(id, maxStudents, termID, instructorID, courseID, classroomID, availability);
         }
 
+        private static Location createLocation(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            int id = contents.ID;
+            int capacity = contents.CAPACITY;
+            int roomNumber = contents.ROOM_NUM;
+            int buildingNumber = contents.BUILDING_NUM;
+
+            return new Location(id, capacity, roomNumber, buildingNumber);
+        }
+
         private static Book createBook(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
@@ -175,13 +187,16 @@ namespace StudentEnrollment.Models
         private static Term createTerm(String json) // TODO: Verify that shady date logic
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
-            int id = Convert.ToInt32(contents.ID);
+            int id = contents.ID;
             String termCode = contents.CODE;
             String start = contents.START_DATE;
             String end = contents.END_DATE;
             // SQL Date Format: YYYY-MM-DD
             DateTime startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
             DateTime endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
+
+           // DateTime startDate = new DateTime(2017, 1, 1);
+            //DateTime endDate = new DateTime(2017, 5, 20);
             return new Term(id, termCode, startDate, endDate);
         }
 

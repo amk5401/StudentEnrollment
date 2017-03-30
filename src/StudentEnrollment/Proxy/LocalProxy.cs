@@ -27,7 +27,7 @@ namespace StudentEnrollment.Proxy
         Dictionary<int, List<int>> studentsInSectionDict = new Dictionary<int, List<int>>();
 
         //Section ID, List of Book IDs
-        Dictionary<int, List<Book>> booksInSectionDict = new Dictionary<int, List<Book>>();
+        Dictionary<int, List<int>> booksInSectionDict = new Dictionary<int, List<int>>();
 
         //Course ID, List of Course IDs
         Dictionary<int, List<int>> prereqsInCourseDict = new Dictionary<int, List<int>>();
@@ -44,7 +44,7 @@ namespace StudentEnrollment.Proxy
             foreach (var student in studentsJSON)
             {
                 JObject modelJSON = student;     
-                this.studentsList.Add((Student)ModelFactory.createModelFromJson("student", modelJSON.ToString()););
+                this.studentsList.Add((Student)ModelFactory.createModelFromJson("student", modelJSON.ToString()));
             }
 
             //Read in instructor.json
@@ -65,12 +65,13 @@ namespace StudentEnrollment.Proxy
 
             //Read in courses.json
             dynamic coursesJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/courses.json"));
-            foreach (var course in coursesJSON.courses)
+            foreach (var course in coursesJSON)
             {
                 List<int> prereqs = new List<int>();
                 foreach (var pre in course.prereqs)
                 {
-                    prereqs.Add(pre);
+                    int id = pre;
+                    prereqs.Add(id);
                 }
 
                 JObject modelJSON = course;
@@ -87,14 +88,15 @@ namespace StudentEnrollment.Proxy
                 List<int> books = new List<int>();
                 foreach (var book in section.books)
                 {
-                    books.Add(book);
+                    int id = book;
+                    books.Add(id);
                 }
 
                 JObject modelJSON = section;
                 Section newSection = (Section)ModelFactory.createModelFromJson("section", modelJSON.ToString());
 
                 this.sectionsList.Add(newSection);
-                this.prereqsInCourseDict.Add(newSection.ID, books);
+                this.booksInSectionDict.Add(newSection.ID, books);
 
             }
 
@@ -123,7 +125,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Create Reference Dictionaries
-            dynamic students_sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/instructors.json"));
+            dynamic students_sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(filePath + "/jsonData/students_sections.json"));
             foreach (var item in students_sectionsJSON)
             {
                 int studentID = item.studentID;
@@ -324,7 +326,7 @@ namespace StudentEnrollment.Proxy
 
         public void createSection(Section section)
         {
-            JObject newStudent = new JObject(
+            /*JObject newStudent = new JObject(
                 new JProperty("ID", section.ID),
                 new JProperty("COURSE_ID", section.Course.ID),
                 new JProperty("TERM_ID", section.TermID),
@@ -337,7 +339,7 @@ namespace StudentEnrollment.Proxy
             JArray newJSON = studentsJSON;
             newJSON.Add(newStudent);
 
-            File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());
+            File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());*/
             this.sectionsList.Add(section);
         }
 

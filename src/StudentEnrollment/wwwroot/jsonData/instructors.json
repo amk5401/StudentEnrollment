@@ -4,18 +4,13 @@
     "USERNAME": "tedJ",
     "EMAIL": "ted@email.com",
     "FIRSTNAME": "Ted",
-    "LASTNAME": "Jones",
-    "teachingSections": [
-      7,
-      5
-    ]
+    "LASTNAME": "Jones"
   },
   {
     "ID": 1,
     "USERNAME": "daniel",
     "EMAIL": "krutz@email.com",
     "FIRSTNAME": "Daniel",
-    "LASTNAME": "Krutz",
-    "teachingSections": []
+    "LASTNAME": "Krutz"
   }
 ]

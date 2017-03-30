@@ -1,25 +1,38 @@
 [
   {
-    "ID": 5,
+    "ID": 0,
     "USERNAME": "bob32",
     "EMAIL": "bob@email.com",
     "FIRSTNAME": "Bob",
     "LASTNAME": "Johnson",
     "YEAR_LEVEL": 2,
-    "GPA": 3.5,
-    "enrolledSections": [
-      7,
-      5
-    ]
+    "GPA": 3.5
   },
   {
-    "ID": 0,
+    "ID": 1,
     "USERNAME": "joejoe",
     "EMAIL": "joe@email.com",
     "FIRSTNAME": "Joe",
     "LASTNAME": "Smith",
     "YEAR_LEVEL": 3,
-    "GPA": 2.9,
-    "enrolledSections": []
+    "GPA": 2.9
+  },
+  {
+    "ID": 2,
+    "USERNAME": "matt",
+    "EMAIL": "matt@email.com",
+    "FIRSTNAME": "Matthew",
+    "LASTNAME": "Bloomberg",
+    "YEAR_LEVEL": 2,
+    "GPA": 4.0
+  },
+  {
+    "ID": 3,
+    "USERNAME": "suzyQ",
+    "EMAIL": "suzy@email.com",
+    "FIRSTNAME": "Suzy",
+    "LASTNAME": "Sanders",
+    "YEAR_LEVEL": 3,
+    "GPA": 3.8
   }
 ]

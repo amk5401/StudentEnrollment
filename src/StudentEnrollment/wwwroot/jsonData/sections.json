@@ -1,0 +1,63 @@
+[
+  {
+    "ID": 0,
+    "COURSE_ID": 0,
+    "TERM_ID": 0,
+    "MAX_STUDENTS": 28,
+    "PROFESSOR_ID": 0,
+    "CLASSROOM_ID": 1,
+    "AVAILABILITY": true,
+    "books": [ 1]
+  },
+  {
+    "ID": 1,
+    "COURSE_ID": 0,
+    "TERM_ID": 0,
+    "MAX_STUDENTS": 28,
+    "PROFESSOR_ID": 1,
+    "CLASSROOM_ID": 2,
+    "AVAILABILITY": true,
+    "books": [2]
+  },
+  {
+    "ID": 2,
+    "COURSE_ID": 1,
+    "TERM_ID": 0,
+    "MAX_STUDENTS": 28,
+    "PROFESSOR_ID": 0,
+    "CLASSROOM_ID": 0,
+    "AVAILABILITY": true,
+    "books": []
+  },
+  {
+    "ID": 3,
+    "COURSE_ID": 2,
+    "TERM_ID": 0,
+    "MAX_STUDENTS": 28,
+    "PROFESSOR_ID": 0,
+    "CLASSROOM_ID": 2,
+    "AVAILABILITY": true,
+    "books": [0,2]
+  },
+  {
+    "ID": 4,
+    "COURSE_ID": 3,
+    "TERM_ID": 0,
+    "MAX_STUDENTS": 15,
+    "PROFESSOR_ID": 1,
+    "CLASSROOM_ID": 1,
+    "AVAILABILITY": true,
+    "books": [1]
+  },
+  {
+    "ID": 5,
+    "COURSE_ID": 4,
+    "TERM_ID": 1,
+    "MAX_STUDENTS": 10,
+    "PROFESSOR_ID": 0,
+    "CLASSROOM_ID": 0,
+    "AVAILABILITY": true,
+    "books": [0,1]
+  }
+]
+
