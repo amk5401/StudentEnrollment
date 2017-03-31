@@ -31,6 +31,9 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Admin admin = this.proxy.getAdmin(1);
             Assert.IsNotNull(admin);
+            Assert.AreEqual(admin.Email, "admin@email.com");
+            Assert.AreEqual(admin.ID, 1);
+            Assert.AreEqual(admin.FirstName, "Addison");
         }
 
         [TestMethod]
@@ -39,6 +42,8 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course course = this.proxy.getCourse(1);
             Assert.IsNotNull(course);
+            Assert.AreEqual(course.CourseCode, "SWEN-344");
+            Assert.AreEqual(course.Name, "Web Engineering");
         }
 
         [TestMethod]
@@ -47,6 +52,9 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course[] courseList = this.proxy.getCourseList();
             Assert.IsNotNull(courseList);
+            Assert.IsNotNull(courseList[0]);
+            Assert.AreEqual(courseList[0].CourseCode, "SWEN-344");
+            Assert.AreEqual(courseList[1].CourseCode, "SWEN-444");
         }
 
         [TestMethod]
@@ -173,6 +181,8 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course course = new Course(11, "TEST", "Unit Test Course", 1, 1, false);
             this.proxy.createCourse(course);
+
+            Assert.IsNotNull(this.proxy.getCourse(11));
         }
 
         [TestMethod]
