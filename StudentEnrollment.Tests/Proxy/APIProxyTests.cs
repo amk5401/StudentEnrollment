@@ -10,112 +10,112 @@ using System.Threading.Tasks;
 namespace StudentEnrollment.Proxy.Tests
 {
     [TestClass()]
-    public class LocalProxyTests
+    public class APIProxyTests
     {
-        LocalProxy proxy;
-        public LocalProxyTests()
+        APIProxy proxy;
+        public APIProxyTests()
         {
-            this.proxy = new LocalProxy(new TestPathData());
+            this.proxy = new APIProxy();
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void LocalProxyTest()
+        [TestCategory("APIProxy")]
+        public void APIProxyTest()
         {
             Assert.IsNotNull(this.proxy);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getAdminLocalTest()
+        [TestCategory("APIProxy")]
+        public void getAdminAPITest()
         {
             Admin admin = this.proxy.getAdmin(1);
             Assert.IsNotNull(admin);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getCourseLocalTest()
+        [TestCategory("APIProxy")]
+        public void getCourseAPITest()
         {
             Course course = this.proxy.getCourse(1);
             Assert.IsNotNull(course);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getCourseListLocalTest()
+        [TestCategory("APIProxy")]
+        public void getCourseListAPITest()
         {
             Course[] courseList = this.proxy.getCourseList();
             Assert.IsNotNull(courseList);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getSectionLocalTest()
+        [TestCategory("APIProxy")]
+        public void getSectionAPITest()
         {
             Section section = this.proxy.getSection(1);
             Assert.IsNotNull(section);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getLocationLocalTest()
+        [TestCategory("APIProxy")]
+        public void getLocationAPITest()
         {
             Location loc = this.proxy.getLocation(1);
             Assert.IsNotNull(loc);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getCurrentTermLocalTest()
+        [TestCategory("APIProxy")]
+        public void getCurrentTermAPITest()
         {
             Term term = this.proxy.getCurrentTerm();
             Assert.IsNotNull(term);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getTermLocalTest()
+        [TestCategory("APIProxy")]
+        public void getTermAPITest()
         {
             Term term = this.proxy.getTerm("20161");
             Assert.IsNotNull(term);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getTermsLocalTest()
+        [TestCategory("APIProxy")]
+        public void getTermsAPITest()
         {
             Term[] terms = this.proxy.getTerms();
             Assert.IsNotNull(terms);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getStudentLocalTest()
+        [TestCategory("APIProxy")]
+        public void getStudentAPITest()
         {
             Student student = this.proxy.getStudent(1);
             Assert.IsNotNull(student);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getInstructorLocalTest()
+        [TestCategory("APIProxy")]
+        public void getInstructorAPITest()
         {
             Student student = this.proxy.getStudent(1);
             Assert.IsNotNull(student);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getBookLocalTest()
+        [TestCategory("APIProxy")]
+        public void getBookAPITest()
         {
             Book book = this.proxy.getBook(1);
             Assert.IsNotNull(book);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getCourseSectionsLocalTest()
+        [TestCategory("APIProxy")]
+        public void getCourseSectionsAPITest()
         {
             Course course = proxy.getCourse(1);
             Section[] sections = this.proxy.getCourseSections(course);
@@ -123,8 +123,8 @@ namespace StudentEnrollment.Proxy.Tests
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getStudentSectionsLocalTest()
+        [TestCategory("APIProxy")]
+        public void getStudentSectionsAPITest()
         {
             Student student = proxy.getStudent(1);
             Section[] sections = this.proxy.getStudentSections(student);
@@ -132,8 +132,8 @@ namespace StudentEnrollment.Proxy.Tests
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getInstructorSectionsLocalTest()
+        [TestCategory("APIProxy")]
+        public void getInstructorSectionsAPITest()
         {
             Instructor instructor = proxy.getInstructor(1);
             Section[] sections = this.proxy.getInstructorSections(instructor);
@@ -141,8 +141,8 @@ namespace StudentEnrollment.Proxy.Tests
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getSectionStudentsLocalTest()
+        [TestCategory("APIProxy")]
+        public void getSectionStudentsAPITest()
         {
             Section section = proxy.getSection(1);
             Student[] students = proxy.getSectionStudents(section);
@@ -150,8 +150,8 @@ namespace StudentEnrollment.Proxy.Tests
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getCoursePrereqsLocalTest()
+        [TestCategory("APIProxy")]
+        public void getCoursePrereqsAPITest()
         {
             Course course = proxy.getCourse(1);
             Course[] prereqs = this.proxy.getCoursePrereqs(course);
@@ -159,8 +159,8 @@ namespace StudentEnrollment.Proxy.Tests
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void getSectionBooksLocalTest()
+        [TestCategory("APIProxy")]
+        public void getSectionBooksAPITest()
         {
             Section section = proxy.getSection(1);
             Book[] books = proxy.getSectionBooks(section);
@@ -168,40 +168,40 @@ namespace StudentEnrollment.Proxy.Tests
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void createCourseLocalTest()
+        [TestCategory("APIProxy")]
+        public void createCourseAPITest()
         {
             Course course = new Course(11, "TEST", "Unit Test Course", 1, 1, false);
             this.proxy.createCourse(course);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void createSectionLocalTest()
+        [TestCategory("APIProxy")]
+        public void createSectionAPITest()
         {
             Section section = new Section(11, 1, 1, 1, 1, 1, false);
             this.proxy.createSection(section);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void createStudentLocalTest()
+        [TestCategory("APIProxy")]
+        public void createStudentAPITest()
         {
             Student student = new Student(11, "username", "email", "firstName", "lastName", 1, 1.0f);
             this.proxy.createStudent(student);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void createTermLocalTest()
+        [TestCategory("APIProxy")]
+        public void createTermAPITest()
         {
             Term term = new Term(11, "20203", new DateTime(2020, 1, 1), new DateTime(2020, 5, 1));
             this.proxy.createTerm(term);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void createBookLocalTest()
+        [TestCategory("APIProxy")]
+        public void createBookAPITest()
         {
             Book book = new Book(11, 11111111, "Test Book");
             this.proxy.createBook(book);
@@ -209,29 +209,29 @@ namespace StudentEnrollment.Proxy.Tests
 
         [Ignore]
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void enrollStudentLocalTest()
+        [TestCategory("APIProxy")]
+        public void enrollStudentAPITest()
         {
             Assert.Fail();
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void toggleCourseLocalTest()
+        [TestCategory("APIProxy")]
+        public void toggleCourseAPITest()
         {
             this.proxy.toggleCourse(1);
         }
 
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void toggleSectionLocalTest()
+        [TestCategory("APIProxy")]
+        public void toggleSectionAPITest()
         {
             this.proxy.toggleSection(1);
         }
 
         [Ignore]
         [TestMethod]
-        [TestCategory("LocalProxy")]
+        [TestCategory("APIProxy")]
         public void waitlistStudentAPITest()
         {
             Assert.Fail();
@@ -239,8 +239,8 @@ namespace StudentEnrollment.Proxy.Tests
 
         [Ignore]
         [TestMethod]
-        [TestCategory("LocalProxy")]
-        public void withdrawStudentLocalTest()
+        [TestCategory("APIProxy")]
+        public void withdrawStudentAPITest()
         {
             Assert.Fail();
         }

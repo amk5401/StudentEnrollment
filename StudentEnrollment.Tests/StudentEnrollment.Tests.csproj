@@ -87,21 +87,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="ModelFactoryUnitTests.cs" />
-    <Compile Include="ProxyUnitTests\LocalProxyUnitTests.cs" />
-    <Compile Include="ProxyUnitTests\APIProxyUnitTests.cs" />
+    <Compile Include="Proxy\APIProxyTests.cs" />
     <Compile Include="Proxy\LocalProxyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
-    <Content Include="Views\jsonData\admins.json" />
-    <Content Include="Views\jsonData\books.json" />
-    <Content Include="Views\jsonData\courses.json" />
-    <Content Include="Views\jsonData\instructors.json" />
-    <Content Include="Views\jsonData\locations.json" />
-    <Content Include="Views\jsonData\sections.json" />
-    <Content Include="Views\jsonData\students.json" />
-    <Content Include="Views\jsonData\students_sections.json" />
-    <Content Include="Views\jsonData\terms.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
