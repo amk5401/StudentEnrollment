@@ -20,7 +20,9 @@ namespace StudentEnrollment.Models
         public int ID { get; }
         public String CourseCode { get; }
         public String Name { get; }
-        public int Credits { get; } 
+        public int Credits { get; }
+
+        // TODO: refactor GPA to double
         public int MinGPA { get; }
         public bool Availability { get;  }
         public override string ToString()
