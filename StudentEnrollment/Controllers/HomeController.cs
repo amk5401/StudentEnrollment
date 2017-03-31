@@ -78,10 +78,22 @@ namespace StudentEnrollment.Controllers
                             break;
                            
                         //result = p.getStudentSections((Student)Convert.ChangeType(parameters, typeof(Student))); break;
-                        case "getSectionStudents": result = p.getSectionStudents((Section)Convert.ChangeType(parameters, typeof(Section))); break;
-                        case "getInstructorSections": result = p.getInstructorSections((Instructor)Convert.ChangeType(parameters, typeof(Instructor))); break;
+                        case "getSectionStudents":
+                            Section section = (Section)ModelFactory.createModelFromJson("section", parameters);
+                            result = p.getSectionStudents(section);
+                            //result = p.getSectionStudents((Section)Convert.ChangeType(parameters, typeof(Section)));
+                            break;
+                        case "getInstructorSections":
+                            Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", parameters);
+                            result = p.getInstructorSections(instructor);
+                            //result = p.getInstructorSections((Instructor)Convert.ChangeType(parameters, typeof(Instructor)));
+                            break;
                         case "getBook": result = p.getBook(Int32.Parse(parameters)); break;
-                        case "getSectionBooks": result = p.getSectionBooks((Section)Convert.ChangeType(parameters, typeof(Section))); break;
+                        case "getSectionBooks":
+                            section = (Section)ModelFactory.createModelFromJson("section", parameters);
+                            result = p.getSectionBooks(section);
+                            //result = p.getSectionBooks((Section)Convert.ChangeType(parameters, typeof(Section)));
+                            break;
                         case "getLocation": result = p.getLocation(Int32.Parse(parameters)); break;
                         case "getCurrentTerm": result = p.getCurrentTerm(); break;
                         case "getTerm": result = p.getTerm(parameters); break;
@@ -121,7 +133,7 @@ namespace StudentEnrollment.Controllers
             // The function returned an object or a list of objects
             if (result.GetType().IsArray)
             {
-                ViewData["Result"] = string.Join(",", (object[])result);
+                ViewData["Result"] = string.Join("\n", (object[])result);
             }
             else
             {
