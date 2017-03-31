@@ -204,6 +204,7 @@
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Instructor.cs" />
+    <Compile Include="Proxy\IPathData.cs" />
     <Compile Include="Proxy\LocalProxy.cs" />
     <Compile Include="Proxy\APIProxy.cs" />
     <Compile Include="Models\Location.cs" />
@@ -216,6 +217,8 @@
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Term.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Proxy\TestPathData.cs" />
+    <Compile Include="Proxy\ServerPathData.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
