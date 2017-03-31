@@ -34,15 +34,11 @@ namespace StudentEnrollment.Proxy
 
         String filePath;
 
-        public LocalProxy()
+        public LocalProxy(IPathData pathData)
         {
-            this.filePath = "~/Views/jsonData/";
-            //this.filePath = "C:/SWEN-344/StudentEnrollment/StudentEnrollment.Tests/Views/jsonData/";
-
-
             //Read in students.json
-            string text = File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "students.json"));
-            dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "students.json")));
+            //dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "students.json")));
+            dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("students.json")));
             foreach (var student in studentsJSON)
             {
                 JObject modelJSON = student;
@@ -50,7 +46,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in instructor.json
-            dynamic instructorsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "instructors.json")));
+            dynamic instructorsJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("instructors.json")));
             foreach (var instructor in instructorsJSON)
             {
                 JObject modelJSON = instructor;
@@ -58,7 +54,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in admins.json
-            dynamic adminJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "admins.json")));
+            dynamic adminJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("admins.json")));
             foreach (var admin in adminJSON)
             {
                 JObject modelJSON = admin;
@@ -66,7 +62,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in courses.json
-            dynamic coursesJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "courses.json")));
+            dynamic coursesJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("courses.json")));
             foreach (var course in coursesJSON)
             {
                 List<int> prereqs = new List<int>();
@@ -84,7 +80,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in sections.json
-            dynamic sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "sections.json")));
+            dynamic sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("sections.json")));
             foreach (var section in sectionsJSON)
             {
                 List<int> books = new List<int>();
@@ -103,7 +99,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in terms.json
-            dynamic termsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "terms.json")));
+            dynamic termsJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("terms.json")));
             foreach (var term in termsJSON)
             {
                 JObject modelJSON = term;
@@ -111,7 +107,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in locations.json
-            dynamic locationsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "locations.json")));
+            dynamic locationsJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("locations.json")));
             foreach (var location in locationsJSON)
             {
                 JObject modelJSON = location;
@@ -119,7 +115,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Read in books.json
-            dynamic booksJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "books.json")));
+            dynamic booksJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("books.json")));
             foreach (var book in booksJSON)
             {
                 JObject modelJSON = book;
@@ -127,7 +123,7 @@ namespace StudentEnrollment.Proxy
             }
 
             //Create Reference Dictionaries
-            dynamic students_sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "students_sections.json")));
+            dynamic students_sectionsJSON = JsonConvert.DeserializeObject(File.ReadAllText(pathData.GetPath("students_sections.json")));
             foreach (var item in students_sectionsJSON)
             {
                 int studentID = item.studentID;

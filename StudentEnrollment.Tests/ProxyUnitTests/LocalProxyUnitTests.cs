@@ -12,8 +12,7 @@ namespace StudentEnrollment.Tests.ProxyUnitTests
         [TestMethod]
         public void createStudentUnitTest()
         {
-            var test = System.IO.Directory.GetCurrentDirectory();
-            LocalProxy proxy = new LocalProxy();
+            LocalProxy proxy = new LocalProxy(new TestPathData());
             Student student = proxy.getStudent(1);
 
             Assert.IsNotNull(student);

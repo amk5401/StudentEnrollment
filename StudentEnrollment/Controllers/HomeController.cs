@@ -49,7 +49,7 @@ namespace StudentEnrollment.Controllers
             IProxy p;
             if (proxyType == "Local")
             {
-                p = new LocalProxy();
+                p = new LocalProxy(new ServerPathData());
             }
             else
             {
