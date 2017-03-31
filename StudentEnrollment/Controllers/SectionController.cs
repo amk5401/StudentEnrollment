@@ -27,8 +27,8 @@ namespace StudentEnrollment.Controllers
 
             Section s1 = new Section(1, 30, 1, 1, courseID, 1, true);
 
-            ViewData["Course"] = c1;
-            ViewData["Sections"] = new List<Section> { s1 };// p.getCourseSections(p.getCourse(courseID));
+            ViewData["Course"] = p.getCourse(courseID);
+            ViewData["Sections"] = p.getCourseSections(p.getCourse(courseID));
             return View();
         }
     }

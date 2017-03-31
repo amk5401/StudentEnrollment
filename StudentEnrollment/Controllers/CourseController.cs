@@ -24,7 +24,7 @@ namespace StudentEnrollment.Controllers
 
 
             IProxy p = new APIProxy();
-            ViewData["Courses"] = courses;//p.getCourseList();
+            ViewData["Courses"] = p.getCourseList();
             return View();
         }
     }

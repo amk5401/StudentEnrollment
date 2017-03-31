@@ -15,13 +15,19 @@ namespace StudentEnrollment.Proxy
 
         static async Task<String> GetFromAPI(string uri)
         {
-            HttpResponseMessage response = await client.GetAsync(uri);
-            String responseText = null;
-            if (response.IsSuccessStatusCode)
+            //HttpResponseMessage response = await client.GetAsync(uri);
+            //String responseText = null;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    responseText = await response.Content.ReadAsStringAsync();
+            //}
+            //return responseText;
+            using (client)
             {
-                responseText = await response.Content.ReadAsStringAsync();
+                var response = client.GetAsync(uri).Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
             }
-            return responseText;
         }
 
         static async Task<String> PostToAPI(string uri, Dictionary<String, String> postParemeters)
@@ -32,13 +38,19 @@ namespace StudentEnrollment.Proxy
                 postData.Add(new KeyValuePair<string, string>(key, postParemeters[key]));
             }
             HttpContent content = new FormUrlEncodedContent(postData);
-            var response = await client.PostAsync(uri, content);
-            String responseText = null;
-            if (response.IsSuccessStatusCode)
+            using (client)
             {
-                responseText = await response.Content.ReadAsStringAsync();
+                var response = client.PostAsync(uri, content).Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
             }
-            return responseText;
+            //var response = await client.PostAsync(uri, content);
+            //String responseText = null;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    responseText = await response.Content.ReadAsStringAsync();
+            //}
+            //return responseText;
         }
 
         #region Model Getters
@@ -105,9 +117,8 @@ namespace StudentEnrollment.Proxy
         }
         public Student getStudent(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getStudentUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentUser&userID={1}", API_URL, ID)).Result;
             Student student = (Student)ModelFactory.createModelFromJson("student", json);
-
             return student;
         }
         public Term getTerm(String termCode)
