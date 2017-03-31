@@ -15,9 +15,8 @@ namespace StudentEnrollment.Controllers
         [HttpGet]
         public ActionResult SectionList(int courseID)
         {
-            ViewData["Title"] = "Section List";
             IProxy p = new APIProxy();
-
+            ViewData["Title"] = (p.getCourse(courseID)).Name;
             List<Student> none = new List<Student> { };
             int[] na = new int[] { };
             Term t1 = new Term(1, "Spring-17", DateTime.Now, DateTime.Now);
@@ -27,9 +26,9 @@ namespace StudentEnrollment.Controllers
 
             Section s1 = new Section(1, 30, 1, 1, courseID, 1, true);
 
-            ViewData["Course"] = p.getCourse(courseID);
-            ViewData["Sections"] = p.getCourseSections(p.getCourse(courseID));
-            return View();
+            //ViewData["Course"] = p.getCourse(courseID);
+            //ViewData["Sections"] = p.getCourseSections(p.getCourse(courseID));
+            return View(p.getCourseSections(p.getCourse(courseID)));
         }
     }
 }
