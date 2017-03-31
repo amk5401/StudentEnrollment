@@ -52,14 +52,14 @@ namespace StudentEnrollment.Proxy
 
         public Book getBook(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=book_store&function=getBook&bookID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=book_store&function=getBook&bookID={1}", API_URL, ID)).Result;
             Book book = (Book)ModelFactory.createModelFromJson("book", json);
             return book;
         }
 
         public Course getCourse(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=general&function=getCourse&courseID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getCourse&courseID={1}", API_URL, ID)).Result;
             Course course = (Course)ModelFactory.createModelFromJson("course", json);
 
             return course;
@@ -67,7 +67,7 @@ namespace StudentEnrollment.Proxy
 
         public Course[] getCourseList()
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseList", API_URL)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getCourseList", API_URL)).Result;
             Course[] courses = (Course[])ModelFactory.createModelArrayFromJson("course", json);
 
             return courses;
@@ -87,7 +87,7 @@ namespace StudentEnrollment.Proxy
         }
         public Instructor getInstructor(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getProfessorUser&professorID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
 
             return instructor;
@@ -105,14 +105,14 @@ namespace StudentEnrollment.Proxy
         }
         public Student getStudent(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getStudentUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentUser&studentID={1}", API_URL, ID)).Result;
             Student student = (Student)ModelFactory.createModelFromJson("student", json);
 
             return student;
         }
         public Term getTerm(String termCode)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getTerm&userID={1}", API_URL, termCode)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getTerm&termCode={1}", API_URL, termCode)).Result;
             Term term = (Term)ModelFactory.createModelFromJson("term", json);
             return term;
         }
@@ -122,7 +122,7 @@ namespace StudentEnrollment.Proxy
         //Returning arrays of Model objects from tables of IDs
         public Student[] getSectionStudents(Section section)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=studentEnrollment&function=getSectionEnrolled&sectionID={1}", API_URL, section.ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getSectionEnrolled&sectionID={1}", API_URL, section.ID)).Result;
             String[] studentIDs = ModelFactory.createIDListFromJson("student", json);
             List<Student> students = new List<Student>();
             foreach (String studentID in studentIDs)
@@ -134,7 +134,7 @@ namespace StudentEnrollment.Proxy
 
         public Course[] getCoursePrereqs(Course course)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=studentEnrollment&function=getPrereqs&courseID={1}", API_URL, course.ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getPrereqs&courseID={1}", API_URL, course.ID)).Result;
             String[] courseIDs = ModelFactory.createIDListFromJson("course", json);
             List<Course> courses = new List<Course>();
             foreach (String courseID in courseIDs)
@@ -190,7 +190,7 @@ namespace StudentEnrollment.Proxy
             postData.Add("courseName", course.Name);
             postData.Add("credits", Convert.ToString(course.Credits));
             postData.Add("minGPA", Convert.ToString(course.MinGPA));
-            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postCourse", API_URL), postData).Result;
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postCourse", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
@@ -202,7 +202,7 @@ namespace StudentEnrollment.Proxy
             postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
             postData.Add("termID", Convert.ToString(section.TermID));
             postData.Add("classroomID", Convert.ToString(section.LocationID));
-            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postSection=", API_URL), postData).Result;
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=postSection", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
@@ -215,7 +215,7 @@ namespace StudentEnrollment.Proxy
             postData.Add("userID", Convert.ToString(student.ID));
             postData.Add("yearLevel", Convert.ToString(student.YearLevel));
             postData.Add("gpa", Convert.ToString(student.GPA));
-            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postStudent", API_URL), postData).Result;
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postStudent", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 
@@ -225,7 +225,7 @@ namespace StudentEnrollment.Proxy
             postData.Add("termCode", term.Code);
             postData.Add("startDate", (term.StartDate).ToString("YYYY-mm-dd"));
             postData.Add("endDate", (term.EndDate).ToString("YYYY-mm-dd"));
-            String json = APIProxy.PostToAPI(String.Format("{0}?team=studentEnrollment&function=postTerm", API_URL), postData).Result;
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=postTerm", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
         #endregion
@@ -243,12 +243,12 @@ namespace StudentEnrollment.Proxy
         }
         public void toggleCourse(int ID) // Make sure this is what is supposed to be in the API
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=toggleCourse&courseID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=toggleCourse&courseID={1}", API_URL, ID)).Result;
         }
 
         public void toggleSection(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=toggleSection&sectionID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=toggleSection&sectionID={1}", API_URL, ID)).Result;
         }
 
         public void waitlistStudent(Student student, Section section)
