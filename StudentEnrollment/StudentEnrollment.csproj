@@ -193,7 +193,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,10 +259,19 @@
     <Content Include="Views\Section\SectionList.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\TestApi.cshtml" />
+    <Content Include="Views\jsonData\admins.json" />
+    <Content Include="Views\jsonData\books.json" />
+    <Content Include="Views\jsonData\courses.json" />
+    <Content Include="Views\jsonData\instructors.json" />
+    <Content Include="Views\jsonData\locations.json" />
+    <Content Include="Views\jsonData\sections.json" />
+    <Content Include="Views\jsonData\students.json" />
+    <Content Include="Views\jsonData\students_sections.json" />
+    <Content Include="Views\jsonData\terms.json" />
+    <Content Include="Views\jsonData\proxyFunctions.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\jsonData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
