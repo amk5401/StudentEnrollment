@@ -23,7 +23,20 @@ namespace StudentEnrollment.Models
         public int Credits { get; } 
         public int MinGPA { get; }
         public bool Availability { get;  }
-        // TODO: Add in availability property ASAP
+        public override string ToString()
+        {
+            string val = String.Format("Course #{0}: {1}, {2} \nCredits {3} \nMinGPA {4}",
+                this.ID,
+                this.CourseCode,
+                this.Name,
+                this.Credits,
+                this.MinGPA);
+            if (Availability)
+            {
+                return val + "\nCurrently available";
+            }
+            return val + "\nNot currently available";
+        }
 
 
     }

@@ -12,5 +12,9 @@ namespace StudentEnrollment.Models
         {
 
         }
+        public override string ToString()
+        {
+            return String.Format("Admin #{0}: {1} {2} \nUsername: {3} \nEmail: {4}", this.ID, this.FirstName, this.LastName, this.Username, this.Email);
+        }
     }
 }

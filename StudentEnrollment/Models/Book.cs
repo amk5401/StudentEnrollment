@@ -17,5 +17,9 @@ namespace StudentEnrollment.Models
         public int ID { get; }
         public int ISBN { get; }
         public String Title { get; }
+        public override string ToString()
+        {
+            return String.Format("Book #{0}: {1} \nISBN: {2}", this.ID, this.Title, this.ISBN);
+        }
     }
 }
