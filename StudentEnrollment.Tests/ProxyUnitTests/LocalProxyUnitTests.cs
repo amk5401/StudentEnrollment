@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StudentEnrollment.Proxy;
+using StudentEnrollment.Models;
+
 
 namespace StudentEnrollment.Tests.ProxyUnitTests
 {
@@ -10,9 +12,12 @@ namespace StudentEnrollment.Tests.ProxyUnitTests
         [TestMethod]
         public void createStudentUnitTest()
         {
+            var test = System.IO.Directory.GetCurrentDirectory();
             LocalProxy proxy = new LocalProxy();
+            Student student = proxy.getStudent(1);
 
-            Assert.AreEqual(proxy.getStudent(0).FirstName, "Bob");
+            Assert.IsNotNull(student);
+          
         }
     }
 }

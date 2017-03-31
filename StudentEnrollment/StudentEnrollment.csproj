@@ -245,7 +245,6 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\jsonData\admins.json" />
     <Content Include="Views\jsonData\books.json" />
-    <Content Include="Views\jsonData\courses.json" />
     <Content Include="Views\jsonData\instructors.json" />
     <Content Include="Views\jsonData\locations.json" />
     <Content Include="Views\jsonData\sections.json" />

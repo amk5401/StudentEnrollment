@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StudentEnrollment.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace StudentEnrollment.Models
 {
@@ -63,7 +64,8 @@ namespace StudentEnrollment.Models
             List<Course> courseList = new List<Course>(); 
             foreach(var jsonCourse in jsonObject)
             {
-                Course course = createCourse(jsonCourse);
+                JObject jsonObj = jsonCourse;
+                Course course = createCourse(jsonObj.ToString());
                 courseList.Add(course);
             }
             return courseList.ToArray();
@@ -73,9 +75,10 @@ namespace StudentEnrollment.Models
         {
             dynamic jsonObject = JsonConvert.DeserializeObject(json);
             List<Section> sectionList = new List<Section>();
-            foreach (var jsonCourse in jsonObject)
+            foreach (var jsonSection in jsonObject)
             {
-                Section section = createSection(jsonCourse);
+                JObject jsonObj = jsonSection;
+                Section section = createSection(jsonObj.ToString());
                 sectionList.Add(section);
             }
             return sectionList.ToArray();

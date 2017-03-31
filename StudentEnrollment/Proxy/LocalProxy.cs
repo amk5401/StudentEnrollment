@@ -36,11 +36,10 @@ namespace StudentEnrollment.Proxy
 
         public LocalProxy()
         {
-            this.filePath = "~/Views/jsonData/";
-
-
-            //Read in students.json
+            this.filePath = "C:/SWEN-344/StudentEnrollment/StudentEnrollment.Tests/Views/jsonData/";
             
+            //Read in students.json
+            string text = File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "students.json"));
             dynamic studentsJSON = JsonConvert.DeserializeObject(File.ReadAllText(HttpContext.Current.Server.MapPath(filePath + "students.json")));
             foreach (var student in studentsJSON)
             {
