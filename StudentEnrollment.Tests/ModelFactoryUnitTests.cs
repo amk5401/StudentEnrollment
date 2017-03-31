@@ -39,44 +39,65 @@ namespace StudentEnrollment.Tests
 
 
 
+        [TestMethod]
         public void createAdminUnitTest()
         {
+            String modelType = "admin";
+            String json = "{'ID' : 0, 'USERNAME' : 'Admin1' , 'EMAIL' : 'admin@test.com', 'FIRSTNAME' : 'Ad' , 'LASTNAME' : 'MIN'}";
 
+            Model model = ModelFactory.createModelFromJson(modelType, json);
+
+            Admin admin = (Admin)model;
+
+            Assert.IsNotNull(admin);
         }
+        [TestMethod]
         public void createCourseUnitTest()
         {
+            String modelType = "course";
+            String json = "{'ID': 0, 'COURSE_CODE' : 'SWEN-101' , 'NAME' : 'Intro', 'CREDITS' : 3, 'MIN_GPA' : 1, 'AVAILABILITY' : true, 'prereqs' : 'null'}";
 
+            Model model = ModelFactory.createModelFromJson(modelType, json);
+
+            Course course = (Course)model;
+            Assert.IsNotNull(course);
         }
 
+        [TestMethod]
         public void createSectionUnitTest()
         {
 
         }
-
+        [TestMethod]
         public void createBookUnitTest()
         {
 
         }
 
+        [TestMethod]
         public void createTermUnitTest()
         {
 
         }
 
+        [TestMethod]
         public void createLocationUnitTest()
         {
 
         }
-
+        [TestMethod]
         public void createSectionIDListUnitTest()
         {
 
         }
+
+        [TestMethod]
         public void createStudentIDListUnitTest()
         {
 
         }
 
+        [TestMethod]
         public void createPrereqIDListUnitTest()
         {
 
@@ -86,11 +107,13 @@ namespace StudentEnrollment.Tests
 
         }
 
+        [TestMethod]
         public void createSectionArrayFromJsonUnitTest()
         {
 
         }
 
+        [TestMethod]
         public void createCourseArrayFromJsonUnitTest()
         {
 
@@ -100,6 +123,7 @@ namespace StudentEnrollment.Tests
 
         }
 
+        [TestMethod]
         public void createModelArrayFromJsonUnitTest()
         {
 
