@@ -57,7 +57,7 @@ namespace StudentEnrollment.Proxy
         //Methods for Retreiving data from API
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdminUser&adminID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdmin&adminID={1}", API_URL, ID)).Result;
             Admin admin = (Admin)ModelFactory.createModelFromJson("admin", json);
             return admin;
         }
@@ -99,7 +99,7 @@ namespace StudentEnrollment.Proxy
         }
         public Instructor getInstructor(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getProfessorUser&professorID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
 
             return instructor;
@@ -124,9 +124,15 @@ namespace StudentEnrollment.Proxy
         }
         public Term getTerm(String termCode)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getTerm&termCode={1}", API_URL, termCode)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getTerm&termCode={1}", API_URL, termCode)).Result;
             Term term = (Term)ModelFactory.createModelFromJson("term", json);
             return term;
+        }
+        public Term[] getTerms()
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getTerms", API_URL)).Result;
+            Term[] terms = (Term[])ModelFactory.createModelArrayFromJson("term", json);
+            return terms;
         }
         #endregion
 
@@ -158,7 +164,7 @@ namespace StudentEnrollment.Proxy
 
         public Section[] getCourseSections(Course course)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}/team=student_enrollment&function=getCourseSections&courseID={1}", API_URL, course.ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getCourseSections&courseID={1}", API_URL, course.ID)).Result;
             Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
 
             return sections;

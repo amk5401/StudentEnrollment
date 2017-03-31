@@ -38,7 +38,7 @@ namespace StudentEnrollment.Models
             {
                 case "course": models = createCourseArrayFromJson(json); break;
                 case "section": models = createSectionArrayFromJson(json); break;
-                case "term": models = createSectionArrayFromJson(json); break;
+                case "term": models = createTermArrayFromJson(json); break;
             }
             return models;
         }
@@ -52,6 +52,7 @@ namespace StudentEnrollment.Models
             {
                 case "course": idList = createPrereqIDList(json); break;
                 case "section": idList = createSectionIDList(json); break;
+                case "student": idList = createStudentIDList(json); break;
             }
             return idList;
         }
@@ -90,8 +91,8 @@ namespace StudentEnrollment.Models
             List<Term> termList = new List<Term>();
             foreach (var jsonCourse in jsonObject)
             {
-                Term section = createTerm(jsonCourse);
-                termList.Add(section);
+                Term term = createTerm(jsonCourse.ToString());
+                termList.Add(term);
             }
             return termList.ToArray();
         }
@@ -110,7 +111,18 @@ namespace StudentEnrollment.Models
             List<String> ids = new List<string>();
             foreach (var entry in contents)
             {
-                ids.Add(entry.SECTION_ID.value);
+                ids.Add(Convert.ToString(entry.SECTION_ID.Value));
+            }
+            return ids.ToArray();
+        }
+
+        private static String[] createStudentIDList(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            List<String> ids = new List<string>();
+            foreach (var entry in contents)
+            {
+                ids.Add(Convert.ToString(entry.STUDENT_ID.Value));
             }
             return ids.ToArray();
         }
@@ -216,11 +228,17 @@ namespace StudentEnrollment.Models
             String start = contents.START_DATE;
             String end = contents.END_DATE;
             // SQL Date Format: YYYY-MM-DD
-            DateTime startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
-            DateTime endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
-
-           // DateTime startDate = new DateTime(2017, 1, 1);
-            //DateTime endDate = new DateTime(2017, 5, 20);
+            DateTime startDate = DateTime.Now; // TODO: I don't think this should be like this but it works for now
+            DateTime endDate =  DateTime.Now.AddDays(1.0);
+            try
+            {
+                startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
+                endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: Invalid Date Fields Parsed From Json. Date 1: " + start + ", Date 2: " + end);
+            }
             return new Term(id, termCode, startDate, endDate);
         }
 

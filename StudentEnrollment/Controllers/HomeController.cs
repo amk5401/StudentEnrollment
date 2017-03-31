@@ -69,8 +69,8 @@ namespace StudentEnrollment.Controllers
                         case "getCourseList": result = p.getCourseList(); break;
                         case "getSection": result = p.getSection(Int32.Parse(parameters)); break;
                         case "getCourseSections":
-                            //parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
-                            result = p.getCourseSections((Course)ModelFactory.createModelFromJson("course", parameters));
+                            Course course = (Course)ModelFactory.createModelFromJson("course", parameters);
+                            result = p.getCourseSections(course);
                             break;
                         case "getStudentSections":
                             Student student = (Student)ModelFactory.createModelFromJson("student", parameters);
@@ -97,6 +97,17 @@ namespace StudentEnrollment.Controllers
                         case "getLocation": result = p.getLocation(Int32.Parse(parameters)); break;
                         case "getCurrentTerm": result = p.getCurrentTerm(); break;
                         case "getTerm": result = p.getTerm(parameters); break;
+                        case "getTerms": result = p.getTerms(); break;
+                        case "createTerm":
+                            Term term = (Term)ModelFactory.createModelFromJson("term", parameters);
+                            p.createTerm(term);
+                            result = "Call the getTerms method for the result of this operation.";
+                            break;
+                        case "createCourse":
+                            course = (Course)ModelFactory.createModelFromJson("course", parameters);
+                            p.createCourse(course);
+                            result = "Check the course list for the result of that operation.";
+                            break;
                     }
                 }
                 catch (FormatException fex)

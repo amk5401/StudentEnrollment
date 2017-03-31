@@ -212,6 +212,10 @@ namespace StudentEnrollment.Proxy
         {
             throw new NotImplementedException();
         }
+        public Term[] getTerms()
+        {
+            throw new NotImplementedException();
+        }
         public Student getStudent(int ID)
         {
             Student student = null;

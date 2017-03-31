@@ -15,6 +15,7 @@ namespace StudentEnrollment.Proxy
         Location getLocation(int ID);
         Term getCurrentTerm();
         Term getTerm(String ID);
+        Term[] getTerms();
         Student getStudent(int ID);
         Instructor getInstructor(int ID);
         Admin getAdmin(int ID);
