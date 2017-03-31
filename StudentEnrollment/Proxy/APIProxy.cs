@@ -38,7 +38,7 @@ namespace StudentEnrollment.Proxy
                 postData.Add(new KeyValuePair<string, string>(key, postParemeters[key]));
             }
             HttpContent content = new FormUrlEncodedContent(postData);
-            using (client)
+            using (client = new HttpClient())
             {
                 var response = client.PostAsync(uri, content).Result;
                 var result = response.Content.ReadAsStringAsync().Result;
