@@ -6,7 +6,7 @@ using StudentEnrollment.Models;
 
 namespace StudentEnrollment.Proxy
 {
-    interface Proxy
+    interface IProxy
     {
         //Model Getters
         //Methods for retreiving data from API
