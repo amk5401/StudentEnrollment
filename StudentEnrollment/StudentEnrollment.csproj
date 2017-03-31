@@ -243,6 +243,15 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\jsonData\admins.json" />
+    <Content Include="Views\jsonData\books.json" />
+    <Content Include="Views\jsonData\courses.json" />
+    <Content Include="Views\jsonData\instructors.json" />
+    <Content Include="Views\jsonData\locations.json" />
+    <Content Include="Views\jsonData\sections.json" />
+    <Content Include="Views\jsonData\students.json" />
+    <Content Include="Views\jsonData\students_sections.json" />
+    <Content Include="Views\jsonData\terms.json" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
