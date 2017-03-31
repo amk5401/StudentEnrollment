@@ -20,18 +20,7 @@
             <td>@item.Name</td>
             <td>@item.Credits</td>
             <td>@item.MinGPA</td>
-            @*<td>@if (item.Prerequisites.Length == 0)
-                {
-                    @("None");
-                }
-                else
-                {
-                    @foreach (var prereq in item.pre)
-                    {
-                        @courses[prereq-1].Name<br/>
-                    }
-                }
-            </td>*@
+            <td>@item.Availability</td>
         </tr>
 
     }
