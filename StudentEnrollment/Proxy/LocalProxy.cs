@@ -36,11 +36,7 @@ namespace StudentEnrollment.Proxy
 
         public LocalProxy()
         {
-<<<<<<< Updated upstream
             this.filePath = "~/Views/jsonData/";
-=======
-            this.filePath = "/../Views/jsonData";
->>>>>>> Stashed changes
 
 
             //Read in students.json
