@@ -7,12 +7,24 @@ using StudentEnrollment.Models;
 namespace StudentEnrollment.Tests.ProxyUnitTests
 {
     [TestClass]
-    public class LocalProxyUnitTests
+    public class LocalProxyUnitTests : APIProxy
     {
+        LocalProxy proxy;
+        public LocalProxyUnitTests()
+        {
+            this.proxy = new LocalProxy(new TestPathData());
+        }
+        [TestMethod]
+        public void getStudentUnitTest()
+        {
+            Student student = proxy.getStudent(1);
+
+            Assert.IsNotNull(student);
+
+        }
         [TestMethod]
         public void createStudentUnitTest()
         {
-            LocalProxy proxy = new LocalProxy(new TestPathData());
             Student student = proxy.getStudent(1);
 
             Assert.IsNotNull(student);

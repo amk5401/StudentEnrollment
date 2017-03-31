@@ -89,6 +89,7 @@
     <Compile Include="ModelFactoryUnitTests.cs" />
     <Compile Include="ProxyUnitTests\LocalProxyUnitTests.cs" />
     <Compile Include="ProxyUnitTests\APIProxyUnitTests.cs" />
+    <Compile Include="Proxy\LocalProxyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
