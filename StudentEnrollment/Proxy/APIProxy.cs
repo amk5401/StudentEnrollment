@@ -243,6 +243,11 @@ namespace StudentEnrollment.Proxy
         }
         public void toggleCourse(int ID) // Make sure this is what is supposed to be in the API
         {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=toggleCourse&courseID={1}", API_URL, ID)).Result;
+        }
+
+        public void toggleSection(int ID)
+        {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=toggleSection&sectionID={1}", API_URL, ID)).Result;
         }
 

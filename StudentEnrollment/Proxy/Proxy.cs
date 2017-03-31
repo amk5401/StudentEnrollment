@@ -47,5 +47,6 @@ namespace StudentEnrollment.Proxy
         void waitlistStudent(Student student, Section section);
         void withdrawStudent(Student student, Section section);
         void toggleCourse(int ID);
+        void toggleSection(int ID);
     }
 }
