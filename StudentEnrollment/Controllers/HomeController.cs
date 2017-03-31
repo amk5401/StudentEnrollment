@@ -68,8 +68,16 @@ namespace StudentEnrollment.Controllers
                         case "getCourse": result = p.getCourse(Int32.Parse(parameters)); break;
                         case "getCourseList": result = p.getCourseList(); break;
                         case "getSection": result = p.getSection(Int32.Parse(parameters)); break;
-                        case "getCourseSections": result = p.getCourseSections((Course)Convert.ChangeType(parameters, typeof(Course))); break;
-                        case "getStudentSections": result = p.getStudentSections((Student)Convert.ChangeType(parameters, typeof(Student))); break;
+                        case "getCourseSections":
+                            //parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
+                            result = p.getCourseSections((Course)ModelFactory.createModelFromJson("course", parameters));
+                            break;
+                        case "getStudentSections":
+                            Student student = (Student)ModelFactory.createModelFromJson("student", parameters);
+                            result = p.getStudentSections(student);
+                            break;
+                           
+                        //result = p.getStudentSections((Student)Convert.ChangeType(parameters, typeof(Student))); break;
                         case "getSectionStudents": result = p.getSectionStudents((Section)Convert.ChangeType(parameters, typeof(Section))); break;
                         case "getInstructorSections": result = p.getInstructorSections((Instructor)Convert.ChangeType(parameters, typeof(Instructor))); break;
                         case "getBook": result = p.getBook(Int32.Parse(parameters)); break;

@@ -50,6 +50,7 @@ namespace StudentEnrollment.Models
             switch (modelType)
             {
                 case "course": idList = createPrereqIDList(json); break;
+                case "section": idList = createSectionIDList(json); break;
             }
             return idList;
         }
@@ -94,10 +95,21 @@ namespace StudentEnrollment.Models
 
         /* ID Array Creation Methods */
 
-        private static String[] createPrereqIDList(String json)
+        private static String[] createPrereqIDList(String json) // TODO: This is broke
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
             return contents.prereqs;
+        }
+
+        private static String[] createSectionIDList(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            List<String> ids = new List<string>();
+            foreach (var entry in contents)
+            {
+                ids.Add(entry.SECTION_ID.value);
+            }
+            return ids.ToArray();
         }
 
         /* Model Creation Methods */
@@ -139,7 +151,16 @@ namespace StudentEnrollment.Models
 
         private static Course createCourse(String json)
         {
-            dynamic contents = JsonConvert.DeserializeObject(json);
+            dynamic contents = null;
+            try
+            {
+                contents = JsonConvert.DeserializeObject(json);
+            }
+            catch(Exception e)
+            {
+                int i = 1;
+            }
+            
 
             int id = contents.ID;
             string courseCode = contents.COURSE_CODE;

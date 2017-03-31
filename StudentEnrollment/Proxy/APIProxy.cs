@@ -15,13 +15,19 @@ namespace StudentEnrollment.Proxy
 
         static async Task<String> GetFromAPI(string uri)
         {
-            HttpResponseMessage response = await client.GetAsync(uri);
-            String responseText = null;
-            if (response.IsSuccessStatusCode)
+            //HttpResponseMessage response = await client.GetAsync(uri);
+            //String responseText = null;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    responseText = await response.Content.ReadAsStringAsync();
+            //}
+            //return responseText;
+            using (client = new HttpClient())
             {
-                responseText = await response.Content.ReadAsStringAsync();
+                var response = client.GetAsync(uri).Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
             }
-            return responseText;
         }
 
         static async Task<String> PostToAPI(string uri, Dictionary<String, String> postParemeters)
@@ -32,13 +38,19 @@ namespace StudentEnrollment.Proxy
                 postData.Add(new KeyValuePair<string, string>(key, postParemeters[key]));
             }
             HttpContent content = new FormUrlEncodedContent(postData);
-            var response = await client.PostAsync(uri, content);
-            String responseText = null;
-            if (response.IsSuccessStatusCode)
+            using (client)
             {
-                responseText = await response.Content.ReadAsStringAsync();
+                var response = client.PostAsync(uri, content).Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
             }
-            return responseText;
+            //var response = await client.PostAsync(uri, content);
+            //String responseText = null;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    responseText = await response.Content.ReadAsStringAsync();
+            //}
+            //return responseText;
         }
 
         #region Model Getters
@@ -105,7 +117,7 @@ namespace StudentEnrollment.Proxy
         }
         public Student getStudent(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentUser&studentID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentUser&userID={1}", API_URL, ID)).Result;
             Student student = (Student)ModelFactory.createModelFromJson("student", json);
 
             return student;
@@ -162,9 +174,13 @@ namespace StudentEnrollment.Proxy
         public Section[] getStudentSections(Student student)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
-            Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
-
-            return sections;
+            String[] ids = ModelFactory.createIDListFromJson("section", json);
+            List<Section> sections = new List<Section>();
+            foreach(String str in ids)
+            {
+                sections.Add(this.getSection(Convert.ToInt32(str)));
+            }
+            return sections.ToArray();
         }
         public Book[] getSectionBooks(Section section) // TODO: Make sure the function doesn't change to getSectionBook(S). Making assumption this is singular
         {
