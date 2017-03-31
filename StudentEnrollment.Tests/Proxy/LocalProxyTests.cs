@@ -77,7 +77,7 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("LocalProxy")]
         public void getTermTest()
         {
-            Term term = this.proxy.getTerm("0614");
+            Term term = this.proxy.getTerm("20161");
             Assert.IsNotNull(term);
         }
 
@@ -171,37 +171,43 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("LocalProxy")]
         public void createCourseTest()
         {
-            Assert.Fail();
+            Course course = new Course(11, "TEST", "Unit Test Course", 1, 1, false);
+            this.proxy.createCourse(course);
         }
 
         [TestMethod()]
         [TestCategory("LocalProxy")]
         public void createSectionTest()
         {
-            Assert.Fail();
+            Section section = new Section(11, 1, 1, 1, 1, 1, false);
+            this.proxy.createSection(section);
         }
 
         [TestMethod()]
         [TestCategory("LocalProxy")]
         public void createStudentTest()
         {
-            Assert.Fail();
+            Student student = new Student(11, "username", "email", "firstName", "lastName", 1, 1.0f);
+            this.proxy.createStudent(student);
         }
 
         [TestMethod()]
         [TestCategory("LocalProxy")]
         public void createTermTest()
         {
-            Assert.Fail();
+            Term term = new Term(11, "20203", new DateTime(2020, 1, 1), new DateTime(2020, 5, 1));
+            this.proxy.createTerm(term);
         }
 
         [TestMethod()]
         [TestCategory("LocalProxy")]
         public void createBookTest()
         {
-            Assert.Fail();
+            Book book = new Book(11, 11111111, "Test Book");
+            this.proxy.createBook(book);
         }
 
+        [Ignore]
         [TestMethod()]
         [TestCategory("LocalProxy")]
         public void enrollStudentTest()
@@ -213,14 +219,14 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("LocalProxy")]
         public void toggleCourseTest()
         {
-            proxy.toggleCourse(1);
+            this.proxy.toggleCourse(1);
         }
 
         [TestMethod()]
         [TestCategory("LocalProxy")]
         public void toggleSectionTest()
         {
-            proxy.toggleSection(1);
+            this.proxy.toggleSection(1);
         }
 
         [Ignore]

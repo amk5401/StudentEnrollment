@@ -206,11 +206,16 @@ namespace StudentEnrollment.Proxy
 
         public Term getTerm(String termCode)
         {
-            throw new NotImplementedException();
+            Term term = null;
+            if (termsList.Exists(x => x.Code == termCode))
+            {
+                term = termsList.Find(x => x.Code.Equals(termCode));
+            }
+            return term;
         }
         public Term[] getTerms()
         {
-            throw new NotImplementedException();
+            return termsList.ToArray();
         }
         public Student getStudent(int ID)
         {
