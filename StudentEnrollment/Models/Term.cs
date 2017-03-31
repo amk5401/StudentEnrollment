@@ -18,5 +18,9 @@ namespace StudentEnrollment.Models
         public String Code { get; }
         public DateTime StartDate { get; }
         public DateTime EndDate { get; }
+        public override string ToString()
+        {
+            return String.Format("Term #{0}: {1} \nStart Date: {2} \nEnd Date: {3}", this.ID, this.Code, this.StartDate.ToString(), this.EndDate.ToString());
+        }
     }
 }

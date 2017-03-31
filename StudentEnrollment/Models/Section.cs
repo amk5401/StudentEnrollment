@@ -25,5 +25,21 @@ namespace StudentEnrollment.Models
         public int TermID { get; }
         public int LocationID { get; }
         public bool Availability { get; }
+
+        public override string ToString()
+        {
+            string val = String.Format("Section #{0}: \nMaximum Students: {1} \nCourse ID: {2} \nTerm ID: {3} \nInstructor ID: {4} \nLocation ID: {5}",
+                this.ID,
+                this.MaxStudents,
+                this.CourseID,
+                this.TermID,
+                this.InstructorID,
+                this.LocationID);
+            if (Availability)
+            {
+                return val + "\nCurrently available";
+            }
+            return val + "\nNot currently available";
+        }
     }
 }

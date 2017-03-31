@@ -14,5 +14,18 @@ namespace StudentEnrollment.Models
         }
         public int YearLevel { get; set; }
         public float GPA { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("Student #{0}: {1} {2} \nUsername: {3} \nEmail: {4} \nYear: {5} \nGPA: {6} ", 
+                this.ID, 
+                this.FirstName, 
+                this.LastName, 
+                this.Username, 
+                this.Email, 
+                this.YearLevel, 
+                this.GPA);
+        }
     }
+    
 }
