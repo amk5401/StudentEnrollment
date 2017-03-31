@@ -11,20 +11,21 @@
             <th>Instructor</th>
             <th>Course</th>
             <th>Location</th>
-            <th>Students</th>
+            <th>Max Students</th>
+            <th>Availability</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in sections)
         {
             <tr id="@item.ID">
-                <td>@item.Term.Code</td>
-                <td>@item.Instructor.LastName</td>
-                <td>@item.Course.Name</td>
-                <td>@item.Location</td>
-                <td>@item.StudentsInSection.Count / @item.MaxStudents</td>
+                <td>@item.TermID</td>
+                <td>@item.InstructorID</td>
+                <td>@item.CourseID</td>
+                <td>@item.LocationID</td>
+                <td>@item.MaxStudents</td>
+                <td>@item.Availability</td>
         </tr>
-
         }
     </tbody>
 </table>

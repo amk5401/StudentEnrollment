@@ -8,7 +8,7 @@ using System.Web;
 
 namespace StudentEnrollment.Proxy
 {
-    public class LocalProxy : Proxy
+    public class LocalProxy : IProxy
     {
         List<Student> studentsList = new List<Student>();
         List<Admin> adminsList = new List<Admin>();
@@ -36,7 +36,7 @@ namespace StudentEnrollment.Proxy
 
         public LocalProxy()
         {
-            this.filePath = "/../Contents/jsonData";
+            this.filePath = "~/Views/jsonData/";
 
 
             //Read in students.json

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace StudentEnrollment.Proxy
 {
-    public class APIProxy : Proxy
+    public class APIProxy : IProxy
     {
         static HttpClient client = new HttpClient();
         private static String API_URL = "http://vm344f.se.rit.edu/API/API.php";

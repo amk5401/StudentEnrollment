@@ -1,0 +1,18 @@
+﻿{
+  "getStudent": "int ID",
+  "getInstructor": "int ID",
+  "getAdmin": "int ID",
+  "getCourse": "int ID",
+  "getCourseList": "n/a",
+  "getSection": "int ID",
+  "getCourseSections": "Course course",
+  "deleteSection": "Section section",
+  "getStudentSections": "Student student",
+  "getSectionStudents": "Section section",
+  "getInstructorSections": "Instructor instructor",
+  "getBook": "int ID",
+  "getSectionBooks": "Section section",
+  "getLocation": "int ID",
+  "getCurrentTerm": "n/a",
+  "getTerm": "int ID"
+}
