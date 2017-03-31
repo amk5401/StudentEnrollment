@@ -390,7 +390,23 @@ namespace StudentEnrollment.Proxy
             coursesList.Remove(course);
             coursesList.Add(changedCourse);
 
+            Section[] sections = getCourseSections(course);
+            
+            foreach(Section section in sections)
+            {
+                toggleSection(section.ID);
+            }
+
             //TODO: toggling off sections
+        }
+        public void toggleSection(int ID)
+        {
+            Section section = getSection(ID);
+
+            Section changedSection = new Section(section.ID, section.MaxStudents, section.TermID, section.InstructorID, section.CourseID, section.LocationID, !section.Availability);
+
+            sectionsList.Remove(section);
+            sectionsList.Add(changedSection);
         }
         public void waitlistStudent(Student student, Section section)
         {
