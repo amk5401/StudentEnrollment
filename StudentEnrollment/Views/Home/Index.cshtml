@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "API Tester";
+    var testInstructor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
+    var list = ViewData["InstructorList"] as List<StudentEnrollment.Models.Instructor>;
+    var functions = ViewData["Functions"] as Dictionary<string, string>;
+}
+@*
+<p>Test</p>
+@testInstructor.FirstName
+@testInstructor.LastName
+
+@foreach(var item in list)
+{
+    <div>
+        @item.FirstName
+      
+        @item.LastName
+    </div>
+
+}
+*@
+<h2>@ViewData["Title"].</h2>
+<form action="Home/TestApi" method="post">
+    <div class="form-group">
+        <input type="radio" name="proxyType" value="Local" checked="checked"> Local Proxy<br>
+        <input type="radio" name="proxyType" value="API"> API Proxy<br>
+    </div>
+    <div class="form-group">
+        <label for="function">Select function:</label>
+        <select class="form-control" id="function" name="function">
+            @foreach (var item in functions)
+            {
+                <option>@item.Key</option>
+            }
+        </select>
+    </div>
+    @foreach (var item in functions)
+    {
+    <div class="form-group @item.Key" style="display: none;">
+        <label for="parameters">Parameters (@item.Value):</label>
+    </div>
+    }
+    <button type="submit" id="submit" value="Submit" class="btn btn-default">Submit</button>
+</form>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        var oldMethod = 'getStudent';
+        $('.' + oldMethod).css('display', 'block');
+        $('.' + oldMethod).append(
+            ('<input type="text" class="form-control" id="parameters" name="parameters"/>'));
+        $('#function').change(function () {
+            var method = $('#function').find(":selected").text();
+            $('.' + method).css('display', 'block');
+            $('.' + method).append(
+                ('<input type="text" class="form-control" id="parameters" name="parameters"/>'));
+
+            $('.' + oldMethod).css('display', 'none');
+            $('.' + oldMethod).find('input').remove();
+
+            oldMethod = method;
+        });
+    });
+</script>
+
