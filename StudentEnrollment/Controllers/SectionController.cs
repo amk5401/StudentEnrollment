@@ -19,5 +19,9 @@ namespace StudentEnrollment.Controllers
             ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
             return PartialView(p.getCourseSections(p.getCourse(courseID)));
         }
+        public ActionResult SectionDetails()
+        {
+            return View();
+        }
     }
 }
