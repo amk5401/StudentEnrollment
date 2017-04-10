@@ -30,5 +30,9 @@ namespace StudentEnrollment.Controllers
             //ViewData["Sections"] = p.getCourseSections(p.getCourse(courseID));
             return View(p.getCourseSections(p.getCourse(courseID)));
         }
+        public ActionResult SectionDetails()
+        {
+            return View();
+        }
     }
 }
