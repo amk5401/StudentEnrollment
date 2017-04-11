@@ -30,9 +30,14 @@ namespace StudentEnrollment.Controllers
             //ViewData["Sections"] = p.getCourseSections(p.getCourse(courseID));
             return View(p.getCourseSections(p.getCourse(courseID)));
         }
-        public ActionResult SectionDetails()
+        public ActionResult SectionDetails(int sectionID)
         {
-            return View();
+            IProxy proxy = new APIProxy();
+
+            ViewData["Title"] = (proxy.getSection(sectionID).Course);
+            //return View();
+            return View(proxy.getSection(sectionID));
+
         }
     }
 }

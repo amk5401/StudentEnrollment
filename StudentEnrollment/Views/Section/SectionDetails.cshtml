@@ -1,22 +1,36 @@
-﻿@model StudentEnrollment.Models.Section[]
+﻿@model StudentEnrollment.Models.Section
+@
 @*@{
         var sections = ViewData["Sections"] as List<StudentEnrollment.Models.Section>;
         var course = ViewData["Course"] as StudentEnrollment.Models.Course;
     }*@
-@{
-    Layout = null;
-}
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    hello
-    </div>
-</body>
-</html>
+        <table class="table myTable" style="cursor:pointer">
+            <thead>
+                <tr>
+                    
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Location</th>
+                    <th>Max Students</th>
+                    <th>Term</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                    <tr id="@Model.ID">
+                        <td>@Model.CourseID</td>
+                        <td>@Model.Course</td>
+                        <td>@Model.InstructorID</td>
+                        <td>@Model.LocationID</td>
+                        <td>@Model.MaxStudents</td>
+                        <td>@Model.TermID</td>
+                        <td>@Model.Availability</td>
+                    </tr>
+          
+            </tbody>
+        </table>
+ 
