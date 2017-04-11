@@ -120,9 +120,14 @@ namespace StudentEnrollment.Controllers
             this.proxy.waitlistStudent(student, section);
             return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
         }
-        public ActionResult SectionDetails()
+        public ActionResult SectionDetails(int sectionID)
         {
-            return View();
+            IProxy proxy = new APIProxy();
+
+            ViewData["Title"] = (proxy.getSection(sectionID).Course);
+            //return View();
+            return View(proxy.getSection(sectionID));
+
         }
     }
 }
