@@ -19,9 +19,14 @@ namespace StudentEnrollment.Controllers
             ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
             return PartialView(p.getCourseSections(p.getCourse(courseID)));
         }
-        public ActionResult SectionDetails()
+        public ActionResult SectionDetails(int sectionID)
         {
-            return View();
+            IProxy proxy = new APIProxy();
+
+            ViewData["Title"] = (proxy.getSection(sectionID).Course);
+            //return View();
+            return View(proxy.getSection(sectionID));
+
         }
     }
 }
