@@ -1,36 +1,42 @@
 ﻿@model StudentEnrollment.Models.Term
 
 @{
-    ViewBag.Title = "CreateTerm";
+    ViewBag.Title = "CreateCourse";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CreateTerm</h2>
+<h2>CreateCourse</h2>
 
 
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Term</h4>
+        <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <form action="@Url.Action("CreateTermSubmit", "Admin")" method="post">
+        <form action="@Url.Action("CreateCourseSubmit", "Admin")" method="post">
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <label for="start-date">Term Code</label>
+                    <label for="courseCode">Course Code</label>
                     <input type="text" value="" />
                 </div>
             </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <label for="start-date">Start Date</label>
-                        <input id="start-date" type="date" value="" />
+                        <label for="Name">Name</label>
+                        <input type="text" value="" />
                     </div>
                 </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <label for="end-date">End Date</label>
-                    <input type="date" value="" />
+                    <label for="credits">Credits</label>
+                    <input type="number" value="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <label for="minGPA">Minimum GPA</label>
+                    <input type="number" value="" />
                 </div>
             </div>
             <div class="col-md-offset-2 col-md-10">

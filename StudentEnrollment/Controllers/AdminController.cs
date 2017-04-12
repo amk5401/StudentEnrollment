@@ -19,11 +19,21 @@ namespace StudentEnrollment.Controllers
             return View();
         }
 
+        public ActionResult CreateCourse()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult CreateTermSubmit(string code, string startDate, string endDate)
         {
+            return RedirectToAction("FormResponse", "Admin", new { message = "Term Creation Success" });
+        }
 
-            return RedirectToAction("FormResponse", "Admin", new { message = "success" });
+        [HttpPost]
+        public ActionResult CreateCourseSubmit(string courseCode, string name, string credits, string minGPA)
+        {
+            return RedirectToAction("FormResponse", "Admin", new { message = "Course Creation Success" });
         }
 
         public ActionResult FormResponse(string message)
