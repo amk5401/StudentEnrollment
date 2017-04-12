@@ -232,8 +232,8 @@ namespace StudentEnrollment.Models
             DateTime endDate =  DateTime.Now.AddDays(1.0);
             try
             {
-                startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
-                endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
+                startDate = Convert.ToDateTime(String.Format("{0}-{1}-{2} 00:00:00.000", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
+                endDate = Convert.ToDateTime(String.Format("{0}-{1}-{2} 00:00:00.000", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
             }
             catch(Exception e)
             {
