@@ -26,5 +26,19 @@ namespace StudentEnrollment.Controllers
             //CourseAndSectionModel courseAndSectionModel = new CourseAndSectionModel(course, p.getCourseSections(course));
             return View(course);
         }
+
+        [HttpPost]
+        public ActionResult EditCourse(Course model)
+        {
+            if (ModelState.IsValid)
+            {
+                IProxy p = new APIProxy();
+                //p.createCourse(model);//p.editCourse(model);
+                return RedirectToAction("CourseDetail", new { courseId = model.ID });
+            } else
+            {
+                return RedirectToAction("CourseList");
+            }
+        }
     }
 }
