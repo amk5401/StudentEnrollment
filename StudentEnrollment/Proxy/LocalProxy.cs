@@ -365,6 +365,18 @@ namespace StudentEnrollment.Proxy
         }
         #endregion
 
+        #region Update Methods
+        public void updateCourse(Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void updateSection(Section section)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         #region Interaction Methods
         //Methods for interactions between models

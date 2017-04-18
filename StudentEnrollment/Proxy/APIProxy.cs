@@ -15,13 +15,6 @@ namespace StudentEnrollment.Proxy
 
         static async Task<String> GetFromAPI(string uri)
         {
-            //HttpResponseMessage response = await client.GetAsync(uri);
-            //String responseText = null;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    responseText = await response.Content.ReadAsStringAsync();
-            //}
-            //return responseText;
             using (client = new HttpClient())
             {
                 var response = client.GetAsync(uri).Result;
@@ -44,13 +37,6 @@ namespace StudentEnrollment.Proxy
                 var result = response.Content.ReadAsStringAsync().Result;
                 return result;
             }
-            //var response = await client.PostAsync(uri, content);
-            //String responseText = null;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    responseText = await response.Content.ReadAsStringAsync();
-            //}
-            //return responseText;
         }
 
         #region Model Getters
@@ -197,7 +183,6 @@ namespace StudentEnrollment.Proxy
         }
         #endregion
 
-
         #region Creation Methods
         //Methods for adding data to the database
         public void createBook(Book book) // TODO: Waiting on the bookstore team for parameters
@@ -252,6 +237,33 @@ namespace StudentEnrollment.Proxy
         }
         #endregion
 
+        #region Update Methods
+        //Methods for updating entities within the API
+        public void updateCourse(Course course)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("courseCode", course.CourseCode);
+            postData.Add("courseName", course.Name);
+            postData.Add("credits", Convert.ToString(course.Credits));
+            postData.Add("minGPA", Convert.ToString(course.MinGPA));
+            postData.Add("id", Convert.ToString(course.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=updateCourse", API_URL), postData).Result;
+        }
+
+        public void updateSection(Section section)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("id", Convert.ToString(section.ID));
+            postData.Add("courseID", Convert.ToString(section.Course.ID));
+            postData.Add("professorID", Convert.ToString(section.InstructorID));
+            postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
+            postData.Add("termID", Convert.ToString(section.TermID));
+            postData.Add("classroomID", Convert.ToString(section.LocationID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=updateSection", API_URL), postData).Result;
+            // TODO: See what comes back from JSON
+        }
+
+        #endregion
 
         #region Interaction Methods
         //Methods for interactions between models

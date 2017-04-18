@@ -41,6 +41,10 @@ namespace StudentEnrollment.Proxy
         void createCourse(Course course);
         void createStudent(Student student);
 
+        //Update Methods
+        //Methods for updating existing entities within the database
+        void updateCourse(Course course);
+        void updateSection(Section section);
 
         //Interaction 
         //Methods for interactions between models

@@ -28,11 +28,7 @@ namespace StudentEnrollment.Models
         public override string ToString()
         {
             string val = String.Format("Course #{0}: {1}, {2} \nCredits {3} \nMinGPA {4}",
-                this.ID,
-                this.CourseCode,
-                this.Name,
-                this.Credits,
-                this.MinGPA);
+                                 this.ID, this.CourseCode, this.Name, this.Credits, this.MinGPA);
             if (Availability)
             {
                 return val + "\nCurrently available";
