@@ -248,8 +248,7 @@ namespace StudentEnrollment.Proxy.Tests
             String testName = "Test Update";
             int testCredits = 666;
             int testGPA = 666;
-            bool testAvail = false;
-            Course updateCourse = new Course(course.ID, testCode, testName, testCredits, testGPA, testAvail);
+            Course updateCourse = new Course(course.ID, testCode, testName, testCredits, testGPA, course.Availability);
             this.proxy.updateCourse(updateCourse);
             updateCourse = this.proxy.getCourse(1);
             Assert.AreEqual(updateCourse.ID, 1);
@@ -257,7 +256,6 @@ namespace StudentEnrollment.Proxy.Tests
             Assert.AreEqual(updateCourse.Name, testName);
             Assert.AreEqual(updateCourse.Credits, testCredits);
             Assert.AreEqual(updateCourse.MinGPA, testGPA);
-            Assert.AreEqual(updateCourse.Availability, testAvail);
             this.proxy.updateCourse(course);
             updateCourse = this.proxy.getCourse(1);
             Assert.AreEqual(course, updateCourse);
@@ -274,8 +272,7 @@ namespace StudentEnrollment.Proxy.Tests
             int testInstructorID = 666;
             int testCourseID = 666;
             int testLocationID = 666;
-            bool testAvail = false;
-            Section updateSection = new Section(section.ID, testMaxStudents, testTermID, testInstructorID, testCourseID, testLocationID, testAvail);
+            Section updateSection = new Section(section.ID, testMaxStudents, testTermID, testInstructorID, testCourseID, testLocationID, section.Availability);
             this.proxy.updateSection(updateSection);
             updateSection = this.proxy.getSection(1);
             Assert.AreEqual(updateSection.ID, 1);
@@ -284,7 +281,6 @@ namespace StudentEnrollment.Proxy.Tests
             Assert.AreEqual(updateSection.InstructorID, testInstructorID);
             Assert.AreEqual(updateSection.CourseID, testCourseID);
             Assert.AreEqual(updateSection.LocationID, testLocationID);
-            Assert.AreEqual(updateSection.Availability, testAvail);
             this.proxy.updateSection(section);
             updateSection = this.proxy.getSection(1);
             Assert.AreEqual(section, updateSection);

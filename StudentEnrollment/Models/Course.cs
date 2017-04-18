@@ -35,7 +35,21 @@ namespace StudentEnrollment.Models
             }
             return val + "\nNot currently available";
         }
-
+        public override bool Equals(System.Object obj)
+        {
+            var course = obj as Course;
+            if (course == null) return false;
+            if (course.ID == this.ID && 
+                course.CourseCode == this.CourseCode && 
+                course.Name == this.Name &&
+                course.Credits == this.Credits && 
+                course.MinGPA == this.MinGPA && 
+                course.Availability == this.Availability)
+            {
+                return true;
+            }
+            else return false;
+        }
 
     }
 }

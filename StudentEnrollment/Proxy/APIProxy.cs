@@ -168,7 +168,7 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
             String[] ids = ModelFactory.createIDListFromJson("section", json);
             List<Section> sections = new List<Section>();
-            foreach(String str in ids)
+            foreach (String str in ids)
             {
                 sections.Add(this.getSection(Convert.ToInt32(str)));
             }
@@ -239,6 +239,10 @@ namespace StudentEnrollment.Proxy
 
         #region Update Methods
         //Methods for updating entities within the API
+
+        /**
+         * If goal is to update the availability, use the toggleCourse method.
+         */
         public void updateCourse(Course course)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
@@ -250,11 +254,14 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=updateCourse", API_URL), postData).Result;
         }
 
+        /**
+         * If goal is to update the availability, use the toggleSection method.
+         */
         public void updateSection(Section section)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("id", Convert.ToString(section.ID));
-            postData.Add("courseID", Convert.ToString(section.Course.ID));
+            postData.Add("courseID", Convert.ToString(section.CourseID));
             postData.Add("professorID", Convert.ToString(section.InstructorID));
             postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
             postData.Add("termID", Convert.ToString(section.TermID));

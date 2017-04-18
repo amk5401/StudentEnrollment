@@ -43,8 +43,8 @@ namespace StudentEnrollment.Proxy
 
         //Update Methods
         //Methods for updating existing entities within the database
-        void updateCourse(Course course);
-        void updateSection(Section section);
+        void updateCourse(Course course); // Not meant to update availability
+        void updateSection(Section section); // Not meant to update availability
 
         //Interaction 
         //Methods for interactions between models
