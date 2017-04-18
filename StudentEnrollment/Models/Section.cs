@@ -18,7 +18,6 @@ namespace StudentEnrollment.Models
             Availability = availability;
         }
         public int CourseID { get; }
-        public Course Course { get; set; }
         public int InstructorID { get; }
         public int ID { get; }
         public int MaxStudents { get; }
