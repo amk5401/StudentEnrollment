@@ -85,9 +85,8 @@ namespace StudentEnrollment.Proxy
         }
         public Instructor getInstructor(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
-
             return instructor;
         }
         public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
@@ -204,7 +203,7 @@ namespace StudentEnrollment.Proxy
         public void createSection(Section section)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
-            postData.Add("courseID", Convert.ToString(section.Course.ID));
+            postData.Add("courseID", Convert.ToString(section.CourseID));
             postData.Add("professorID", Convert.ToString(section.InstructorID));
             postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
             postData.Add("termID", Convert.ToString(section.TermID));

@@ -109,8 +109,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void getInstructorAPITest()
         {
-            Student student = this.proxy.getStudent(1);
-            Assert.IsNotNull(student);
+            Instructor instructor = this.proxy.getInstructor(1);
+            Assert.IsNotNull(instructor);
         }
 
         [TestMethod]
