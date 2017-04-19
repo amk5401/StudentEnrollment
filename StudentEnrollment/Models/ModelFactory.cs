@@ -206,9 +206,8 @@ namespace StudentEnrollment.Models
             int id = contents.ID;
             int capacity = contents.CAPACITY;
             int roomNumber = contents.ROOM_NUM;
-            int buildingNumber = contents.BUILDING_NUM;
-
-            return new Location(id, capacity, roomNumber, buildingNumber);
+            int buildingID = contents.BUILDING_ID;
+            return new Location(id, capacity, roomNumber, buildingID);
         }
 
         private static Book createBook(String json)

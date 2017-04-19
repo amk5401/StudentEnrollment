@@ -91,7 +91,9 @@ namespace StudentEnrollment.Proxy
         }
         public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=facility_management&function=getClassroom&id={1}", API_URL, ID)).Result;
+            Location location = (Location)ModelFactory.createModelFromJson("location", json);
+            return location;
         }
         public Section getSection(int ID)
         {

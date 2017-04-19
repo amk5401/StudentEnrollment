@@ -42,8 +42,12 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course course = this.proxy.getCourse(1);
             Assert.IsNotNull(course);
-            Assert.AreEqual(course.CourseCode, "SWEN-344");
-            Assert.AreEqual(course.Name, "Web Engineering");
+            Assert.IsNotNull(course.Availability);
+            Assert.IsNotNull(course.CourseCode);
+            Assert.IsNotNull(course.ID);
+            Assert.IsNotNull(course.Credits);
+            Assert.IsNotNull(course.MinGPA);
+            Assert.IsNotNull(course.Name);
         }
 
         [TestMethod]
@@ -52,9 +56,16 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course[] courseList = this.proxy.getCourseList();
             Assert.IsNotNull(courseList);
-            Assert.IsNotNull(courseList[0]);
-            Assert.AreEqual(courseList[0].CourseCode, "SWEN-344");
-            Assert.AreEqual(courseList[1].CourseCode, "SWEN-444");
+            foreach (Course course in courseList)
+            {
+                Assert.IsNotNull(course);
+                Assert.IsNotNull(course.Availability);
+                Assert.IsNotNull(course.CourseCode);
+                Assert.IsNotNull(course.ID);
+                Assert.IsNotNull(course.Credits);
+                Assert.IsNotNull(course.MinGPA);
+                Assert.IsNotNull(course.Name);
+            }
         }
 
         [TestMethod]
@@ -109,8 +120,12 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void getInstructorAPITest()
         {
-            Instructor instructor = this.proxy.getInstructor(1);
+            Instructor instructor = this.proxy.getInstructor(1); //TODO: Make sure the getProfessorUser function in the API gets fixed
             Assert.IsNotNull(instructor);
+            Assert.IsNotNull(instructor.ID);
+            Assert.IsNotNull(instructor.FirstName);
+            Assert.IsNotNull(instructor.LastName);
+            Assert.IsNotNull(instructor.Email);
         }
 
         [TestMethod]
