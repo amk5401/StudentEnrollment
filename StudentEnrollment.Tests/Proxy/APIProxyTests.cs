@@ -31,9 +31,10 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Admin admin = this.proxy.getAdmin(1);
             Assert.IsNotNull(admin);
-            Assert.AreEqual(admin.Email, "admin@email.com");
-            Assert.AreEqual(admin.ID, 1);
-            Assert.AreEqual(admin.FirstName, "Addison");
+            Assert.IsNotNull(admin.Email);
+            Assert.IsNotNull(admin.ID);
+            Assert.IsNotNull(admin.FirstName);
+            Assert.IsNotNull(admin.LastName);
         }
 
         [TestMethod]
