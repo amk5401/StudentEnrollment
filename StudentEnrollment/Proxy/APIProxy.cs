@@ -39,6 +39,18 @@ namespace StudentEnrollment.Proxy
             }
         }
 
+
+        public User login(string username, string password)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("username", username);
+            postData.Add("password", password);
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=login", API_URL), postData).Result;
+            User user =(User)ModelFactory.createModelFromJson(json, "user");
+            return user;
+        }
+
+
         #region Model Getters
         //Methods for Retreiving data from API
         public Admin getAdmin(int ID)
