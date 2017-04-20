@@ -28,18 +28,28 @@ namespace StudentEnrollment.Models
         public override string ToString()
         {
             string val = String.Format("Course #{0}: {1}, {2} \nCredits {3} \nMinGPA {4}",
-                this.ID,
-                this.CourseCode,
-                this.Name,
-                this.Credits,
-                this.MinGPA);
+                                 this.ID, this.CourseCode, this.Name, this.Credits, this.MinGPA);
             if (Availability)
             {
                 return val + "\nCurrently available";
             }
             return val + "\nNot currently available";
         }
-
+        public override bool Equals(System.Object obj)
+        {
+            var course = obj as Course;
+            if (course == null) return false;
+            if (course.ID == this.ID && 
+                course.CourseCode == this.CourseCode && 
+                course.Name == this.Name &&
+                course.Credits == this.Credits && 
+                course.MinGPA == this.MinGPA && 
+                course.Availability == this.Availability)
+            {
+                return true;
+            }
+            else return false;
+        }
 
     }
 }

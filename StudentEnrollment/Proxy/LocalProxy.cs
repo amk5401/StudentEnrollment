@@ -252,7 +252,7 @@ namespace StudentEnrollment.Proxy
         //Returning arrays of Model objects from tables of IDs
         public Section[] getCourseSections(Course course)
         {
-            return sectionsList.FindAll(x => x.Course.Equals(course)).ToArray();
+            return sectionsList.FindAll(x => x.CourseID.Equals(course.ID)).ToArray();
         }
 
         public Section[] getStudentSections(Student student)
@@ -365,6 +365,18 @@ namespace StudentEnrollment.Proxy
         }
         #endregion
 
+        #region Update Methods
+        public void updateCourse(Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void updateSection(Section section)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         #region Interaction Methods
         //Methods for interactions between models

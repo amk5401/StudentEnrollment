@@ -9,7 +9,7 @@ namespace StudentEnrollment.Proxy
     {
         public string GetPath(string path)
         {
-            return HttpContext.Current.Server.MapPath("~/Views/jsonData/"+path);
+            return HttpContext.Current.Server.MapPath("~/Views/jsonData/" + path);
         }
     }
 }
