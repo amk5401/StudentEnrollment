@@ -281,10 +281,10 @@
     <Content Include="Views\jsonData\students_sections.json" />
     <Content Include="Views\jsonData\terms.json" />
     <Content Include="Views\jsonData\proxyFunctions.json" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

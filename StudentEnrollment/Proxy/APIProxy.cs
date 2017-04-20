@@ -46,7 +46,7 @@ namespace StudentEnrollment.Proxy
             postData.Add("username", username);
             postData.Add("password", password);
             String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=login", API_URL), postData).Result;
-            User user =(User)ModelFactory.createModelFromJson(json, "user");
+            User user =(User)ModelFactory.createModelFromJson("user", json);
             return user;
         }
 

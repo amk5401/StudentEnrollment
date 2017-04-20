@@ -173,7 +173,7 @@ namespace StudentEnrollment.Models
             string lastName = contents.LASTNAME;
             String username = contents.USERNAME;
             String email = contents.EMAIL;
-            String role = contents.Role;
+            String role = contents.ROLE;
             User user = new User(id, username, email, firstName, lastName);
             user.Role = role;
             return user;

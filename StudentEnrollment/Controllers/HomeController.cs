@@ -14,6 +14,12 @@ namespace StudentEnrollment.Controllers
     {
         public ActionResult Index()
         {
+       
+            if(Session["user"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             Models.Instructor i1 = new StudentEnrollment.Models.Instructor(5, "gj888", "gj888@rit.edu", "George", "Johnson");
             Models.Instructor i2 = new StudentEnrollment.Models.Instructor(4, "gj888", "gj888@rit.edu", "Bob", "Smith");
 
@@ -35,6 +41,12 @@ namespace StudentEnrollment.Controllers
 
         public ActionResult TestApi(string function, string parameters, string proxyType)
         {
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("Index", "Login", new { redirectAction="TestApi", redirectController="Home" });
+            }
+
             Models.Student s = new StudentEnrollment.Models.Student(1, "rs4296", "rs4296@rit.edu", "Rob", "Stone", 5, float.Parse("3.5"));
             Models.Instructor i = new StudentEnrollment.Models.Instructor(1, "gj888", "gj888@rit.edu", "Bob", "Smith");
             Models.Course c1 = new StudentEnrollment.Models.Course(1, "SWEN-344", "Web Engineering", 3, 2, false);
