@@ -27,6 +27,18 @@ namespace StudentEnrollment.Proxy.Tests
 
         [TestMethod]
         [TestCategory("APIProxy")]
+        public void APIProxyLoginTest()
+        {
+            User user = proxy.login("huntercaskey", "pass1234");
+            Assert.IsNotNull(user);
+            Assert.AreEqual(user.FirstName, "Hunter");
+            Assert.AreEqual(user.LastName, "Caskey");
+            Assert.AreEqual(user.Role, "Admin");
+            Assert.AreEqual(user.Username, "huntercaskey");
+        }
+
+        [TestMethod]
+        [TestCategory("APIProxy")]
         public void getAdminAPITest()
         {
             Admin admin = this.proxy.getAdmin(1);
