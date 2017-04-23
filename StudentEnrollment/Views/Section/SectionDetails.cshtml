@@ -4,6 +4,7 @@
 @{
     var professor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
     var course = ViewData["Course"] as StudentEnrollment.Models.Course;
+    var students = ViewData["Enrolled"];
     //var first = professor.FirstName;
 }
     
@@ -12,7 +13,7 @@
         var course = ViewData["Course"] as StudentEnrollment.Models.Course;
     }*@
 
-  <h2>professor</h2>
+  <h2>@ViewData["Title"]</h2>
 
         <table class="table myTable" style="cursor:pointer">
             <thead>
@@ -23,6 +24,7 @@
                     <th>Instructor</th>
                     <th>Location</th>
                     <th>Max Students</th>
+                    <th>Students Ennrolled</th>
                     <th>Term</th>
                     <th>Availability</th>
                 </tr>
@@ -35,13 +37,26 @@
                         <td>@professor.LastName.ToString()</td>
                         <td>@Model.LocationID</td>
                         <td>@Model.MaxStudents</td>
+                        <td>@students.ToString()</td>
                         <td>@Model.TermID</td>
                         <td>@Model.Availability</td>
                     </tr>
           
             </tbody>
         </table>
-<form method="post"
-<button type="submit" id="enroll" value="Enroll" class="btn btn-default">Enroll</button>
-    </form>
+@{
+    if ((String)ViewData["Enroll"] == "Enroll")
+    {
+        <form method="post" action="/Section/Enroll">
+            <button type="submit" id="enroll" value="Enroll" class="btn btn-default">Enroll</button>
+        </form>
+    }
+    else if ((String)ViewData["Enroll"] == "Waitlist")
+    {
+        <form method="post" action="/Section/Waitlist">
+            <button type="submit" id="waitlist" value="Waitlist" class="btn btn-default">Waitlist</button>
+        </form>
+    }
+}
+
  
