@@ -7,6 +7,7 @@ namespace StudentEnrollment.Models
 {
     public class Course : Model
     {
+        public Course() {}
         public Course(int id, String courseCode, String name, int credits, int minGPA, bool availability)
         {
             ID = id;
@@ -17,14 +18,14 @@ namespace StudentEnrollment.Models
             Availability = availability;
         }
 
-        public int ID { get; }
-        public String CourseCode { get; }
-        public String Name { get; }
-        public int Credits { get; }
+        public int ID { get; set; }
+        public String CourseCode { get; set; }
+        public String Name { get; set; }
+        public int Credits { get; set; }
 
         // TODO: refactor GPA to double
-        public int MinGPA { get; }
-        public bool Availability { get;  }
+        public int MinGPA { get; set; }
+        public bool Availability { get; set; }
         public override string ToString()
         {
             string val = String.Format("Course #{0}: {1}, {2} \nCredits {3} \nMinGPA {4}",
