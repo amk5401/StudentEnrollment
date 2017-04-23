@@ -20,6 +20,7 @@ namespace StudentEnrollment.Models
                 case "student": model = createStudent(json); break;
                 case "instructor": model = createInstructor(json); break;
                 case "admin": model = createAdmin(json); break;
+                case "user": model = createUser(json); break;
                 case "course": model = createCourse(json); break;
                 case "section": model = createSection(json); break;
                 case "book": model = createBook(json); break;
@@ -164,6 +165,20 @@ namespace StudentEnrollment.Models
             return new Admin(id, username, email, firstName, lastName);
         }
 
+        private static User createUser(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            int id = contents.ID;
+            string firstName = contents.FIRSTNAME;
+            string lastName = contents.LASTNAME;
+            String username = contents.USERNAME;
+            String email = contents.EMAIL;
+            String role = contents.ROLE;
+            User user = new User(id, username, email, firstName, lastName);
+            user.Role = role;
+            return user;
+        }
+
         private static Course createCourse(String json)
         {
             dynamic contents = null;
@@ -206,9 +221,8 @@ namespace StudentEnrollment.Models
             int id = contents.ID;
             int capacity = contents.CAPACITY;
             int roomNumber = contents.ROOM_NUM;
-            int buildingNumber = contents.BUILDING_NUM;
-
-            return new Location(id, capacity, roomNumber, buildingNumber);
+            int buildingID = contents.BUILDING_ID;
+            return new Location(id, capacity, roomNumber, buildingID);
         }
 
         private static Book createBook(String json)
