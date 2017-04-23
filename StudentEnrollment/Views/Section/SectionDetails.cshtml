@@ -2,13 +2,10 @@
 
 
 @{
-    var professor = ViewData["InstructorName"];
-    var course = ViewData["CourseCode"];
+    var professor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
+    var course = ViewData["Course"] as StudentEnrollment.Models.Course;
     //var first = professor.FirstName;
 }
-
-    <p>Test</p>
-    @professor.GetType()
     
     @*{
         var sections = ViewData["Sections"] as List<StudentEnrollment.Models.Section>;
@@ -21,7 +18,7 @@
             <thead>
                 <tr>
                     
-                    <th>Course ID</th>
+                    <th>Course Code</th>
                     <th>Course Name</th>
                     <th>Instructor</th>
                     <th>Location</th>
@@ -33,9 +30,9 @@
             <tbody>
                
                     <tr id="@Model.ID">
-                        <td>@Model.CourseID</td>
-                        <td>@course.ToString()</td>
-                        <td>@professor.ToString()</td>
+                        <td>@course.CourseCode.ToString()</td>
+                        <td>@course.Name.ToString()</td>
+                        <td>@professor.LastName.ToString()</td>
                         <td>@Model.LocationID</td>
                         <td>@Model.MaxStudents</td>
                         <td>@Model.TermID</td>
