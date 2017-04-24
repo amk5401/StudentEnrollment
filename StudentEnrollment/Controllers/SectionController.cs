@@ -38,7 +38,7 @@ namespace StudentEnrollment.Controllers
             //only keeping this in to test how view shows instructor
             Instructor i = new Instructor(4, "prof4", "prof@example", "Dan", "Krutz");
             Section s = (proxy.getSection(sectionID));
-            Course c = proxy.getCourse(s.CourseID);
+            Course c = proxy.getCourse(s.CourseID); 
             ViewData["InstructorName"] = i.LastName;
             ViewData["CourseCode"] = c.CourseCode;
             return View(proxy.getSection(sectionID));
