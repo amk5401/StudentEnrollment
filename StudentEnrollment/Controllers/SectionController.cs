@@ -24,7 +24,7 @@ namespace StudentEnrollment.Controllers
             IProxy proxy = new APIProxy();
 
 
-            ViewData["Title"] = (proxy.getSection(sectionID).Course);
+            ViewData["Title"] = proxy.getSection(sectionID);
             Console.Write(proxy.getSection(sectionID));
 
             // TODO: uncomment and make sure this works with the API proxy after the endpoint is made
