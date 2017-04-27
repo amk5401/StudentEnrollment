@@ -54,16 +54,18 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpPost]
-        public ActionResult Enroll(Student student, Section section)
+        public ActionResult Enroll(int sectionID)
         {
+            Student student = new Student(10, "user", "user@user", "bob", "smith", 4, 3.44f);
+            Section s = proxy.getSection(sectionID);
 
-            if (student != null && section != null)
+            if (student != null && s != null)
             {
-                this.proxy.enrollStudent(student, section);
-                return View(section);
+                this.proxy.enrollStudent(student, s);
+                return SectionDetails(sectionID);
             }
             Console.Write("User not logged in");
-            return View();
+            return View(s);
             
         
         }
@@ -73,10 +75,10 @@ namespace StudentEnrollment.Controllers
             if (student != null && section !=null)
             {
                 this.proxy.waitlistStudent(student, section);
-                return View(section);
+                return SectionDetails(section.ID);
             }
             Console.Write("user not logged in");
-            return View();
+            return SectionDetails(section.ID);
         }
     }
 }
