@@ -44,11 +44,14 @@
           
             </tbody>
         </table>
+<label for="accessServices">Check for assistive services</label><input type="checkbox" id="accessServices" name="accessServices" value="accessServices"/>
 @{
     if ((String)ViewData["Enroll"] == "Enroll")
     {
-        <form method="post" action="/Section/Enroll">
+        <form method="post" id="enroll" action="/Section/Enroll">
+            <input data-val="true" type="hidden" value="@Model.ID" name="sectionID" id="sectionID" />
             <button type="submit" id="enroll" value="Enroll" class="btn btn-default">Enroll</button>
+
         </form>
     }
     else if ((String)ViewData["Enroll"] == "Waitlist")
