@@ -12,6 +12,7 @@ namespace StudentEnrollment.Controllers
 {
     public class SectionController : Controller
     {
+        private APIProxy proxy = new APIProxy();
         [HttpGet]
         public ActionResult SectionList(int courseID)
         {
@@ -19,30 +20,65 @@ namespace StudentEnrollment.Controllers
             ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
             return PartialView(p.getCourseSections(p.getCourse(courseID)));
         }
+        [HttpGet]
         public ActionResult SectionDetails(int sectionID)
         {
             IProxy proxy = new APIProxy();
 
 
-            ViewData["Title"] = proxy.getSection(sectionID);
+            ViewData["Title"] = (proxy.getSection(sectionID).CourseID);
             Console.Write(proxy.getSection(sectionID));
 
-            // TODO: uncomment and make sure this works with the API proxy after the endpoint is made
-            /* Section section = proxy.getSection(sectionID);
+            
+            Section section = proxy.getSection(sectionID);
+            Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
-            //ViewData["Instructor"] = proxy.getInstructor(proxy.getSection(sectionID).InstructorID);
+
+            int numStudents = proxy.getSectionStudents(section).Length;
+
+            ViewData["Enrolled"] = numStudents;
+            
+            if (numStudents >= section.MaxStudents)
+            {
+                ViewData["Enroll"] = "Waitlist";
+            }
+            else
+            {
+                ViewData["Enroll"] = "Enroll";
+            }
             ViewData["Instructor"] = instructor;
-            //return View();
-            */
-
-            //only keeping this in to test how view shows instructor
-            Instructor i = new Instructor(4, "prof4", "prof@example", "Dan", "Krutz");
-            Section s = (proxy.getSection(sectionID));
-            Course c = proxy.getCourse(s.CourseID);
-            ViewData["InstructorName"] = i.LastName;
+            ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;
-            return View(proxy.getSection(sectionID));
+            ViewData["CourseName"] = c.Name;
+            return View(section);
+        }
 
+        [HttpPost]
+        public ActionResult Enroll(int sectionID)
+        {
+            Student student = new Student(10, "user", "user@user", "bob", "smith", 4, 3.44f);
+            Section s = proxy.getSection(sectionID);
+
+            if (student != null && s != null)
+            {
+                this.proxy.enrollStudent(student, s);
+                return SectionDetails(sectionID);
+            }
+            Console.Write("User not logged in");
+            return View(s);
+            
+        
+        }
+        [HttpPost]
+        public ActionResult Waitlist(Student student, Section section)
+        {
+            if (student != null && section !=null)
+            {
+                this.proxy.waitlistStudent(student, section);
+                return SectionDetails(section.ID);
+            }
+            Console.Write("user not logged in");
+            return SectionDetails(section.ID);
         }
     }
 }
