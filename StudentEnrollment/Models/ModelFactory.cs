@@ -12,7 +12,7 @@ namespace StudentEnrollment.Models
     {
         public static Model createModelFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             Model model = null;
             switch (modelType)
@@ -32,7 +32,7 @@ namespace StudentEnrollment.Models
 
         public static Model[] createModelArrayFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             Model[] models = null;
             switch (modelType)
@@ -46,7 +46,7 @@ namespace StudentEnrollment.Models
 
         public static String[] createIDListFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             String[] idList = null;
             switch (modelType)
