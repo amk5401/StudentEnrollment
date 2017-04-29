@@ -177,5 +177,13 @@ namespace StudentEnrollment.Controllers
         {
             return View();
         }
+
+        public ActionResult QOD()
+        {
+            APIProxy p = new APIProxy();
+            string quote = p.getQuote();
+            ViewData["Quote"] = quote.Replace("<p>","").Replace("</p>","");
+            return PartialView();
+        }
     }
 }
