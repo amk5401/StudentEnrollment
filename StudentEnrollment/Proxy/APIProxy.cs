@@ -15,13 +15,6 @@ namespace StudentEnrollment.Proxy
 
         static async Task<String> GetFromAPI(string uri)
         {
-            //HttpResponseMessage response = await client.GetAsync(uri);
-            //String responseText = null;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    responseText = await response.Content.ReadAsStringAsync();
-            //}
-            //return responseText;
             using (client = new HttpClient())
             {
                 var response = client.GetAsync(uri).Result;
@@ -44,20 +37,25 @@ namespace StudentEnrollment.Proxy
                 var result = response.Content.ReadAsStringAsync().Result;
                 return result;
             }
-            //var response = await client.PostAsync(uri, content);
-            //String responseText = null;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    responseText = await response.Content.ReadAsStringAsync();
-            //}
-            //return responseText;
         }
+
+
+        public User login(string username, string password)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("username", username);
+            postData.Add("password", password);
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=login", API_URL), postData).Result;
+            User user =(User)ModelFactory.createModelFromJson("user", json);
+            return user;
+        }
+
 
         #region Model Getters
         //Methods for Retreiving data from API
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdmin&adminID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
             Admin admin = (Admin)ModelFactory.createModelFromJson("admin", json);
             return admin;
         }
@@ -99,14 +97,15 @@ namespace StudentEnrollment.Proxy
         }
         public Instructor getInstructor(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
-
             return instructor;
         }
         public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
         {
-            throw new NotImplementedException();
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=facility_management&function=getClassroom&id={1}", API_URL, ID)).Result;
+            Location location = (Location)ModelFactory.createModelFromJson("location", json);
+            return location;
         }
         public Section getSection(int ID)
         {
@@ -182,7 +181,7 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
             String[] ids = ModelFactory.createIDListFromJson("section", json);
             List<Section> sections = new List<Section>();
-            foreach(String str in ids)
+            foreach (String str in ids)
             {
                 sections.Add(this.getSection(Convert.ToInt32(str)));
             }
@@ -196,7 +195,6 @@ namespace StudentEnrollment.Proxy
             throw new NotImplementedException();
         }
         #endregion
-
 
         #region Creation Methods
         //Methods for adding data to the database
@@ -219,7 +217,7 @@ namespace StudentEnrollment.Proxy
         public void createSection(Section section)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
-            postData.Add("courseID", Convert.ToString(section.Course.ID));
+            postData.Add("courseID", Convert.ToString(section.CourseID));
             postData.Add("professorID", Convert.ToString(section.InstructorID));
             postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
             postData.Add("termID", Convert.ToString(section.TermID));
@@ -271,6 +269,40 @@ namespace StudentEnrollment.Proxy
         }
         #endregion
 
+        #region Update Methods
+        //Methods for updating entities within the API
+
+        /**
+         * If goal is to update the availability, use the toggleCourse method.
+         */
+        public void updateCourse(Course course)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("courseCode", course.CourseCode);
+            postData.Add("courseName", course.Name);
+            postData.Add("credits", Convert.ToString(course.Credits));
+            postData.Add("minGPA", Convert.ToString(course.MinGPA));
+            postData.Add("id", Convert.ToString(course.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=updateCourse", API_URL), postData).Result;
+        }
+
+        /**
+         * If goal is to update the availability, use the toggleSection method.
+         */
+        public void updateSection(Section section)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("id", Convert.ToString(section.ID));
+            postData.Add("courseID", Convert.ToString(section.CourseID));
+            postData.Add("professorID", Convert.ToString(section.InstructorID));
+            postData.Add("maxStudents", Convert.ToString(section.MaxStudents));
+            postData.Add("termID", Convert.ToString(section.TermID));
+            postData.Add("classroomID", Convert.ToString(section.LocationID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=updateSection", API_URL), postData).Result;
+            // TODO: See what comes back from JSON
+        }
+
+        #endregion
 
         #region Interaction Methods
         //Methods for interactions between models

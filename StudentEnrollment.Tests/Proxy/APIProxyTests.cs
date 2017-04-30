@@ -27,13 +27,26 @@ namespace StudentEnrollment.Proxy.Tests
 
         [TestMethod]
         [TestCategory("APIProxy")]
+        public void APIProxyLoginTest()
+        {
+            User user = proxy.login("huntercaskey", "pass1234");
+            Assert.IsNotNull(user);
+            Assert.AreEqual(user.FirstName, "Hunter");
+            Assert.AreEqual(user.LastName, "Caskey");
+            Assert.AreEqual(user.Role, "Admin");
+            Assert.AreEqual(user.Username, "huntercaskey");
+        }
+
+        [TestMethod]
+        [TestCategory("APIProxy")]
         public void getAdminAPITest()
         {
             Admin admin = this.proxy.getAdmin(1);
             Assert.IsNotNull(admin);
-            Assert.AreEqual(admin.Email, "admin@email.com");
-            Assert.AreEqual(admin.ID, 1);
-            Assert.AreEqual(admin.FirstName, "Addison");
+            Assert.IsNotNull(admin.Email);
+            Assert.IsNotNull(admin.ID);
+            Assert.IsNotNull(admin.FirstName);
+            Assert.IsNotNull(admin.LastName);
         }
 
         [TestMethod]
@@ -42,8 +55,12 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course course = this.proxy.getCourse(1);
             Assert.IsNotNull(course);
-            Assert.AreEqual(course.CourseCode, "SWEN-344");
-            Assert.AreEqual(course.Name, "Web Engineering");
+            Assert.IsNotNull(course.Availability);
+            Assert.IsNotNull(course.CourseCode);
+            Assert.IsNotNull(course.ID);
+            Assert.IsNotNull(course.Credits);
+            Assert.IsNotNull(course.MinGPA);
+            Assert.IsNotNull(course.Name);
         }
 
         [TestMethod]
@@ -52,9 +69,16 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course[] courseList = this.proxy.getCourseList();
             Assert.IsNotNull(courseList);
-            Assert.IsNotNull(courseList[0]);
-            Assert.AreEqual(courseList[0].CourseCode, "SWEN-344");
-            Assert.AreEqual(courseList[1].CourseCode, "SWEN-444");
+            foreach (Course course in courseList)
+            {
+                Assert.IsNotNull(course);
+                Assert.IsNotNull(course.Availability);
+                Assert.IsNotNull(course.CourseCode);
+                Assert.IsNotNull(course.ID);
+                Assert.IsNotNull(course.Credits);
+                Assert.IsNotNull(course.MinGPA);
+                Assert.IsNotNull(course.Name);
+            }
         }
 
         [TestMethod]
@@ -109,8 +133,12 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void getInstructorAPITest()
         {
-            Student student = this.proxy.getStudent(1);
-            Assert.IsNotNull(student);
+            Instructor instructor = this.proxy.getInstructor(1); //TODO: Make sure the getProfessorUser function in the API gets fixed
+            Assert.IsNotNull(instructor);
+            Assert.IsNotNull(instructor.ID);
+            Assert.IsNotNull(instructor.FirstName);
+            Assert.IsNotNull(instructor.LastName);
+            Assert.IsNotNull(instructor.Email);
         }
 
         [TestMethod]
@@ -181,7 +209,6 @@ namespace StudentEnrollment.Proxy.Tests
         {
             Course course = new Course(11, "TEST", "Unit Test Course", 1, 1, false);
             this.proxy.createCourse(course);
-
             Assert.IsNotNull(this.proxy.getCourse(11));
         }
 
@@ -237,6 +264,54 @@ namespace StudentEnrollment.Proxy.Tests
         public void toggleSectionAPITest()
         {
             this.proxy.toggleSection(1);
+        }
+
+        [TestMethod]
+        [TestCategory("APIProxy")]
+        public void updateCourseAPITest()
+        {
+            Course course = this.proxy.getCourse(1);
+            Assert.IsNotNull(course);
+            String testCode = "TEST-1234";
+            String testName = "Test Update";
+            int testCredits = 666;
+            int testGPA = 666;
+            Course updateCourse = new Course(course.ID, testCode, testName, testCredits, testGPA, course.Availability);
+            this.proxy.updateCourse(updateCourse);
+            updateCourse = this.proxy.getCourse(1);
+            Assert.AreEqual(updateCourse.ID, 1);
+            Assert.AreEqual(updateCourse.CourseCode, testCode);
+            Assert.AreEqual(updateCourse.Name, testName);
+            Assert.AreEqual(updateCourse.Credits, testCredits);
+            Assert.AreEqual(updateCourse.MinGPA, testGPA);
+            this.proxy.updateCourse(course);
+            updateCourse = this.proxy.getCourse(1);
+            Assert.AreEqual(course, updateCourse);
+        }
+
+        [TestMethod]
+        [TestCategory("APIProxy")]
+        public void updateSectionAPITest()
+        {
+            Section section = this.proxy.getSection(1);
+            Assert.IsNotNull(section);
+            int testMaxStudents = 666;
+            int testTermID = 666;
+            int testInstructorID = 666;
+            int testCourseID = 666;
+            int testLocationID = 666;
+            Section updateSection = new Section(section.ID, testMaxStudents, testTermID, testInstructorID, testCourseID, testLocationID, section.Availability);
+            this.proxy.updateSection(updateSection);
+            updateSection = this.proxy.getSection(1);
+            Assert.AreEqual(updateSection.ID, 1);
+            Assert.AreEqual(updateSection.MaxStudents, testMaxStudents);
+            Assert.AreEqual(updateSection.TermID, testTermID);
+            Assert.AreEqual(updateSection.InstructorID, testInstructorID);
+            Assert.AreEqual(updateSection.CourseID, testCourseID);
+            Assert.AreEqual(updateSection.LocationID, testLocationID);
+            this.proxy.updateSection(section);
+            updateSection = this.proxy.getSection(1);
+            Assert.AreEqual(section, updateSection);
         }
 
         [Ignore]

@@ -22,3 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.form-group > label{
+    text-align: right;
+}
+
+.course-container {
+    display: inline-block;
+    background-color: #f6f6f6;
+    padding-top: 15px;
+    -moz-border-radius: 15px; 
+    border-radius: 15px;
+}
