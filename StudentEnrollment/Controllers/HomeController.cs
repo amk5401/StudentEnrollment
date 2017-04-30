@@ -12,6 +12,7 @@ namespace StudentEnrollment.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
             Models.Instructor i1 = new StudentEnrollment.Models.Instructor(5, "gj888", "gj888@rit.edu", "George", "Johnson");
@@ -165,5 +166,11 @@ namespace StudentEnrollment.Controllers
         {
             return View();
         }
+
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }
