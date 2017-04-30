@@ -228,16 +228,28 @@ namespace StudentEnrollment.Proxy
             // TODO: See what comes back from JSON
         }
 
-        /**
-         * createStudent assumes that the User object attached to the Student object has already been registered within the database.
-         * */
-        public void createStudent(Student student)
+        public void createStudent(Student student, string password)
         {
+            // Create the user 
             Dictionary<String, String> postData = new Dictionary<string, string>();
-            postData.Add("userID", Convert.ToString(student.ID));
+            postData.Add("username", student.Username);
+            postData.Add("password", password);
+            postData.Add("fname", student.FirstName);
+            postData.Add("lname", student.LastName);
+            postData.Add("email", student.Email);
+            postData.Add("role", "STUDENT");
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=createUser", API_URL), postData).Result;
+
+            int studentID;
+            if (json == null || !int.TryParse(json, out studentID)) return;
+            else studentID = int.Parse(json);
+
+            // Create the student
+            postData = new Dictionary<string, string>();
+            postData.Add("userID", Convert.ToString(studentID));
             postData.Add("yearLevel", Convert.ToString(student.YearLevel));
             postData.Add("gpa", Convert.ToString(student.GPA));
-            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postStudent", API_URL), postData).Result;
+            json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postStudent", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
 

@@ -39,7 +39,7 @@ namespace StudentEnrollment.Proxy
         void createTerm(Term term);
         void createSection(Section section);
         void createCourse(Course course);
-        void createStudent(Student student);
+        void createStudent(Student student, string password);
 
 
         //Interaction 

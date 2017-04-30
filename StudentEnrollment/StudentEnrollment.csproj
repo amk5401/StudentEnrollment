@@ -285,6 +285,7 @@
     <Content Include="Views\Admin\CreateTerm.cshtml" />
     <Content Include="Views\Admin\FormResponse.cshtml" />
     <Content Include="Views\Admin\CreateCourse.cshtml" />
+    <Content Include="Views\Admin\RegisterStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

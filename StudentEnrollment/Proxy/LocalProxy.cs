@@ -350,7 +350,7 @@ namespace StudentEnrollment.Proxy
             this.sectionsList.Add(section);
         }
 
-        public void createStudent(Student student)
+        public void createStudent(Student student, string password)
         {
             this.studentsList.Add(student);
         }

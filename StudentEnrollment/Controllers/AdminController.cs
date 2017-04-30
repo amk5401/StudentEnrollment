@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using StudentEnrollment.Proxy;
+using StudentEnrollment.Models;
 
 namespace StudentEnrollment.Controllers
 {
     public class AdminController : Controller
     {
+
+        private APIProxy proxy = new APIProxy();
+
         // GET: Admin
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult RegisterStudent()
         {
             return View();
         }
@@ -22,6 +32,14 @@ namespace StudentEnrollment.Controllers
         public ActionResult CreateCourse()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult RegisterStudentSubmit(string username, string password, string fname, string lname, string email, int yearLevel, float gpa)
+        {
+            Student student = new Student(0, username, email, fname, lname, yearLevel, gpa);
+            proxy.createStudent(student, password);
+            return Index();
         }
 
         [HttpPost]
@@ -43,3 +61,5 @@ namespace StudentEnrollment.Controllers
         }
     }
 }
+ 
+ 
