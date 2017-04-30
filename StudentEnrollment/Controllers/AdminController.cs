@@ -38,8 +38,9 @@ namespace StudentEnrollment.Controllers
         public ActionResult RegisterStudentSubmit(string username, string password, string fname, string lname, string email, int yearLevel, float gpa)
         {
             Student student = new Student(0, username, email, fname, lname, yearLevel, gpa);
-            proxy.createStudent(student, password);
-            return Index();
+            bool success = proxy.createStudent(student, password);
+            string message = success ? "Student was successfully created!" : "There was an error creating the Student.";
+            return RedirectToAction("FormResponse", "Admin", new { message });
         }
 
         [HttpPost]
