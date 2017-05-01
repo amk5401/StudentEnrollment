@@ -14,6 +14,21 @@ namespace StudentEnrollment.Controllers
     public class SectionController : Controller
     {
         private APIProxy proxy = new APIProxy();
+
+        private bool loggedIn()
+        {
+            if (Session["user"] == null) return false; else return true;
+        }
+
+        private bool checkPermission(string role)
+        {
+            if (Session["user"] != null && Session["role"] != null && String.Equals(role, (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return false;
+        }
+
         [HttpGet]
         public ActionResult SectionList(int courseID)
         {
@@ -23,23 +38,20 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpGet]
-        public ActionResult SectionDetails(int sectionID)
+        public ActionResult Detail(int sectionID)
         {
-          
 
+            ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
 
-            ViewData["Title"] = (proxy.getSection(sectionID).CourseID);
-            Console.Write(proxy.getSection(sectionID));
-
-            
             Section section = proxy.getSection(sectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
 
             int numStudents = proxy.getSectionStudents(section).Length;
+            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
 
             ViewData["Enrolled"] = numStudents;
-            
+
             if (numStudents >= section.MaxStudents)
             {
                 ViewData["Enroll"] = "Waitlist";
@@ -52,53 +64,30 @@ namespace StudentEnrollment.Controllers
             ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;
             ViewData["CourseName"] = c.Name;
+            ViewData["Waitlist"] = waitlistStudents;
             return View(section);
         }
 
         [HttpPost]
         public ActionResult Enroll(int sectionID)
         {
-            if (ModelState.IsValid)
-            {
-                IProxy p = new APIProxy();
-                Section section = this.proxy.getSection(sectionID);
-                Student student = this.proxy.getStudent(4);
-                //Student s = p.createStudent(student);
-                //this.proxy.createStudent(student);
-                this.proxy.enrollStudent(student, section);
-                ViewData["student"] = student;
-                ViewData["section"] = section;
-                ViewData["course"] = this.proxy.getCourse(this.proxy.getSection(sectionID).CourseID);
-
-                return View(section);
-            }
-            else
-            {
-                return RedirectToAction("SectionDetails", new { sectionID = sectionID });
-            }
-            //Student student = new Student(10, "user", "user@user", "bob", "smith", 4, 3.44f);
-            //Section s = proxy.getSection(sectionID);
-
-            //if (student != null && s != null)
-            //{
-            //    this.proxy.enrollStudent(student, s);
-            //    return SectionDetails(sectionID);
-            //}
-            //Console.Write("User not logged in");
-            //return View(s);
-            
-        
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
+            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
+            Section section = this.proxy.getSection(sectionID);
+            Student student = this.proxy.getStudent(4); // TODO: Figure this out
+            this.proxy.enrollStudent(student, section);
+            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
         }
+
         [HttpPost]
-        public ActionResult Waitlist(Student student, Section section)
+        public ActionResult Waitlist(int sectionID)
         {
-            if (student != null && section !=null)
-            {
-                this.proxy.waitlistStudent(student, section);
-                return SectionDetails(section.ID);
-            }
-            Console.Write("user not logged in");
-            return SectionDetails(section.ID);
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
+            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
+            Section section = this.proxy.getSection(sectionID);
+            Student student = this.proxy.getStudent(4); // TODO: Figure this out
+            this.proxy.waitlistStudent(student, section);
+            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
         }
     }
 }
