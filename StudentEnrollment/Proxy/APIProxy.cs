@@ -262,8 +262,10 @@ namespace StudentEnrollment.Proxy
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("termCode", term.Code);
-            postData.Add("startDate", (term.StartDate).ToString("YYYY-mm-dd"));
-            postData.Add("endDate", (term.EndDate).ToString("YYYY-mm-dd"));
+            string start = (term.StartDate).ToString("yyyy-MM-dd") + " 00:00:00.000";
+            string end = (term.EndDate).ToString("yyyy-MM-dd") + " 00:00:00.000";
+            postData.Add("startDate", start);
+            postData.Add("endDate", end);
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=postTerm", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
