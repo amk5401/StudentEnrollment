@@ -244,12 +244,19 @@ namespace StudentEnrollment.Proxy.Tests
             this.proxy.createBook(book);
         }
 
-        [Ignore]
+        
         [TestMethod]
         [TestCategory("APIProxy")]
         public void enrollStudentAPITest()
         {
-            Assert.Fail();
+            Student student = this.proxy.getStudent(4);
+            Section section = this.proxy.getSection(1);
+
+            this.proxy.enrollStudent(student, section);
+            Section[] sections = this.proxy.getStudentSections(student);
+
+            Console.Write(sections);
+            Assert.AreEqual(sections[1].ID, section.ID);
         }
 
         [TestMethod]

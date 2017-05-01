@@ -283,6 +283,7 @@
     <Content Include="Views\jsonData\proxyFunctions.json" />
     <Content Include="Views\Course\CourseDetail.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Section\Enroll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
