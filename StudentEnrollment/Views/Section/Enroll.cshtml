@@ -1,0 +1,12 @@
+﻿@model StudentEnrollment.Models.Section
+
+@{
+    var professor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
+    var course = ViewData["Course"] as StudentEnrollment.Models.Course;
+    var student = ViewData["student"] as StudentEnrollment.Models.Student;
+  
+    //var first = professor.FirstName;
+}
+
+@student.FirstName @student.LastName has enrolled in Section @Model.ID - @course.CourseCode
+

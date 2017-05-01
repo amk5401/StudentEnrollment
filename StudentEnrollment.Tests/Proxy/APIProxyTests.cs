@@ -16,7 +16,7 @@ namespace StudentEnrollment.Proxy.Tests
         public APIProxyTests()
         {
             this.proxy = new APIProxy();
-        }
+}
 
         [TestMethod]
         [TestCategory("APIProxy")]
@@ -29,12 +29,12 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void APIProxyLoginTest()
         {
-            User user = proxy.login("huntercaskey", "pass1234");
+            User user = this.proxy.login("mars", "hi");
             Assert.IsNotNull(user);
-            Assert.AreEqual(user.FirstName, "Hunter");
-            Assert.AreEqual(user.LastName, "Caskey");
-            Assert.AreEqual(user.Role, "Admin");
-            Assert.AreEqual(user.Username, "huntercaskey");
+            Assert.AreEqual(user.FirstName, "mars");
+            Assert.AreEqual(user.LastName, "ballantyne");
+            Assert.AreEqual(user.Role, "Student");
+            Assert.AreEqual(user.Username, "mars");
         }
 
         [TestMethod]

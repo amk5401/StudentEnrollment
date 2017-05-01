@@ -148,6 +148,19 @@ namespace StudentEnrollment.Proxy
             }
             return students.ToArray();
         }
+        public Student[] getSectionWaitlist(Section section)
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getSectionWaitlist&sectionID={1}", 
+                API_URL, section.ID)).Result;
+            String[] studentIDs = ModelFactory.createIDListFromJson("student", json);
+            List<Student> students = new List<Student>();
+            foreach (String studentID in studentIDs)
+            {
+                students.Add(getStudent(Convert.ToInt32(studentID)));
+            }
+
+            return students.ToArray();
+        }
 
         public Course[] getCoursePrereqs(Course course)
         {
