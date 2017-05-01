@@ -6,6 +6,7 @@ using StudentEnrollment.Proxy;
 using StudentEnrollment.Models;
 using System.Web.Mvc;
 
+
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentEnrollment.Controllers
@@ -23,7 +24,7 @@ namespace StudentEnrollment.Controllers
         [HttpGet]
         public ActionResult SectionDetails(int sectionID)
         {
-            IProxy proxy = new APIProxy();
+          
 
 
             ViewData["Title"] = (proxy.getSection(sectionID).CourseID);
@@ -56,16 +57,34 @@ namespace StudentEnrollment.Controllers
         [HttpPost]
         public ActionResult Enroll(int sectionID)
         {
-            Student student = new Student(10, "user", "user@user", "bob", "smith", 4, 3.44f);
-            Section s = proxy.getSection(sectionID);
-
-            if (student != null && s != null)
+            if (ModelState.IsValid)
             {
-                this.proxy.enrollStudent(student, s);
-                return SectionDetails(sectionID);
+                IProxy p = new APIProxy();
+                Section section = this.proxy.getSection(sectionID);
+                Student student = this.proxy.getStudent(4);
+                //Student s = p.createStudent(student);
+                //this.proxy.createStudent(student);
+                this.proxy.enrollStudent(student, section);
+                ViewData["student"] = student;
+                ViewData["section"] = section;
+                ViewData["course"] = this.proxy.getCourse(this.proxy.getSection(sectionID).CourseID);
+
+                return View(section);
             }
-            Console.Write("User not logged in");
-            return View(s);
+            else
+            {
+                return RedirectToAction("SectionDetails", new { sectionID = sectionID });
+            }
+            //Student student = new Student(10, "user", "user@user", "bob", "smith", 4, 3.44f);
+            //Section s = proxy.getSection(sectionID);
+
+            //if (student != null && s != null)
+            //{
+            //    this.proxy.enrollStudent(student, s);
+            //    return SectionDetails(sectionID);
+            //}
+            //Console.Write("User not logged in");
+            //return View(s);
             
         
         }
