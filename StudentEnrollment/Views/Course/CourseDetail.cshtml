@@ -39,9 +39,11 @@
         <div class="form-group col-md-6 text-right">
             <button id="editBtn" type="button" value="Edit">Edit</button>
             <button class="attribute" type="submit" value="Submit" disabled>Save</button>
+            <button id="deleteBtn" type="button" value="Delete">Delete</button>
         </div>
     }
 </div>
+
 }
 else
 {
@@ -76,6 +78,7 @@ else
 <div class="col-md-12">
     @Html.Action("SectionList", "Section", @Model.ID)
 </div>
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -84,6 +87,12 @@ else
             for (i = 0; i < attrs.length; i++) {
                 attrs[i].removeAttribute("disabled");
             }
+        });
+        $("#deleteBtn").click(function (e) {
+            xhr.open("POST", "/Course/RemoveCourse", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.send({"courseID": @Model.ID});
+
         });
     });
 </script>
