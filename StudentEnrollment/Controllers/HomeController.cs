@@ -12,6 +12,7 @@ namespace StudentEnrollment.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
        
@@ -177,5 +178,11 @@ namespace StudentEnrollment.Controllers
         {
             return View();
         }
+
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }
