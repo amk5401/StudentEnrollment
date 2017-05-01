@@ -85,7 +85,7 @@ namespace StudentEnrollment.Controllers
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Admin" });
             if (!checkPermission()) return RedirectToAction("AccessDenied", "Home");
-            Course course = new Course(0, courseCode, name, Convert.ToInt32(credits), Convert.ToInt32(minGPA), avail);
+            Course course = new Course(0, courseCode, name, Convert.ToInt32(credits), Convert.ToInt32(minGPA), true);
             proxy.createCourse(course);
             return RedirectToAction("FormResponse", "Admin", new { message = "Course Creation Success" });
         }
