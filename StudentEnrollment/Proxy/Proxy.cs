@@ -39,7 +39,7 @@ namespace StudentEnrollment.Proxy
         void createTerm(Term term);
         void createSection(Section section);
         void createCourse(Course course);
-        void createStudent(Student student);
+        bool createStudent(Student student, string password);
 
         //Update Methods
         //Methods for updating existing entities within the database
@@ -53,5 +53,8 @@ namespace StudentEnrollment.Proxy
         void withdrawStudent(Student student, Section section);
         void toggleCourse(int ID);
         void toggleSection(int ID);
+
+        // Delete Methods
+        bool deleteUser(int userID);
     }
 }

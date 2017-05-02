@@ -16,7 +16,7 @@ namespace StudentEnrollment.Proxy.Tests
         public APIProxyTests()
         {
             this.proxy = new APIProxy();
-        }
+}
 
         [TestMethod]
         [TestCategory("APIProxy")]
@@ -29,12 +29,12 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void APIProxyLoginTest()
         {
-            User user = proxy.login("huntercaskey", "pass1234");
+            User user = this.proxy.login("mars", "hi");
             Assert.IsNotNull(user);
-            Assert.AreEqual(user.FirstName, "Hunter");
-            Assert.AreEqual(user.LastName, "Caskey");
-            Assert.AreEqual(user.Role, "Admin");
-            Assert.AreEqual(user.Username, "huntercaskey");
+            Assert.AreEqual(user.FirstName, "mars");
+            Assert.AreEqual(user.LastName, "ballantyne");
+            Assert.AreEqual(user.Role, "Student");
+            Assert.AreEqual(user.Username, "mars");
         }
 
         [TestMethod]
@@ -225,7 +225,7 @@ namespace StudentEnrollment.Proxy.Tests
         public void createStudentAPITest()
         {
             Student student = new Student(11, "username", "email", "firstName", "lastName", 1, 1.0f);
-            this.proxy.createStudent(student);
+            this.proxy.createStudent(student, "testpassword");
         }
 
         [TestMethod]
@@ -244,12 +244,19 @@ namespace StudentEnrollment.Proxy.Tests
             this.proxy.createBook(book);
         }
 
-        [Ignore]
+        
         [TestMethod]
         [TestCategory("APIProxy")]
         public void enrollStudentAPITest()
         {
-            Assert.Fail();
+            Student student = this.proxy.getStudent(4);
+            Section section = this.proxy.getSection(1);
+
+            this.proxy.enrollStudent(student, section);
+            Section[] sections = this.proxy.getStudentSections(student);
+
+            Console.Write(sections);
+            Assert.AreEqual(sections[1].ID, section.ID);
         }
 
         [TestMethod]

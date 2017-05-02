@@ -1,0 +1,114 @@
+﻿@model StudentEnrollment.Models.Section
+@{
+    var professor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
+    var course = ViewData["Course"] as StudentEnrollment.Models.Course;
+    var students = ViewData["Enrolled"];
+    var waitlist = ViewData["Waitlist"];
+    //var first = professor.FirstName;
+}
+@*{
+        var sections = ViewData["Sections"] as List<StudentEnrollment.Models.Section>;
+        var course = ViewData["Course"] as StudentEnrollment.Models.Course;
+    }*@
+<h2>@course.Name</h2>
+<div id="info">
+<table class="table myTable" style="cursor:pointer">
+        <tr>
+            <th>Course Code</th>
+            <td>@course.CourseCode.ToString()</td>
+            </tr>
+        <tr>
+            <th>Course Name</th>
+            <td>@course.Name.ToString()</td>
+            </tr>
+        <tr>
+            <th>Instructor</th>
+            <td>@professor.LastName.ToString()</td>
+
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>@Model.LocationID</td>
+        </tr>
+        <tr>
+            <th>Max Students</th>
+            <td>@Model.MaxStudents</td>
+        </tr>
+            <tr>
+                <th>Students Enrolled</th>
+                <td>@students.ToString()</td>
+            </tr>
+            <tr>
+                <th>Waitlist Size</th>
+                <td>@Model.MaxStudents</td>
+            </tr>
+            
+            <tr>
+                <th>Students on Waitlist</th>
+                <td>@waitlist.ToString()</td>
+            </tr>
+            <tr>
+                <th>Term</th>
+                <td>@Model.TermID</td>
+            </tr>
+            <tr>
+                <th>Availability</th>
+                <td>@Model.Availability</td>
+            </tr>
+            
+</table>
+</div>
+<label for="accessServices">Check for access services: </label><input type="checkbox" id="accessServices" name="accessServices" value="accessServices" /><br /><br />
+@{
+    if ((String)ViewData["Enroll"] == "Enroll")
+    {
+        <button type="button" data-toggle="modal" data-target="#confirmationModal"class="btn btn-default">Enroll</button>
+        @*<form method="post" id="enroll" action="/Section/Enroll">
+                <input data-val="true" type="hidden" value="@Model.ID" name="sectionID" id="sectionID" />
+                <button type="submit" id="enroll" value="Enroll" class="btn btn-default">Enroll</button>
+            </form>*@
+    }
+    else if ((String)ViewData["Enroll"] == "Waitlist")
+    {
+        <button type="button" data-toggle="modal" data-target="#waitlistConfirmationModal">Waitlist</button>
+    }
+}
+<div id="confirmationModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Enrollment</h4>
+            </div>
+            <div class="modal-body">
+                <p>This class will be added to your schedule.</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="/Section/Enroll">
+                    <input type="hidden" name="sectionID" value="@Model.ID">
+                    <button type="submit" value="Submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="waitlistConfirmationModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Waitlist</h4>
+            </div>
+            <div class="modal-body">
+                <p>You will be added to the waitlist for this section.</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="/Section/Waitlist">
+                    <input type="hidden" name="sectionID" value="@Model.ID">
+                    <button type="submit" value="Submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

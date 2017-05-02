@@ -188,7 +188,7 @@ namespace StudentEnrollment.Proxy.Tests
         public void createStudentLocalTest()
         {
             Student student = new Student(11, "username", "email", "firstName", "lastName", 1, 1.0f);
-            this.proxy.createStudent(student);
+            this.proxy.createStudent(student, "testpassword");
         }
 
         [TestMethod]

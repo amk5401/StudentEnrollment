@@ -12,6 +12,7 @@ namespace StudentEnrollment.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
        
@@ -185,5 +186,11 @@ namespace StudentEnrollment.Controllers
             ViewData["Quote"] = quote.Replace("<p>","").Replace("</p>","");
             return PartialView();
         }
+
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }
