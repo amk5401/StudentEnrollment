@@ -38,7 +38,7 @@ namespace StudentEnrollment.Proxy
         void createBook(Book book);
         void createTerm(Term term);
         void createSection(Section section);
-        void createCourse(Course course);
+        int createCourse(Course course);
         bool createStudent(Student student, string password);
 
         //Update Methods

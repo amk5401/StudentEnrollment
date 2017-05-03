@@ -208,8 +208,10 @@ namespace StudentEnrollment.Proxy.Tests
         public void createCourseAPITest()
         {
             Course course = new Course(11, "TEST", "Unit Test Course", 1, 1, false);
-            this.proxy.createCourse(course);
-            Assert.IsNotNull(this.proxy.getCourse(11));
+            int id = this.proxy.createCourse(course);
+            Assert.IsNotNull(this.proxy.getCourse(id));
+            this.proxy.deleteCourse(id);
+            Assert.IsNull(this.proxy.getCourse(id));
         }
 
         [TestMethod]
@@ -320,6 +322,18 @@ namespace StudentEnrollment.Proxy.Tests
             updateSection = this.proxy.getSection(1);
             Assert.AreEqual(section, updateSection);
         }
+
+        [TestMethod]
+        [TestCategory("APIProxy")]
+        public void deleteCourseTest()
+        {
+            Course course = new Course(1, "TESTCOURSE", "TEST COURSE", 4, 4, true);
+            int id = this.proxy.createCourse(course);
+            Assert.AreNotEqual(id, -1);
+            this.proxy.deleteCourse(id);
+            Assert.IsNull(this.proxy.getCourse(id));
+        }
+
 
         [Ignore]
         [TestMethod]

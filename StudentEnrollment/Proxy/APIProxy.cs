@@ -223,7 +223,7 @@ namespace StudentEnrollment.Proxy
             throw new NotImplementedException();
         }
 
-        public void createCourse(Course course)
+        public int createCourse(Course course)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("courseCode", course.CourseCode);
@@ -231,7 +231,8 @@ namespace StudentEnrollment.Proxy
             postData.Add("credits", Convert.ToString(course.Credits));
             postData.Add("minGPA", Convert.ToString(course.MinGPA));
             String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postCourse", API_URL), postData).Result;
-            // TODO: See what comes back from JSON
+            int id = parseID(json);
+            return id;
         }
 
         public void createSection(Section section)
@@ -376,6 +377,30 @@ namespace StudentEnrollment.Proxy
             return false;
         }
 
+        public bool deleteCourse(int courseID)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("id", Convert.ToString(courseID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=deleteCourse", API_URL), postData).Result;
+            if (json != null && json == "Success") return true;
+            return false;
+        }
+
         #endregion
+
+        private int parseID(string json)
+        {
+            int id;
+            try
+            {
+                dynamic contents = JsonConvert.DeserializeObject(json);
+                id = contents.ID;
+            }
+            catch(Exception e)
+            {
+                id = -1;
+            }
+            return id;
+        }
     }
 }

@@ -17,9 +17,9 @@ namespace StudentEnrollment.Controllers
             if (Session["user"] == null) return false; else return true;
         }
 
-        private bool isAdmin()
+        private bool hasPermission(string role)
         {
-            if (Session["user"] != null && Session["role"] != null && String.Equals("admin", (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
+            if (Session["user"] != null && Session["role"] != null && String.Equals(role, (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -48,27 +48,41 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditCourse(Course model)
+        public ActionResult SubmitCourse(Course model, string operation)
         {
-            if (ModelState.IsValid)
-            {
-                proxy.updateCourse(model);//p.createCourse(model);
-                return RedirectToAction("CourseDetail", new { courseId = model.ID });
-            } else
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction("CourseList");
             }
+
+            if (operation.Equals("delete"))
+            {
+                return RemoveCourse(model);
+            }
+            else if (operation.Equals("save"))
+            {
+                return EditCourse(model);
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
-        [HttpPost]
-        public ActionResult RemoveCourse(int courseID)
+        private ActionResult EditCourse(Course model)
         {
-            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "CourseDetail", redirectController = "Course", courseID = courseID });
-            if (!isAdmin()) return RedirectToAction("AccessDenied", "Home");
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "CourseDetail", redirectController = "Course", courseID = model.ID });
+            if (!(hasPermission("admin") || hasPermission("professor"))) return RedirectToAction("AccessDenied", "Home");
+            proxy.updateCourse(model);
+            return RedirectToAction("CourseDetail", new { courseId = model.ID });
+        }
 
-            //proxy.deleteCourse(courseID);
-            // Check?
-            return CourseList();
+        private ActionResult RemoveCourse(Course model)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "CourseDetail", redirectController = "Course", courseID = model.ID });
+            if (!hasPermission("admin")) return RedirectToAction("AccessDenied", "Home");
+            bool success = proxy.deleteCourse(model.ID);
+            return RedirectToAction("CourseList");
         }
     }
 }
