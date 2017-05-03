@@ -12,7 +12,7 @@ namespace StudentEnrollment.Models
     {
         public static Model createModelFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             Model model = null;
             switch (modelType)
@@ -20,6 +20,7 @@ namespace StudentEnrollment.Models
                 case "student": model = createStudent(json); break;
                 case "instructor": model = createInstructor(json); break;
                 case "admin": model = createAdmin(json); break;
+                case "user": model = createUser(json); break;
                 case "course": model = createCourse(json); break;
                 case "section": model = createSection(json); break;
                 case "book": model = createBook(json); break;
@@ -31,7 +32,7 @@ namespace StudentEnrollment.Models
 
         public static Model[] createModelArrayFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             Model[] models = null;
             switch (modelType)
@@ -45,7 +46,7 @@ namespace StudentEnrollment.Models
 
         public static String[] createIDListFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             String[] idList = null;
             switch (modelType)
@@ -164,6 +165,20 @@ namespace StudentEnrollment.Models
             return new Admin(id, username, email, firstName, lastName);
         }
 
+        private static User createUser(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            int id = contents.ID;
+            string firstName = contents.FIRSTNAME;
+            string lastName = contents.LASTNAME;
+            String username = contents.USERNAME;
+            String email = contents.EMAIL;
+            String role = contents.ROLE;
+            User user = new User(id, username, email, firstName, lastName);
+            user.Role = role;
+            return user;
+        }
+
         private static Course createCourse(String json)
         {
             dynamic contents = null;
@@ -231,8 +246,8 @@ namespace StudentEnrollment.Models
             DateTime endDate =  DateTime.Now.AddDays(1.0);
             try
             {
-                startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
-                endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
+                startDate = Convert.ToDateTime(String.Format("{0}-{1}-{2} 00:00:00.000", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
+                endDate = Convert.ToDateTime(String.Format("{0}-{1}-{2} 00:00:00.000", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
             }
             catch(Exception e)
             {

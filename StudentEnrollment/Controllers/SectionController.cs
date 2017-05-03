@@ -6,29 +6,88 @@ using StudentEnrollment.Proxy;
 using StudentEnrollment.Models;
 using System.Web.Mvc;
 
+
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentEnrollment.Controllers
 {
     public class SectionController : Controller
     {
+        private APIProxy proxy = new APIProxy();
+
+        private bool loggedIn()
+        {
+            if (Session["user"] == null) return false; else return true;
+        }
+
+        private bool checkPermission(string role)
+        {
+            if (Session["user"] != null && Session["role"] != null && String.Equals(role, (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return false;
+        }
+
         [HttpGet]
         public ActionResult SectionList(int courseID)
         {
             IProxy p = new APIProxy();
-            ViewData["Title"] = (p.getCourse(courseID)).Name;
-            List<Student> none = new List<Student> { };
-            int[] na = new int[] { };
-            Term t1 = new Term(1, "Spring-17", DateTime.Now, DateTime.Now);
-            Instructor i1 = new Instructor(1, "gj888", "gj888@rit.edu", "George", "Johnson");
-            Course c1 = new Course(courseID, "CS-420", "Data Mining", 3, 3, false);
-            Location l1 = new Location(1, 2, 3, 4);
+            ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
+            return PartialView(p.getCourseSections(p.getCourse(courseID)));
+        }
 
-            Section s1 = new Section(1, 30, 1, 1, courseID, 1, true);
+        [HttpGet]
+        public ActionResult Detail(int sectionID)
+        {
 
-            //ViewData["Course"] = p.getCourse(courseID);
-            //ViewData["Sections"] = p.getCourseSections(p.getCourse(courseID));
-            return View(p.getCourseSections(p.getCourse(courseID)));
+            ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
+
+            Section section = proxy.getSection(sectionID);
+            Course c = proxy.getCourse(section.CourseID);
+            Instructor instructor = proxy.getInstructor(section.InstructorID);
+
+            int numStudents = proxy.getSectionStudents(section).Length;
+            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
+
+            ViewData["Enrolled"] = numStudents;
+
+            if (numStudents >= section.MaxStudents)
+            {
+                ViewData["Enroll"] = "Waitlist";
+            }
+            else
+            {
+                ViewData["Enroll"] = "Enroll";
+            }
+            ViewData["Instructor"] = instructor;
+            ViewData["Course"] = c;
+            ViewData["CourseCode"] = c.CourseCode;
+            ViewData["CourseName"] = c.Name;
+            ViewData["Waitlist"] = waitlistStudents;
+            return View(section);
+        }
+
+        [HttpPost]
+        public ActionResult Enroll(int sectionID)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
+            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
+            Section section = this.proxy.getSection(sectionID);
+            Student student = this.proxy.getStudent(4); // TODO: Figure this out
+            this.proxy.enrollStudent(student, section);
+            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
+        }
+
+        [HttpPost]
+        public ActionResult Waitlist(int sectionID)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
+            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
+            Section section = this.proxy.getSection(sectionID);
+            Student student = this.proxy.getStudent(4); // TODO: Figure this out
+            this.proxy.waitlistStudent(student, section);
+            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿@model StudentEnrollment.Models.Term
+
+@{
+    ViewBag.Title = "CreateTerm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CreateTerm</h2>
+
+
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Term</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <form action="/Admin/CreateTermSubmit" method="post">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label for="start-date">Term Code</label>
+                <input type="text" name="code" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label for="start-date">Start Date</label>
+                <input id="start-date" name="startDate" type="text" placeholder="YYYY/MM/DD" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label for="end-date">End Date</label>
+                <input id="end-date" type="text" name="endDate" value="" placeholder="YYYY/MM/DD" />
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" name="submit" value="Submit" class="btn btn-default" />
+        </div>
+
+    </form>
+</div>
+<script>
+    $('[placeholder]').on('focus', function () {
+        if ($(this).val() == $(this).attr('placeholder')) {
+            $(this).val('');
+            $(this).css('color', '#000000');
+        }
+    });
+    $('[placeholder]').on('blur', function () {
+        if ($(this).val() == '') {
+            $(this).css('color', '#A9A9A9');
+            $(this).val($(this).attr('placeholder'));
+        }
+    }).trigger('blur');
+</script>
+
+<div>
+    @Html.ActionLink("Cancel Creation - Return Home", "Index")
+</div>

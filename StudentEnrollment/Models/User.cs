@@ -2,7 +2,7 @@
 
 namespace StudentEnrollment.Models
 {
-    public abstract class User : Model
+    public class User : Model
     {
         public User(int id, String username, String email, String firstName, String lastName)
         {
@@ -14,9 +14,10 @@ namespace StudentEnrollment.Models
         }
         public int ID { get; }
         public String Username { get; }
-        //public String Password { get; set; }
         public String Email { get; }
         public String FirstName { get; }
         public String LastName { get; } 
+        public String Role { get; set; }
     }
+
 }

@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Login</h2>
+<h4>@ViewData["error"]</h4>
+<form id="loginForm" action="/Login/Submit" method="post">
+    <div class="form-group">
+        Username: <input type="text" name="username" required> <br>
+        Password: <input type="password" name="password" required> <br>
+        <input data-val="true" id="redirectAction" name="redirectAction" type="hidden"  value="@ViewData["redirectAction"]" />
+        <input data-val="true" id="redirectController" name="redirectController" type="hidden" value="@ViewData["redirectController"]" />
+    </div>
+    <button type="submit" id="submit" value="Submit" class="btn btn-default">Login</button>
+</form>
+
+
