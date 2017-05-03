@@ -183,7 +183,7 @@ namespace StudentEnrollment.Controllers
         {
             APIProxy p = new APIProxy();
             string quote = p.getQuote();
-            ViewData["Quote"] = quote.Replace("<p>","").Replace("</p>","");
+            ViewData["Quote"] = System.Web.HttpUtility.HtmlDecode(quote.Replace("<p>","").Replace("</p>",""));
             return PartialView();
         }
 
