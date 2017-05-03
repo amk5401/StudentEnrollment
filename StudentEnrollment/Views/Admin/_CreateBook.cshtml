@@ -1,0 +1,28 @@
+﻿@model StudentEnrollment.Models.Book
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Create Book</h3>
+        </div>
+        <div>
+            @using (Html.BeginForm("CreateBook", "Admin", FormMethod.Post, new { @class = "" }))
+            {
+                @Html.ValidationSummary(true)
+                <div class="modal-body col-md-12">
+                    <div class="form-group col-md-12">
+                        <label class="col-xs-3" for="ISBN">ISBN:</label>
+                        @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "col-xs-6 attribute" } })
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="col-xs-3" for="Title">Title:</label>
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "col-xs-6 attribute" } })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-inverse" type="submit">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

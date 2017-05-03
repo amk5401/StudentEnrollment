@@ -97,6 +97,22 @@ namespace StudentEnrollment.Controllers
             ViewData["message"] = message;
             return View();
         }
+
+        [HttpGet] // this action result returns the partial containing the modal
+        public ActionResult CreateBook()
+        {
+            var book = new Book();
+            return PartialView("_CreateBook", book);
+        }
+
+        [HttpPost]
+        public ActionResult CreateBook(Book model)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Admin" });
+            if (!checkPermission()) return RedirectToAction("AccessDenied", "Home");
+            proxy.createBook(model);
+            return RedirectToAction("FormResponse", "Admin", new { message = "Book Creation Success" });
+        }
     }
 }
  
