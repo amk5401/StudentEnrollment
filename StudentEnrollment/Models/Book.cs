@@ -7,6 +7,7 @@ namespace StudentEnrollment.Models
 {
     public class Book : Model
     {
+        public Book() { }
         public Book(int id, int isbn, String title)
         {
             ID = id;

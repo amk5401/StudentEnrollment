@@ -60,10 +60,28 @@
             </div>
             
                     
-        </form>    
+        </form>
+        <button type="button" class="btn btn-primary create-book">Create Book</button>
+        <div class="modal fade in" id="createBook">
+            <div id="create-book-container"></div>
+        </div>
+            
     </div>
 
 
 <div>
     @Html.ActionLink("Cancel Creation - Return Home", "Index")
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#createBook').modal('hide');
+        $('.create-book').click(function () {
+            var url = "/Admin/CreateBook"; // the url to the controller
+            $.get(url, function (data) {           
+                $('#create-book-container').html(data);
+                //$('#create-book').modal('show');
+                $('#createBook').modal('show');
+            });
+        });
+     });
+</script>
