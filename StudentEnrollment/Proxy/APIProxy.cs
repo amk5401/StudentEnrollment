@@ -39,6 +39,13 @@ namespace StudentEnrollment.Proxy
             }
         }
 
+        public string getQuote()
+        {
+            string json = APIProxy.GetFromAPI("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1").Result;
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            return contents.First.content;
+        }
+
 
         public User login(string username, string password)
         {
