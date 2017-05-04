@@ -216,7 +216,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void createSectionAPITest()
         {
-            Section section = new Section(11, 1, 1, 1, 1, 1, false);
+            Assert.Fail();
+            Section section = new Section(11, 1, 1, 1, 1, 1, false); // Properly check it was created to pass
             this.proxy.createSection(section);
         }
 
@@ -240,8 +241,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void createBookAPITest()
         {
-            Book book = new Book(11, 11111111, "Test Book");
-            this.proxy.createBook(book);
+            Book book = new Book(100000, "Test Book", 555, "http://www.rd.com/wp-content/uploads/sites/2/2016/04/01-cat-wants-to-tell-you-laptop.jpg", 5051.000, true, 5);
+            this.proxy.createBook(book, "Me", "MyselfAndI", "Addison");
         }
 
         
