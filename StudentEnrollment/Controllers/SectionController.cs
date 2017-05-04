@@ -32,9 +32,16 @@ namespace StudentEnrollment.Controllers
         [HttpGet]
         public ActionResult SectionList(int courseID)
         {
-            IProxy p = new APIProxy();
-            ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
-            return PartialView(p.getCourseSections(p.getCourse(courseID)));
+            ViewData["Title"] = "Sections of " + (proxy.getCourse(courseID)).Name;
+            return PartialView(proxy.getCourseSections(proxy.getCourse(courseID)));
+        }
+
+        [HttpGet]
+        public ActionResult Create(int courseID)
+        {
+            Course course = proxy.getCourse(courseID);
+            if (course != null) return View(course);
+            else return RedirectToAction("Home", "Index");
         }
 
         [HttpGet]
@@ -66,6 +73,15 @@ namespace StudentEnrollment.Controllers
             ViewData["CourseName"] = c.Name;
             ViewData["Waitlist"] = waitlistStudents;
             return View(section);
+        }
+
+        [HttpPost]
+        public ActionResult SubmitSection(Section section)
+        {
+            proxy.createSection(section);
+            Course course = proxy.getCourse(section.CourseID);
+            if (course != null) return View(course);
+            else return RedirectToAction("Home", "Index");
         }
 
         [HttpPost]

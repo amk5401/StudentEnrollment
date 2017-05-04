@@ -110,7 +110,7 @@ namespace StudentEnrollment.Controllers
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Admin" });
             if (!checkPermission()) return RedirectToAction("AccessDenied", "Home");
-            proxy.createBook(model);
+            //proxy.createBook(model);
             return RedirectToAction("FormResponse", "Admin", new { message = "Book Creation Success" });
         }
     }
