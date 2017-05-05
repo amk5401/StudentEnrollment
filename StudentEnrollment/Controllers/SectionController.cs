@@ -67,6 +67,7 @@ namespace StudentEnrollment.Controllers
             Student student = this.proxy.getStudent(user.ID);
             ViewData["Enrolled"] = numStudents;
             if (students.Contains(student)){
+
                 ViewData["Enroll"] = "Already Enrolled";
             }
             else {
