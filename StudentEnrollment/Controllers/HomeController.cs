@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;    
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -177,6 +177,14 @@ namespace StudentEnrollment.Controllers
         public ActionResult Error()
         {
             return View();
+        }
+
+        public ActionResult QOD()
+        {
+            APIProxy p = new APIProxy();
+            string quote = p.getQuote();
+            ViewData["Quote"] = System.Web.HttpUtility.HtmlDecode(quote.Replace("<p>","").Replace("</p>",""));
+            return PartialView();
         }
 
         public ActionResult AccessDenied()

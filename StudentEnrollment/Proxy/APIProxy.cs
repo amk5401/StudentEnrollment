@@ -39,6 +39,13 @@ namespace StudentEnrollment.Proxy
             }
         }
 
+        public string getQuote()
+        {
+            string json = APIProxy.GetFromAPI("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1").Result;
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            return contents.First.content;
+        }
+
 
         public User login(string username, string password)
         {
@@ -211,9 +218,19 @@ namespace StudentEnrollment.Proxy
 
         #region Creation Methods
         //Methods for adding data to the database
-        public void createBook(Book book) // TODO: Waiting on the bookstore team for parameters
+        public void createBook(Book book, String authorFirstName, String authorLastName, String publisher) 
         {
-            throw new NotImplementedException();
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("publisher_name", publisher);
+            postData.Add("isbn", Convert.ToString(book.ISBN));
+            postData.Add("f_name", authorFirstName);
+            postData.Add("l_name", authorLastName);
+            postData.Add("title", book.Title);
+            postData.Add("price", Convert.ToString(book.Price));
+            postData.Add("thumbnail_url", book.ThumbnailURL);
+            postData.Add("available", book.Availability ? "true" : "false");
+            postData.Add("count", Convert.ToString(book.Count));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=book_store&function=createBook", API_URL), postData).Result;
         }
 
         public void createCourse(Course course)
