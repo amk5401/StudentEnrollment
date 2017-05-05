@@ -55,7 +55,7 @@ namespace StudentEnrollment.Proxy
         //Methods for Retreiving data from API
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdmin&adminID={1}", API_URL, ID)).Result;
             Admin admin = (Admin)ModelFactory.createModelFromJson("admin", json);
             return admin;
         }

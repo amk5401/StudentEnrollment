@@ -15,6 +15,8 @@ namespace StudentEnrollment.Controllers
     {
         private APIProxy proxy = new APIProxy();
 
+
+
         private bool loggedIn()
         {
             if (Session["user"] == null) return false; else return true;
@@ -32,6 +34,7 @@ namespace StudentEnrollment.Controllers
         [HttpGet]
         public ActionResult SectionList(int courseID)
         {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Section" });
             IProxy p = new APIProxy();
             ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
             return PartialView(p.getCourseSections(p.getCourse(courseID)));
@@ -46,19 +49,25 @@ namespace StudentEnrollment.Controllers
             Section section = proxy.getSection(sectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
-
-            int numStudents = proxy.getSectionStudents(section).Length;
+            Student[] students = proxy.getSectionStudents(section);
+            int numStudents = students.Length;
+            
             int waitlistStudents = proxy.getSectionWaitlist(section).Length;
-
+            User user = (User)Session["user"];
+            Student student = this.proxy.getStudent(user.ID);
             ViewData["Enrolled"] = numStudents;
-
-            if (numStudents >= section.MaxStudents)
-            {
-                ViewData["Enroll"] = "Waitlist";
+            if (students.Contains(student){
+                ViewData["Enroll"] = "Already Enrolled";
             }
-            else
-            {
-                ViewData["Enroll"] = "Enroll";
+            else {
+                if (numStudents >= section.MaxStudents)
+                {
+                    ViewData["Enroll"] = "Waitlist";
+                }
+                else
+                {
+                    ViewData["Enroll"] = "Enroll";
+                }
             }
             ViewData["Instructor"] = instructor;
             ViewData["Course"] = c;
@@ -74,7 +83,9 @@ namespace StudentEnrollment.Controllers
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
             if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
             Section section = this.proxy.getSection(sectionID);
-            Student student = this.proxy.getStudent(4); // TODO: Figure this out
+            User user = (User)Session["user"];
+
+            Student student = this.proxy.getStudent(user.ID); // TODO: Figure this out
             this.proxy.enrollStudent(student, section);
             return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
         }

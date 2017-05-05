@@ -29,12 +29,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void APIProxyLoginTest()
         {
-            User user = this.proxy.login("mars", "hi");
-            Assert.IsNotNull(user);
-            Assert.AreEqual(user.FirstName, "mars");
-            Assert.AreEqual(user.LastName, "ballantyne");
-            Assert.AreEqual(user.Role, "Student");
-            Assert.AreEqual(user.Username, "mars");
+           
+            //User user = this.proxy.login("
         }
 
         [TestMethod]
@@ -47,6 +43,8 @@ namespace StudentEnrollment.Proxy.Tests
             Assert.IsNotNull(admin.ID);
             Assert.IsNotNull(admin.FirstName);
             Assert.IsNotNull(admin.LastName);
+            Assert.AreEqual(admin.FirstName, "John");
+            Assert.AreEqual(admin.LastName, "Doe");
         }
 
         [TestMethod]
@@ -254,9 +252,9 @@ namespace StudentEnrollment.Proxy.Tests
 
             this.proxy.enrollStudent(student, section);
             Section[] sections = this.proxy.getStudentSections(student);
-
-            Console.Write(sections);
-            Assert.AreEqual(sections[1].ID, section.ID);
+            Assert.IsTrue(sections.Contains(section));
+            //Console.Write(sections);
+            //Assert.AreEqual(sections[1].ID, section.ID);
         }
 
         [TestMethod]
@@ -320,13 +318,28 @@ namespace StudentEnrollment.Proxy.Tests
             updateSection = this.proxy.getSection(1);
             Assert.AreEqual(section, updateSection);
         }
+        [TestMethod]
+        [TestCategory("APIProxy")]
+        public void getSectionWaitlistAPITest()
+        {
+            Section section = this.proxy.getSection(1);
+            Student student = this.proxy.getStudent(1);
+            Student[] students = this.proxy.getSectionWaitlist(section);
+            Assert.IsNotNull(students);
+            Assert.AreEqual(student.FirstName, students[0].FirstName);
+        }
 
-        [Ignore]
+       
         [TestMethod]
         [TestCategory("APIProxy")]
         public void waitlistStudentAPITest()
         {
-            Assert.Fail();
+            Student student = this.proxy.getStudent(1);
+            Section section = this.proxy.getSection(1);
+
+            this.proxy.waitlistStudent(student, section);
+
+            Assert.IsTrue(this.proxy.getSectionWaitlist(section).Contains(student));
         }
 
         [Ignore]
