@@ -37,3 +37,10 @@ else
 {
     <p>There are currently no sections for this course.</p>
 }
+<script type="text/javascript">
+    $(function () {
+        $("table tr").click(function (e) {
+            window.location.href = "/Section/Detail?sectionID=" + $(this).attr("id");
+        });
+    });
+</script>
