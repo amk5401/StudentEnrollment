@@ -96,12 +96,12 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSection(Section section)
+        public ActionResult EditSection(Section model)
         {
             if (ModelState.IsValid)
             {
-                proxy.updateSection(section);//p.createCourse(model);
-                return RedirectToAction("Detail", new { sectionID = section.ID });
+                proxy.updateSection(model);//p.createCourse(model);
+                return RedirectToAction("Detail", new { sectionID = model.ID });
             }
 
             else

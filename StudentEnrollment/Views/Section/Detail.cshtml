@@ -17,7 +17,7 @@
     || (string)ViewData["Role"] == "Instructor" || (string)ViewData["Role"] == "instructor" 
     || (string)ViewData["Role"] == "INSTRUCTOR")
 {
-    <div class="col-md-12 course-container">
+    <div class="col-md-12 section-container">
         @using (Html.BeginForm("EditSection", "Section", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 section-details" }))
         {
             @Html.ValidationSummary(true)
@@ -49,10 +49,11 @@
                 <label class="col-xs-6" for="available">Currently Available:</label>
                 @Html.EditorFor(model => model.Availability, new { htmlAttributes = new { @class = "attribute", @disabled = "disabled" } })
             </div>
+
             @Html.HiddenFor(model => model.ID)
             <div class="form-group col-md-6 text-right">
                 <button id="editBtn" type="button" value="Edit">Edit</button>
-                <button class="attribute" type="submit" value="Submit" disabled>Save</button>
+                <button class="attribute" type="submit" value="Submit">Save</button>
                 <button id="deleteBtn" type="button" value="Delete">Delete</button>
             </div>
         }
