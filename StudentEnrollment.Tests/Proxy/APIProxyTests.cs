@@ -76,7 +76,9 @@ namespace StudentEnrollment.Proxy.Tests
                 Assert.IsNotNull(course.Credits);
                 Assert.IsNotNull(course.MinGPA);
                 Assert.IsNotNull(course.Name);
+
             }
+            Assert.AreEqual("SWEN-345", courseList[0].CourseCode);
         }
 
         [TestMethod]
@@ -262,6 +264,18 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void toggleCourseAPITest()
         {
+            Course course = this.proxy.getCourse(1);
+            bool avail = course.Availability;
+            this.proxy.toggleCourse(1);
+            if (avail)
+            {
+               
+                Assert.IsFalse(this.proxy.getCourse(1).Availability);
+            }
+            else
+            {
+                Assert.IsTrue(this.proxy.getCourse(1).Availability);
+            }
             this.proxy.toggleCourse(1);
         }
 
@@ -269,7 +283,21 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void toggleSectionAPITest()
         {
+
+            Section section = this.proxy.getSection(1);
+            bool avail = section.Availability;
             this.proxy.toggleSection(1);
+            if (avail)
+            {
+
+                Assert.IsFalse(this.proxy.getSection(1).Availability);
+            }
+            else
+            {
+                Assert.IsTrue(this.proxy.getSection(1).Availability);
+            }
+            this.proxy.toggleSection(1);
+
         }
 
         [TestMethod]
