@@ -348,12 +348,16 @@ namespace StudentEnrollment.Proxy
         }
         public void toggleCourse(int ID) // Make sure this is what is supposed to be in the API
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=toggleCourse&courseID={1}", API_URL, ID)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("courseID", Convert.ToString(ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=toggleCourse", API_URL), postData).Result;
         }
 
         public void toggleSection(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=toggleSection&sectionID={1}", API_URL, ID)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("sectionID", Convert.ToString(ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=toggleSection", API_URL), postData).Result;
         }
 
         public void waitlistStudent(Student student, Section section)
