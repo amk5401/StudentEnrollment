@@ -12,7 +12,7 @@ namespace StudentEnrollment.Models
     {
         public static Model createModelFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             Model model = null;
             switch (modelType)
@@ -32,7 +32,7 @@ namespace StudentEnrollment.Models
 
         public static Model[] createModelArrayFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             Model[] models = null;
             switch (modelType)
@@ -46,7 +46,7 @@ namespace StudentEnrollment.Models
 
         public static String[] createIDListFromJson(String modelType, String json)
         {
-            if (modelType == null || modelType.Equals("")) return null;
+            if (modelType == null || modelType.Equals("") || json == null || json.Equals("") || json.Equals("null")) return null;
 
             String[] idList = null;
             switch (modelType)
@@ -228,11 +228,15 @@ namespace StudentEnrollment.Models
         private static Book createBook(String json)
         {
             dynamic contents = JsonConvert.DeserializeObject(json);
-            int id = contents.ID;
-            int isbn = contents.ISBN;
+            int isbn = Convert.ToInt32(contents.ISBN);
             String title = contents.TITLE;
-            return new Book(id, isbn, title);
-        }
+            int publisherID = Convert.ToInt32(contents.PUBLISHER_ID);
+            double price = Convert.ToInt32(contents.PRICE);
+            String thumbnail = contents.THUMBNAIL_URL;
+            bool avail = contents.AVAILABLE == "true" ? true : false;
+            int count = Convert.ToInt32(contents.COUNT);
+            return new Book(isbn, title, publisherID, thumbnail, price, avail, count);
+    }
 
         private static Term createTerm(String json) // TODO: Verify that shady date logic
         {
@@ -246,8 +250,8 @@ namespace StudentEnrollment.Models
             DateTime endDate =  DateTime.Now.AddDays(1.0);
             try
             {
-                startDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
-                endDate = Convert.ToDateTime(String.Format("{0}/{1}/{2} 00:00:00.00", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
+                startDate = Convert.ToDateTime(String.Format("{0}-{1}-{2} 00:00:00.000", start.Substring(5, 2), start.Substring(8, 2), start.Substring(0, 4)));
+                endDate = Convert.ToDateTime(String.Format("{0}-{1}-{2} 00:00:00.000", end.Substring(5, 2), end.Substring(8, 2), end.Substring(0, 4)));
             }
             catch(Exception e)
             {

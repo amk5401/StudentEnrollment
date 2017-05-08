@@ -350,16 +350,17 @@ namespace StudentEnrollment.Proxy
             this.sectionsList.Add(section);
         }
 
-        public void createStudent(Student student)
+        public bool createStudent(Student student, string password)
         {
             this.studentsList.Add(student);
+            return true;
         }
 
         public void createTerm(Term term)
         {
             this.termsList.Add(term);
         }
-        public void createBook(Book book)
+        public void createBook(Book book, String authorFirstName, String authorLastName, String publisher)
         {
             this.booksList.Add(book);
         }
@@ -442,6 +443,15 @@ namespace StudentEnrollment.Proxy
                 studentsInSectionDict[section.ID].Remove(student.ID);
             }
         }
+        #endregion
+
+        #region Delete Methods
+
+        public bool deleteUser(int userID)
+        {
+            return true; // TODO: not sure what we wanna do here
+        }
+
         #endregion
     }
 }

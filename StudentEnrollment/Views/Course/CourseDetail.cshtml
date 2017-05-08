@@ -1,5 +1,8 @@
 ﻿@model StudentEnrollment.Models.Course
 <h2>@ViewData["Title"]</h2>
+
+@if ((string)@ViewData["Role"] == "ADMIN" || (string)@ViewData["Role"] == "Admin" || (string)@ViewData["Role"] == "admin")
+{
 <div class="col-md-12 course-container">
     @using (Html.BeginForm("EditCourse", "Course", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 course-details" }))
     {
@@ -9,25 +12,25 @@
             @Html.EditorFor(model => model.CourseCode, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
             <!--<input class="col-xs-6" type="text" id="courseCode" placeholder=@Model.CourseCode disabled /><br />-->
         </div>
- 
+
         <div class="form-group col-md-6">
             <label class="col-xs-6" for="name">Name:</label>
             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
             <!--<input class="col-xs-6" type="text" id="name" placeholder=@Model.Name disabled /><br />-->
         </div>
-       
+
         <div class="form-group col-md-6">
             <label class="col-xs-6" for="credits">Credits:</label>
             @Html.EditorFor(model => model.Credits, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
             <!--<input class="col-xs-6" type="text" id="credits" placeholder=@Model.Credits disabled /><br />-->
         </div>
-       
+
         <div class="form-group col-md-6">
             <label class="col-xs-6" for="minGPA">MinGPA:</label>
             @Html.EditorFor(model => model.MinGPA, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
             <!--<input class="col-xs-6" type="text" id="minGPA" placeholder=@Model.MinGPA disabled /><br />-->
         </div>
-  
+
         <div class="form-group col-md-6">
             <label class="col-xs-6" for="available">Currently Available:</label>
             @Html.EditorFor(model => model.Availability, new { htmlAttributes = new { @class = "attribute", @disabled = "disabled" } })
@@ -36,13 +39,46 @@
         <div class="form-group col-md-6 text-right">
             <button id="editBtn" type="button" value="Edit">Edit</button>
             <button class="attribute" type="submit" value="Submit" disabled>Save</button>
+            <button id="deleteBtn" type="button" value="Delete">Delete</button>
         </div>
     }
 </div>
+
+}
+else
+{
+<div class="col-md-12 course-container">
+
+        <div class="form-group col-md-6">
+            <label class="col-xs-6" for="courseCode">Course Code:</label>
+            @Model.CourseCode
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="col-xs-6" for="name">Name:</label>
+            @Model.Name
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="col-xs-6" for="credits">Credits:</label>
+            @Model.Credits
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="col-xs-6" for="minGPA">MinGPA:</label>
+            @Model.MinGPA
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="col-xs-6" for="available">Currently Available:</label>
+            @Model.Availability
+        </div>
+</div>
+}
 <div class="col-md-12">
     @Html.Action("SectionList", "Section", @Model.ID)
 </div>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
 <script type="text/javascript">
     $(function () {
         $("#editBtn").click(function (e) {
@@ -50,6 +86,12 @@
             for (i = 0; i < attrs.length; i++) {
                 attrs[i].removeAttribute("disabled");
             }
+        });
+        $("#deleteBtn").click(function (e) {
+            xhr.open("POST", "/Course/RemoveCourse", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.send({"courseID": @Model.ID});
+
         });
     });
 </script>

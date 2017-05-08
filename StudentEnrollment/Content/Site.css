@@ -34,3 +34,7 @@ textarea {
     -moz-border-radius: 15px; 
     border-radius: 15px;
 }
+
+.attribute-input {
+    float: none;
+}

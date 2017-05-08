@@ -11,6 +11,7 @@ namespace StudentEnrollment.Models
             : base(id, username, email, firstName, lastName){
             YearLevel = yearLevel;
             GPA = gpa;
+            this.Role = "Student";
         }
         public int YearLevel { get; set; }
         public float GPA { get; set; }

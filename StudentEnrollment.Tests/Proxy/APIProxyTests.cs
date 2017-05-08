@@ -16,7 +16,7 @@ namespace StudentEnrollment.Proxy.Tests
         public APIProxyTests()
         {
             this.proxy = new APIProxy();
-        }
+}
 
         [TestMethod]
         [TestCategory("APIProxy")]
@@ -29,12 +29,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void APIProxyLoginTest()
         {
-            User user = proxy.login("huntercaskey", "pass1234");
-            Assert.IsNotNull(user);
-            Assert.AreEqual(user.FirstName, "Hunter");
-            Assert.AreEqual(user.LastName, "Caskey");
-            Assert.AreEqual(user.Role, "Admin");
-            Assert.AreEqual(user.Username, "huntercaskey");
+           
+            //User user = this.proxy.login("
         }
 
         [TestMethod]
@@ -47,6 +43,8 @@ namespace StudentEnrollment.Proxy.Tests
             Assert.IsNotNull(admin.ID);
             Assert.IsNotNull(admin.FirstName);
             Assert.IsNotNull(admin.LastName);
+            Assert.AreEqual(admin.FirstName, "John");
+            Assert.AreEqual(admin.LastName, "Doe");
         }
 
         [TestMethod]
@@ -216,7 +214,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void createSectionAPITest()
         {
-            Section section = new Section(11, 1, 1, 1, 1, 1, false);
+            Assert.Fail();
+            Section section = new Section(11, 1, 1, 1, 1, 1, false); // Properly check it was created to pass
             this.proxy.createSection(section);
         }
 
@@ -225,7 +224,7 @@ namespace StudentEnrollment.Proxy.Tests
         public void createStudentAPITest()
         {
             Student student = new Student(11, "username", "email", "firstName", "lastName", 1, 1.0f);
-            this.proxy.createStudent(student);
+            this.proxy.createStudent(student, "testpassword");
         }
 
         [TestMethod]
@@ -240,16 +239,23 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void createBookAPITest()
         {
-            Book book = new Book(11, 11111111, "Test Book");
-            this.proxy.createBook(book);
+            Book book = new Book(100000, "Test Book", 555, "http://www.rd.com/wp-content/uploads/sites/2/2016/04/01-cat-wants-to-tell-you-laptop.jpg", 5051.000, true, 5);
+            this.proxy.createBook(book, "Me", "MyselfAndI", "Addison");
         }
 
-        [Ignore]
+        
         [TestMethod]
         [TestCategory("APIProxy")]
         public void enrollStudentAPITest()
         {
-            Assert.Fail();
+            Student student = this.proxy.getStudent(4);
+            Section section = this.proxy.getSection(1);
+
+            this.proxy.enrollStudent(student, section);
+            Section[] sections = this.proxy.getStudentSections(student);
+            Assert.IsTrue(sections.Contains(section));
+            //Console.Write(sections);
+            //Assert.AreEqual(sections[1].ID, section.ID);
         }
 
         [TestMethod]
@@ -313,13 +319,28 @@ namespace StudentEnrollment.Proxy.Tests
             updateSection = this.proxy.getSection(1);
             Assert.AreEqual(section, updateSection);
         }
+        [TestMethod]
+        [TestCategory("APIProxy")]
+        public void getSectionWaitlistAPITest()
+        {
+            Section section = this.proxy.getSection(1);
+            Student student = this.proxy.getStudent(1);
+            Student[] students = this.proxy.getSectionWaitlist(section);
+            Assert.IsNotNull(students);
+            Assert.AreEqual(student.FirstName, students[0].FirstName);
+        }
 
-        [Ignore]
+       
         [TestMethod]
         [TestCategory("APIProxy")]
         public void waitlistStudentAPITest()
         {
-            Assert.Fail();
+            Student student = this.proxy.getStudent(1);
+            Section section = this.proxy.getSection(1);
+
+            this.proxy.waitlistStudent(student, section);
+
+            Assert.IsTrue(this.proxy.getSectionWaitlist(section).Contains(student));
         }
 
         [Ignore]

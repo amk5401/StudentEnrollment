@@ -39,6 +39,13 @@ namespace StudentEnrollment.Proxy
             }
         }
 
+        public string getQuote()
+        {
+            string json = APIProxy.GetFromAPI("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1").Result;
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            return contents.First.content;
+        }
+
 
         public User login(string username, string password)
         {
@@ -55,7 +62,7 @@ namespace StudentEnrollment.Proxy
         //Methods for Retreiving data from API
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdmin&adminID={1}", API_URL, ID)).Result;
             Admin admin = (Admin)ModelFactory.createModelFromJson("admin", json);
             return admin;
         }
@@ -148,6 +155,19 @@ namespace StudentEnrollment.Proxy
             }
             return students.ToArray();
         }
+        public Student[] getSectionWaitlist(Section section)
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getSectionWaitlist&sectionID={1}", 
+                API_URL, section.ID)).Result;
+            String[] studentIDs = ModelFactory.createIDListFromJson("student", json);
+            List<Student> students = new List<Student>();
+            foreach (String studentID in studentIDs)
+            {
+                students.Add(getStudent(Convert.ToInt32(studentID)));
+            }
+
+            return students.ToArray();
+        }
 
         public Course[] getCoursePrereqs(Course course)
         {
@@ -198,9 +218,19 @@ namespace StudentEnrollment.Proxy
 
         #region Creation Methods
         //Methods for adding data to the database
-        public void createBook(Book book) // TODO: Waiting on the bookstore team for parameters
+        public void createBook(Book book, String authorFirstName, String authorLastName, String publisher) 
         {
-            throw new NotImplementedException();
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("publisher_name", publisher);
+            postData.Add("isbn", Convert.ToString(book.ISBN));
+            postData.Add("f_name", authorFirstName);
+            postData.Add("l_name", authorLastName);
+            postData.Add("title", book.Title);
+            postData.Add("price", Convert.ToString(book.Price));
+            postData.Add("thumbnail_url", book.ThumbnailURL);
+            postData.Add("available", book.Availability ? "true" : "false");
+            postData.Add("count", Convert.ToString(book.Count));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=book_store&function=createBook", API_URL), postData).Result;
         }
 
         public void createCourse(Course course)
@@ -226,25 +256,46 @@ namespace StudentEnrollment.Proxy
             // TODO: See what comes back from JSON
         }
 
-        /**
-         * createStudent assumes that the User object attached to the Student object has already been registered within the database.
-         * */
-        public void createStudent(Student student)
+        public bool createStudent(Student student, string password)
         {
+            // Create the user 
             Dictionary<String, String> postData = new Dictionary<string, string>();
-            postData.Add("userID", Convert.ToString(student.ID));
+            postData.Add("username", student.Username);
+            postData.Add("password", password);
+            postData.Add("fname", student.FirstName);
+            postData.Add("lname", student.LastName);
+            postData.Add("email", student.Email);
+            postData.Add("role", "STUDENT");
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=createUser", API_URL), postData).Result;
+
+            int studentID;
+            if (json == null || !int.TryParse(json, out studentID)) return false;
+            else studentID = int.Parse(json);
+
+            // Create the student
+            postData = new Dictionary<string, string>();
+            postData.Add("userID", Convert.ToString(studentID));
             postData.Add("yearLevel", Convert.ToString(student.YearLevel));
             postData.Add("gpa", Convert.ToString(student.GPA));
-            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postStudent", API_URL), postData).Result;
-            // TODO: See what comes back from JSON
+            json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postStudent", API_URL), postData).Result;
+
+            if (json == null || !int.TryParse(json, out studentID))
+            {
+                this.deleteUser(studentID);
+                return false;
+            }
+            return true;
+            
         }
 
         public void createTerm(Term term)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("termCode", term.Code);
-            postData.Add("startDate", (term.StartDate).ToString("YYYY-mm-dd"));
-            postData.Add("endDate", (term.EndDate).ToString("YYYY-mm-dd"));
+            string start = (term.StartDate).ToString("yyyy-MM-dd") + " 00:00:00.000";
+            string end = (term.EndDate).ToString("yyyy-MM-dd") + " 00:00:00.000";
+            postData.Add("startDate", start);
+            postData.Add("endDate", end);
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=postTerm", API_URL), postData).Result;
             // TODO: See what comes back from JSON
         }
@@ -322,6 +373,19 @@ namespace StudentEnrollment.Proxy
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=withdrawStudent", API_URL), postData).Result;
             // See what comes back from the API
         }
+        #endregion
+
+        #region Delete Methods
+
+       public bool deleteUser(int userID)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("userID", Convert.ToString(userID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=deleteUser", API_URL), postData).Result;
+            if (json != null && json == "Success") return true;
+            return false;
+        }
+
         #endregion
     }
 }
