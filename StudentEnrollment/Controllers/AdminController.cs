@@ -102,7 +102,7 @@ namespace StudentEnrollment.Controllers
         public ActionResult CreateBook()
         {
             var book = new Book();
-            return PartialView("_CreateBook", book);
+            return View("CreateBook", book);
         }
 
         [HttpPost]
@@ -110,7 +110,7 @@ namespace StudentEnrollment.Controllers
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Admin" });
             if (!checkPermission()) return RedirectToAction("AccessDenied", "Home");
-            //proxy.createBook(model);
+            proxy.createBook(model, "test", "test", "test");
             return RedirectToAction("FormResponse", "Admin", new { message = "Book Creation Success" });
         }
     }
