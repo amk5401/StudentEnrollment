@@ -12,6 +12,56 @@
     }*@
 <h2>@course.Name</h2>
 
+
+@if ((string)ViewData["Role"] == "ADMIN" || (string)@ViewData["Role"] == "Admin" 
+    || (string)ViewData["Role"] == "admin"
+    || (string)ViewData["Role"] == "Instructor" || (string)ViewData["Role"] == "instructor" 
+    || (string)ViewData["Role"] == "INSTRUCTOR")
+{
+    <div class="col-md-12 section-container">
+        @using (Html.BeginForm("EditSection", "Section", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 section-details" }))
+        {
+            @Html.ValidationSummary(true)
+            <div class="form-group col-md-6">
+                <label class="col-xs-6" for="instructor">Instructor Last Name:</label>
+                @Html.EditorFor(model => professor.LastName, new { htmlAttributes = new { @class = "col-xs-6 attribute" } })
+                <!--<input class="col-xs-6" type="text" id="courseCode" placeholder=@professor.LastName disabled /><br />-->
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="col-xs-6" for="location">Location:</label>
+                @Html.EditorFor(model => model.LocationID, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
+                <!--<input class="col-xs-6" type="text" id="name" placeholder=@Model.LocationID disabled /><br />-->
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="col-xs-6" for="credits">Max Students:</label>
+                @Html.EditorFor(model => model.MaxStudents, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
+                <!--<input class="col-xs-6" type="text" id="credits" placeholder=@Model.MaxStudents disabled /><br />-->
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="col-xs-6" for="minGPA">Waitlist Capacity:</label>
+                @Html.EditorFor(model => model.MaxStudents, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
+                <!--<input class="col-xs-6" type="text" id="minGPA" placeholder=@Model.MaxStudents disabled /><br />-->
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="col-xs-6" for="available">Currently Available:</label>
+                @Html.EditorFor(model => model.Availability, new { htmlAttributes = new { @class = "attribute", @disabled = "disabled" } })
+            </div>
+
+            @Html.HiddenFor(model => model.ID)
+            <div class="form-group col-md-6 text-right">
+                <button id="editBtn" type="button" value="Edit">Edit</button>
+                <button class="attribute" type="submit" value="Submit">Save</button>
+                <button id="deleteBtn" type="button" value="Delete">Delete</button>
+            </div>
+        }
+    </div>
+
+}
+
 <div class="section-container col-md-12 " style="cursor:pointer;">
     <div class="row justify-content-center">
         <div class="form-group col-md-6">
