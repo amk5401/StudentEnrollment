@@ -38,7 +38,7 @@ namespace StudentEnrollment.Controllers
         {
             if (Session["user"] == null)
             {
-                return RedirectToAction("Index", "Login", new { redirectAction = "CourseDetail", redirectController = "Course", courseID = courseID });
+                return RedirectToAction("Index", "Login", new { redirectAction = "CourseList", redirectController = "Course"});
             }
             ViewData["Title"] = "Course Detail";
             Course course = proxy.getCourse(courseID);
@@ -63,7 +63,7 @@ namespace StudentEnrollment.Controllers
         [HttpPost]
         public ActionResult RemoveCourse(int courseID)
         {
-            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "CourseDetail", redirectController = "Course", courseID = courseID });
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "CourseList", redirectController = "Course"});
             if (!isAdmin()) return RedirectToAction("AccessDenied", "Home");
 
             //proxy.deleteCourse(courseID);
