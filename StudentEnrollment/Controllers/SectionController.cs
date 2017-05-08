@@ -15,13 +15,10 @@ namespace StudentEnrollment.Controllers
     {
         private APIProxy proxy = new APIProxy();
 
-
-
         private bool loggedIn()
         {
             if (Session["user"] == null) return false; else return true;
         }
-
         private bool checkPermission(string role)
         {
             if (Session["user"] != null && Session["role"] != null && String.Equals(role, (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
@@ -55,35 +52,38 @@ namespace StudentEnrollment.Controllers
         {
 
             ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
-
+            ViewData["Role"] = Session["role"];
             Section section = proxy.getSection(sectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
             Student[] students = proxy.getSectionStudents(section);
             int numStudents = students.Length;
-            
-            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
-            User user = (User)Session["user"];
-            Student student = this.proxy.getStudent(user.ID);
             ViewData["Enrolled"] = numStudents;
-            if (students.Contains(student)){
-                ViewData["Enroll"] = "Already Enrolled";
-            }
-            else {
-                if (numStudents >= section.MaxStudents)
+
+            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
+            if (checkPermission("student") || checkPermission("Student")) {
+                User user = (User)Session["user"];
+                Student student = this.proxy.getStudent(user.ID);
+                
+                
+                    if (numStudents >= section.MaxStudents)
+                    {
+                        ViewData["Enroll"] = "Waitlist";
+                    }
+                    else
+                    {
+                        ViewData["Enroll"] = "Enroll";
+                    }
+                
+                foreach (Student s in students)
                 {
-                    ViewData["Enroll"] = "Waitlist";
-                }
-                else
-                {
-                    ViewData["Enroll"] = "Enroll";
-                }
-            }
-            foreach (Student s in students) {
-                if (s.ID == student.ID) {
-                    ViewData["Enroll"] = "Already Enrolled";
+                    if (s.ID == student.ID)
+                    {
+                        ViewData["Enroll"] = "Already Enrolled";
+                    }
                 }
             }
+            
              
                 
             
@@ -93,6 +93,21 @@ namespace StudentEnrollment.Controllers
             ViewData["CourseName"] = c.Name;
             ViewData["Waitlist"] = waitlistStudents;
             return View(section);
+        }
+
+        [HttpPost]
+        public ActionResult EditSection(Section section)
+        {
+            if (ModelState.IsValid)
+            {
+                proxy.updateSection(section);//p.createCourse(model);
+                return RedirectToAction("Detail", new { sectionID = section.ID });
+            }
+
+            else
+            {
+                return RedirectToAction("SectionList");
+            }
         }
 
         [HttpPost]
