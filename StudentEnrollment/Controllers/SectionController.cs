@@ -67,7 +67,6 @@ namespace StudentEnrollment.Controllers
             Student student = this.proxy.getStudent(user.ID);
             ViewData["Enrolled"] = numStudents;
             if (students.Contains(student)){
-
                 ViewData["Enroll"] = "Already Enrolled";
             }
             else {
@@ -80,6 +79,14 @@ namespace StudentEnrollment.Controllers
                     ViewData["Enroll"] = "Enroll";
                 }
             }
+            foreach (Student s in students) {
+                if (s.ID == student.ID) {
+                    ViewData["Enroll"] = "Already Enrolled";
+                }
+            }
+             
+                
+            
             ViewData["Instructor"] = instructor;
             ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;
