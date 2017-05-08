@@ -66,20 +66,23 @@ namespace StudentEnrollment.Controllers
             User user = (User)Session["user"];
             Student student = this.proxy.getStudent(user.ID);
             ViewData["Enrolled"] = numStudents;
-            if (students.Contains(student)){
 
-                ViewData["Enroll"] = "Already Enrolled";
+            if (numStudents >= section.MaxStudents)
+            {
+                ViewData["Enroll"] = "Waitlist";
             }
-            else {
-                if (numStudents >= section.MaxStudents)
-                {
-                    ViewData["Enroll"] = "Waitlist";
-                }
-                else
-                {
-                    ViewData["Enroll"] = "Enroll";
+            else
+            {
+                ViewData["Enroll"] = "Enroll";
+            }
+            foreach (Student s in students) {
+                if (s.ID == student.ID) {
+                    ViewData["Enroll"] = "Already Enrolled";
                 }
             }
+             
+                
+            
             ViewData["Instructor"] = instructor;
             ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;
