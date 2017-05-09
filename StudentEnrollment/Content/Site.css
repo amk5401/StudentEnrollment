@@ -34,3 +34,19 @@ textarea {
     -moz-border-radius: 15px; 
     border-radius: 15px;
 }
+
+.section-container {
+    display: inline-block;
+    margin: 0 auto;
+    float: none;
+    background-color: #f6f6f6;
+    padding-top: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.attribute-input {
+    float: none;
+}

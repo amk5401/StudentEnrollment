@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -174,6 +174,12 @@ namespace StudentEnrollment.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index", "Login");
+        }
+
         public ActionResult Error()
         {
             return View();
@@ -183,7 +189,7 @@ namespace StudentEnrollment.Controllers
         {
             APIProxy p = new APIProxy();
             string quote = p.getQuote();
-            ViewData["Quote"] = quote.Replace("<p>","").Replace("</p>","");
+            ViewData["Quote"] = System.Web.HttpUtility.HtmlDecode(quote.Replace("<p>","").Replace("</p>",""));
             return PartialView();
         }
 

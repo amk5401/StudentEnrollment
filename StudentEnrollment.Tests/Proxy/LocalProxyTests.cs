@@ -203,8 +203,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("LocalProxy")]
         public void createBookLocalTest()
         {
-            Book book = new Book(11, 11111111, "Test Book");
-            this.proxy.createBook(book);
+            //Book book = new Book(11, 11111111, "Test Book");
+            //this.proxy.createBook(book);
         }
 
         [Ignore]

@@ -332,7 +332,7 @@ namespace StudentEnrollment.Proxy
             return course.ID;
         }
 
-        public void createSection(Section section)
+        public int createSection(Section section)
         {
             /*JObject newStudent = new JObject(
                 new JProperty("ID", section.ID),
@@ -349,6 +349,7 @@ namespace StudentEnrollment.Proxy
 
             File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());*/
             this.sectionsList.Add(section);
+            return 0;
         }
 
         public bool createStudent(Student student, string password)
@@ -361,7 +362,7 @@ namespace StudentEnrollment.Proxy
         {
             this.termsList.Add(term);
         }
-        public void createBook(Book book)
+        public void createBook(Book book, String authorFirstName, String authorLastName, String publisher)
         {
             this.booksList.Add(book);
         }

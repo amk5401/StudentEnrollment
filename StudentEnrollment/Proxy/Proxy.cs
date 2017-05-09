@@ -35,10 +35,12 @@ namespace StudentEnrollment.Proxy
 
         //Creation Methods
         //Methods for adding data to the database
-        void createBook(Book book);
+        void createBook(Book book, String authorFirstName, String authorLastName, String publisher);
         void createTerm(Term term);
         void createSection(Section section);
         int createCourse(Course course);
+        int createSection(Section section);
+
         bool createStudent(Student student, string password);
 
         //Update Methods

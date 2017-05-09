@@ -39,6 +39,21 @@ namespace StudentEnrollment.Proxy
             }
         }
 
+        private int extractIDFromJson(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            int id;
+            try
+            {
+                id = contents.ID;
+            }
+            catch(Exception e)
+            {
+                id = -1;
+            }
+            return id;
+        }
+
         public string getQuote()
         {
             string json = APIProxy.GetFromAPI("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1").Result;
@@ -62,7 +77,7 @@ namespace StudentEnrollment.Proxy
         //Methods for Retreiving data from API
         public Admin getAdmin(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getAdmin&adminID={1}", API_URL, ID)).Result;
             Admin admin = (Admin)ModelFactory.createModelFromJson("admin", json);
             return admin;
         }
@@ -218,9 +233,19 @@ namespace StudentEnrollment.Proxy
 
         #region Creation Methods
         //Methods for adding data to the database
-        public void createBook(Book book) // TODO: Waiting on the bookstore team for parameters
+        public void createBook(Book book, String authorFirstName, String authorLastName, String publisher) 
         {
-            throw new NotImplementedException();
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("publisher_name", publisher);
+            postData.Add("isbn", Convert.ToString(book.ISBN));
+            postData.Add("f_name", authorFirstName);
+            postData.Add("l_name", authorLastName);
+            postData.Add("title", book.Title);
+            postData.Add("price", Convert.ToString(book.Price));
+            postData.Add("thumbnail_url", book.ThumbnailURL);
+            postData.Add("available", book.Availability ? "true" : "false");
+            postData.Add("count", Convert.ToString(book.Count));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=book_store&function=createBook", API_URL), postData).Result;
         }
 
         public int createCourse(Course course)
@@ -235,7 +260,7 @@ namespace StudentEnrollment.Proxy
             return id;
         }
 
-        public void createSection(Section section)
+        public int createSection(Section section)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("courseID", Convert.ToString(section.CourseID));
@@ -244,7 +269,8 @@ namespace StudentEnrollment.Proxy
             postData.Add("termID", Convert.ToString(section.TermID));
             postData.Add("classroomID", Convert.ToString(section.LocationID));
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=postSection", API_URL), postData).Result;
-            // TODO: See what comes back from JSON
+            int id = extractIDFromJson(json);
+            return id;
         }
 
         public bool createStudent(Student student, string password)
@@ -339,12 +365,16 @@ namespace StudentEnrollment.Proxy
         }
         public void toggleCourse(int ID) // Make sure this is what is supposed to be in the API
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=toggleCourse&courseID={1}", API_URL, ID)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("courseID", Convert.ToString(ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=toggleCourse", API_URL), postData).Result;
         }
 
         public void toggleSection(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=toggleSection&sectionID={1}", API_URL, ID)).Result;
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("sectionID", Convert.ToString(ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=toggleSection", API_URL), postData).Result;
         }
 
         public void waitlistStudent(Student student, Section section)
