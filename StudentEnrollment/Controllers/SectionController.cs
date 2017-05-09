@@ -59,7 +59,7 @@ namespace StudentEnrollment.Controllers
             Student[] students = proxy.getSectionStudents(section);
             int numStudents = students.Length;
             ViewData["Enrolled"] = numStudents;
-            ViewData["Student"] = null;
+            ViewData["Student"] = this.proxy.getStudent(1);
             int waitlistStudents = proxy.getSectionWaitlist(section).Length;
             if (checkPermission("student") || checkPermission("Student")) {
                 User user = (User)Session["user"];
@@ -135,8 +135,9 @@ namespace StudentEnrollment.Controllers
             if (checkPermission("admin"))
             {
                 Section section = this.proxy.getSection(sectionID);
-
+                
                 Student student = this.proxy.getStudent(studentID);
+                this.proxy.enrollStudent(student, section);
                 return RedirectToAction("Detail", "Section", new { sectionID = section.ID });
 
 

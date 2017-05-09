@@ -158,7 +158,7 @@
             <div class="modal-footer">
                 <form method="post" action="/Section/Enroll">
                     
-                    <input type="hidden" name="studentID" value="@student.ID" />"
+                    <input type="hidden" name="studentID" value="@student.ID" />
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
@@ -179,6 +179,7 @@
             </div>
             <div class="modal-footer">
                 <form method="post" action="/Section/Waitlist">
+                    <input type="hidden" name="studentID" value="@student.ID" />
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
@@ -200,7 +201,7 @@
             </div>
             <div class="modal-footer">
                 <form method="post" action="/Section/Waitlist">
-                    
+                    <input type="hidden" name="studentID" value="@student.ID" />
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
