@@ -1,10 +1,10 @@
-﻿@model StudentEnrollment.Models.Course
+@model StudentEnrollment.Models.Course
 <h2>@ViewData["Title"]</h2>
 
 @if ((string)@ViewData["Role"] == "ADMIN" || (string)@ViewData["Role"] == "Admin" || (string)@ViewData["Role"] == "admin")
 {
 <div class="col-md-12 course-container">
-    @using (Html.BeginForm("EditCourse", "Course", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 course-details" }))
+    @using (Html.BeginForm("SubmitCourse", "Course", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 course-details" }))
     {
         @Html.ValidationSummary(true)
         <div class="form-group col-md-6">
@@ -40,8 +40,8 @@
         @Html.HiddenFor(model => model.ID)
         <div class="form-group col-md-6 text-right">
             <button id="editBtn" type="button" value="Edit">Edit</button>
-            <button class="attribute" type="submit" value="Submit" disabled>Save</button>
-            <button id="deleteBtn" type="button" value=     "Delete">Delete</button>
+            <button class="attribute" type="submit" name="operation" value="save" disabled>Save</button>
+            <button type="submit" name="operation" value="delete">Delete</button>
         </div>
     }
 </div>
@@ -81,6 +81,14 @@ else
 <div class="col-md-12">
     @Html.Action("SectionList", "Section", @Model.ID)
 </div>
+<br>
+@if (String.Equals("admin", (string)Session["Role"], StringComparison.OrdinalIgnoreCase) || String.Equals("professor", (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
+{
+    <form action="/Course/CreateSection" method="post">
+        <input type="hidden" name="courseID" value="@Model.ID">
+        <button type="submit" value="Submit">Create a Section</button>
+    </form>
+}
 
 <script type="text/javascript">
     $(function () {
@@ -90,11 +98,15 @@ else
                 attrs[i].removeAttribute("disabled");
             }
         });
-        $("#deleteBtn").click(function (e) {
+        @*$("#deleteBtn").click(function (e) {
             xhr.open("POST", "/Course/RemoveCourse", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             xhr.send({"courseID": @Model.ID});
 
-        });
+        });*@
+
     });
+
+});
 </script>
+

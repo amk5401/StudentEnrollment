@@ -293,6 +293,7 @@
     <Content Include="Views\Shared\QOD.cshtml" />
     <Content Include="Views\Section\Detail.cshtml" />
     <Content Include="Views\Admin\CreateBook.cshtml" />
+    <Content Include="Views\Section\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

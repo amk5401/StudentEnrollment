@@ -326,12 +326,13 @@ namespace StudentEnrollment.Proxy
 
         #region Creation Methods
         //Methods for adding data to the database
-        public void createCourse(Course course)
+        public int createCourse(Course course)
         {
             this.coursesList.Add(course);
+            return course.ID;
         }
 
-        public void createSection(Section section)
+        public int createSection(Section section)
         {
             /*JObject newStudent = new JObject(
                 new JProperty("ID", section.ID),
@@ -348,6 +349,7 @@ namespace StudentEnrollment.Proxy
 
             File.WriteAllText(this.filePath + "/jsonData/students.json", newJSON.ToString());*/
             this.sectionsList.Add(section);
+            return 0;
         }
 
         public bool createStudent(Student student, string password)
