@@ -15,13 +15,10 @@ namespace StudentEnrollment.Controllers
     {
         private APIProxy proxy = new APIProxy();
 
-
-
         private bool loggedIn()
         {
             if (Session["user"] == null) return false; else return true;
         }
-
         private bool checkPermission(string role)
         {
             if (Session["user"] != null && Session["role"] != null && String.Equals(role, (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
@@ -92,6 +89,7 @@ namespace StudentEnrollment.Controllers
         public ActionResult Detail(int sectionID)
         {
             ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
+            ViewData["Role"] = Session["role"];
             Section section = proxy.getSection(sectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
@@ -126,6 +124,7 @@ namespace StudentEnrollment.Controllers
                     else
                     {
                         ViewData["Enroll"] = "Enroll";
+
                     }
                 }
 
@@ -137,6 +136,21 @@ namespace StudentEnrollment.Controllers
             ViewData["CourseName"] = c.Name;
             ViewData["Waitlist"] = waitlistStudents;
             return View(section);
+        }
+
+        [HttpPost]
+        public ActionResult EditSection(Section model)
+        {
+            if (ModelState.IsValid)
+            {
+                proxy.updateSection(model);//p.createCourse(model);
+                return RedirectToAction("Detail", new { sectionID = model.ID });
+            }
+
+            else
+            {
+                return RedirectToAction("SectionList");
+            }
         }
 
         [HttpPost]
