@@ -134,7 +134,7 @@ namespace StudentEnrollment.Controllers
             ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;
             ViewData["CourseName"] = c.Name;
-            ViewData["Waitlist"] = waitlistStudents;
+            ViewData["Waitlist"] = waitlistStudentsCount;
             return View(section);
         }
 
