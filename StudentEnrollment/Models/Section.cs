@@ -7,6 +7,10 @@ namespace StudentEnrollment.Models
 {
     public class Section : Model
     {
+        public Section()
+        {
+
+        }
         public Section(int id, int maxStudents, int termID, int instructorID, int courseID, int locationID, bool availability)
         {
             ID = id;

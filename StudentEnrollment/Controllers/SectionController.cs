@@ -59,12 +59,12 @@ namespace StudentEnrollment.Controllers
             Student[] students = proxy.getSectionStudents(section);
             int numStudents = students.Length;
             ViewData["Enrolled"] = numStudents;
-
+            ViewData["Student"] = null;
             int waitlistStudents = proxy.getSectionWaitlist(section).Length;
             if (checkPermission("student") || checkPermission("Student")) {
                 User user = (User)Session["user"];
                 Student student = this.proxy.getStudent(user.ID);
-                
+                ViewData["Student"] = student;
                 
                     if (numStudents >= section.MaxStudents)
                     {
@@ -96,12 +96,12 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSection(Section model)
+        public ActionResult EditSection(Section section)
         {
             if (ModelState.IsValid)
             {
-                proxy.updateSection(model);//p.createCourse(model);
-                return RedirectToAction("Detail", new { sectionID = model.ID });
+                proxy.updateSection(section);//p.createCourse(model);
+                return RedirectToAction("Detail", new { sectionID = section.ID });
             }
 
             else
@@ -120,17 +120,34 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpPost]
-        public ActionResult Enroll(int sectionID)
+        public ActionResult Enroll(int sectionID, int studentID)
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
-            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
-            Section section = this.proxy.getSection(sectionID);
-            User user = (User)Session["user"];
+            if (checkPermission("student"))
+            {
+                Section section = this.proxy.getSection(sectionID);
+                User user = (User)Session["user"];
 
-            Student student = this.proxy.getStudent(user.ID); // TODO: Figure this out
-            this.proxy.enrollStudent(student, section);
-            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
+                Student student = this.proxy.getStudent(user.ID);
+                this.proxy.enrollStudent(student, section);
+                return RedirectToAction("Detail", "Section", new { sectionID = section.ID });
+            }
+            if (checkPermission("admin"))
+            {
+                Section section = this.proxy.getSection(sectionID);
+
+                Student student = this.proxy.getStudent(studentID);
+                return RedirectToAction("Detail", "Section", new { sectionID = section.ID });
+
+
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            
         }
+
 
         [HttpPost]
         public ActionResult Waitlist(int sectionID)
