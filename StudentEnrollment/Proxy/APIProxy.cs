@@ -39,6 +39,21 @@ namespace StudentEnrollment.Proxy
             }
         }
 
+        private int extractIDFromJson(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            int id;
+            try
+            {
+                id = contents.ID;
+            }
+            catch(Exception e)
+            {
+                id = -1;
+            }
+            return id;
+        }
+
         public string getQuote()
         {
             string json = APIProxy.GetFromAPI("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1").Result;
@@ -244,7 +259,7 @@ namespace StudentEnrollment.Proxy
             // TODO: See what comes back from JSON
         }
 
-        public void createSection(Section section)
+        public int createSection(Section section)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("courseID", Convert.ToString(section.CourseID));
@@ -253,7 +268,8 @@ namespace StudentEnrollment.Proxy
             postData.Add("termID", Convert.ToString(section.TermID));
             postData.Add("classroomID", Convert.ToString(section.LocationID));
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=postSection", API_URL), postData).Result;
-            // TODO: See what comes back from JSON
+            int id = extractIDFromJson(json);
+            return id;
         }
 
         public bool createStudent(Student student, string password)

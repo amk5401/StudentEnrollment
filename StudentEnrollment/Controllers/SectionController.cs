@@ -39,7 +39,7 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create(int courseID)
+        public ActionResult Create(int courseID, string message = null)
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Section" });
             if (!checkPermission("professor") && !checkPermission("admin")) return RedirectToAction("AccessDenied", "Home");
@@ -54,10 +54,10 @@ namespace StudentEnrollment.Controllers
                 {
                     ViewData["instructorID"] = ((Instructor)Session["user"]).ID;
                 }
+                if (message != null && message != "") ViewData["message"] = message;
                 return View();
             }
             else return RedirectToAction("Home", "Index");
-
         }
 
         [HttpPost]
@@ -71,19 +71,20 @@ namespace StudentEnrollment.Controllers
             Term term = proxy.getTerm(termCode);
             Location location = proxy.getLocation(classroomID);
 
+            bool success = true;
             if (course != null && instructor != null && term != null && location != null)
             {
                 Section section = new Section(0, maxStudents, term.ID, instructorID, courseID, classroomID, true);
-                if (section != null)
+                int id = proxy.createSection(section);
+                if (id == -1 || proxy.getSection(id) == null)
                 {
-                    int i = 0;
-                }
+                    success = false;
+                }                
             }
-            else
-            {
-                // Error Case
-            }
-            return View();
+            else success = false;
+
+            if(success) return RedirectToAction("SectionList", "Section", new { courseID = courseID });
+            else return RedirectToAction("Create", new { courseID = courseID, message = "There was an error creating the section"});
         }
 
 
