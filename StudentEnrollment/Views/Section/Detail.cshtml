@@ -4,6 +4,7 @@
     var course = ViewData["Course"] as StudentEnrollment.Models.Course;
     var students = ViewData["Enrolled"];
     var waitlist = ViewData["Waitlist"];
+    var student = ViewData["Student"] as StudentEnrollment.Models.Student;
     //var first = professor.FirstName;
 }
 @*{
@@ -11,7 +12,6 @@
         var course = ViewData["Course"] as StudentEnrollment.Models.Course;
     }*@
 <h2>@course.Name</h2>
-
 
 @if ((string)ViewData["Role"] == "ADMIN" || (string)@ViewData["Role"] == "Admin" 
     || (string)ViewData["Role"] == "admin"
@@ -23,9 +23,9 @@
         {
             @Html.ValidationSummary(true)
             <div class="form-group col-md-6">
-                <label class="col-xs-6" for="instructor">Instructor Last Name:</label>
-                @Html.EditorFor(model => professor.LastName, new { htmlAttributes = new { @class = "col-xs-6 attribute" } })
-                <!--<input class="col-xs-6" type="text" id="courseCode" placeholder=@professor.LastName disabled /><br />-->
+                <label class="col-xs-6" for="instructor">Instructor:</label>
+                @Html.EditorFor(model => model.InstructorID, new { htmlAttributes = new { @class = "col-xs-6 attribute" } })
+                <!--<input class="col-xs-6" type="text" id="courseCode" placeholder= disabled /><br />-->
             </div>
 
             <div class="form-group col-md-6">
@@ -40,18 +40,16 @@
                 <!--<input class="col-xs-6" type="text" id="credits" placeholder=@Model.MaxStudents disabled /><br />-->
             </div>
 
-            <div class="form-group col-md-6">
-                <label class="col-xs-6" for="minGPA">Waitlist Capacity:</label>
-                @Html.EditorFor(model => model.MaxStudents, new { htmlAttributes = new { @class = "col-xs-6 attribute", @disabled = "disabled" } })
-                <!--<input class="col-xs-6" type="text" id="minGPA" placeholder=@Model.MaxStudents disabled /><br />-->
-            </div>
 
             <div class="form-group col-md-6">
                 <label class="col-xs-6" for="available">Currently Available:</label>
                 @Html.EditorFor(model => model.Availability, new { htmlAttributes = new { @class = "attribute", @disabled = "disabled" } })
             </div>
-
+           
             @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.CourseID)
+            @Html.HiddenFor(model => model.TermID)
+
             <div class="form-group col-md-6 text-right">
                 <button id="editBtn" type="button" value="Edit">Edit</button>
                 <button class="attribute" type="submit" value="Submit">Save</button>
@@ -61,6 +59,8 @@
     </div>
 
 }
+
+
 
 <div class="section-container col-md-12 " style="cursor:pointer;">
     <div class="row justify-content-center">
@@ -121,7 +121,12 @@
 </div> <!-- end section-container-->
 <br />
 
-<label for="accessServices">Check for access services: </label><input type="checkbox" id="accessServices" name="accessServices" value="accessServices" /><br /><br />
+<label for="accessServices">Check for access services:  </label><input type="checkbox" id="accessServices" name="accessServices" value="accessServices" /><br /><br />
+@if ((string)ViewData["Role"] == "ADMIN" || (string)@ViewData["Role"] == "Admin"
+                            || (string)ViewData["Role"] == "admin")
+{
+    <button type="button" data-toggle="modal" data-target="#enrollStudentModal" class="btn btn-primary">Enroll Student</button>
+}
 @{
     if ((String)ViewData["Enroll"] == "Enroll")
     {
@@ -152,6 +157,8 @@
             </div>
             <div class="modal-footer">
                 <form method="post" action="/Section/Enroll">
+                    
+                    <input type="hidden" name="studentID" value="@student.ID" />
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
@@ -172,6 +179,7 @@
             </div>
             <div class="modal-footer">
                 <form method="post" action="/Section/Waitlist">
+                    <input type="hidden" name="studentID" value="@student.ID" />
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
@@ -193,9 +201,30 @@
             </div>
             <div class="modal-footer">
                 <form method="post" action="/Section/Waitlist">
+                    <input type="hidden" name="studentID" value="@student.ID" />
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="enrollStudentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enroll Student</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/Section/Enroll">
+                    Student ID to enroll: <input type="number" name="studentID" />
+                    <input type="hidden" name="sectionID" value="@Model.ID">
+                    <button type="submit" value="Submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                
             </div>
         </div>
     </div>
