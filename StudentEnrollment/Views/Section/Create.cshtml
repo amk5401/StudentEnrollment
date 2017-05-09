@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "CreateSection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["title"]</h2>
+
+
+@Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <form action="@Url.Action("Create", "Section")" method="post">
+        @if (!String.Equals("professor", (string)ViewData["role"], StringComparison.OrdinalIgnoreCase))
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <label for="instructorID">Instructor ID</label>
+                    <input type="number" name="instructorID" value="" /
+                </div>
+            </div>
+        }
+        else
+        {
+            <input data-val="true" name="instructorID" type="hidden" value="@ViewData["instructorID"]" />
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label for="maxStudents">Maximum Number of Students</label>
+                <input type="number" name="maxStudents" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label for="termCode">Term Code</label>
+                <input type="text" name="termCode" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label for="classroomID">Classroom ID</label>
+                <input type="number" name="classroomID" value="" />
+            </div>
+        </div>
+        <input data-val="true" name="courseID" type="hidden" value="@ViewData["courseID"]" />
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" name="submit" value="Submit" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+
+<div>
+    @Html.ActionLink("Cancel Creation - Return Home", "Detail", "Course", new { courseID = ViewData["courseID"]} )
+</div>
+

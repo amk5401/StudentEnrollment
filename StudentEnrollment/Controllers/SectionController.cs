@@ -41,52 +41,95 @@ namespace StudentEnrollment.Controllers
         [HttpGet]
         public ActionResult Create(int courseID)
         {
-            Course course = proxy.getCourse(courseID);
-            if (course != null) return View(course);
-            else return RedirectToAction("Home", "Index");
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Section" });
-            IProxy p = new APIProxy();
-            ViewData["Title"] = "Sections of " + (p.getCourse(courseID)).Name;
-            return PartialView(p.getCourseSections(p.getCourse(courseID)));
+            if (!checkPermission("professor") && !checkPermission("admin")) return RedirectToAction("AccessDenied", "Home");
+
+            Course course = proxy.getCourse(courseID);
+            if (course != null)
+            {
+                ViewData["role"] = Session["role"];
+                ViewData["title"] = "Create a Section of " + course.Name;
+                ViewData["courseID"] = courseID;
+                if(checkPermission("professor"))
+                {
+                    ViewData["instructorID"] = ((Instructor)Session["user"]).ID;
+                }
+                return View();
+            }
+            else return RedirectToAction("Home", "Index");
+
         }
+
+        [HttpPost]
+        public ActionResult Create(int instructorID, int maxStudents, int courseID, string termCode, int classroomID)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Section" });
+            if (!checkPermission("professor") && !checkPermission("admin")) return RedirectToAction("AccessDenied", "Home");
+
+            Course course = proxy.getCourse(courseID);
+            Instructor instructor = proxy.getInstructor(instructorID);
+            Term term = proxy.getTerm(termCode);
+            Location location = proxy.getLocation(classroomID);
+
+            if (course != null && instructor != null && term != null && location != null)
+            {
+                Section section = new Section(0, maxStudents, term.ID, instructorID, courseID, classroomID, true);
+                if (section != null)
+                {
+                    int i = 0;
+                }
+            }
+            else
+            {
+                // Error Case
+            }
+            return View();
+        }
+
 
         [HttpGet]
         public ActionResult Detail(int sectionID)
         {
-
             ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
-
             Section section = proxy.getSection(sectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
             Student[] students = proxy.getSectionStudents(section);
             int numStudents = students.Length;
-            
-            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
+            Student[] waitlistStudents = proxy.getSectionWaitlist(section);
+            int waitlistStudentsCount = waitlistStudents.Length;
             User user = (User)Session["user"];
-            Student student = this.proxy.getStudent(user.ID);
             ViewData["Enrolled"] = numStudents;
-            if (students.Contains(student)){
-                ViewData["Enroll"] = "Already Enrolled";
-            }
-            else {
-                if (numStudents >= section.MaxStudents)
+
+            if (checkPermission("student"))
+            {
+                Student student = this.proxy.getStudent(user.ID);
+                bool enrolled = false;
+                if (students.Length != 0)
                 {
-                    ViewData["Enroll"] = "Waitlist";
+                    foreach (Student s in students)
+                    {
+                        if (s.ID == student.ID)
+                        {
+                            ViewData["Enroll"] = "Already Enrolled";
+                            enrolled = true;
+                        }
+                    }
                 }
-                else
+                if(!enrolled)
                 {
-                    ViewData["Enroll"] = "Enroll";
+                    if (numStudents >= section.MaxStudents)
+                    {
+                        ViewData["Enroll"] = "Waitlist";
+                    }
+                    else
+                    {
+                        ViewData["Enroll"] = "Enroll";
+                    }
                 }
+
             }
-            foreach (Student s in students) {
-                if (s.ID == student.ID) {
-                    ViewData["Enroll"] = "Already Enrolled";
-                }
-            }
-             
-                
-            
+
             ViewData["Instructor"] = instructor;
             ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;

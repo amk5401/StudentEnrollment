@@ -78,20 +78,28 @@ else
 <div class="col-md-12">
     @Html.Action("SectionList", "Section", @Model.ID)
 </div>
+<br>
+@if (String.Equals("admin", (string)Session["Role"], StringComparison.OrdinalIgnoreCase) || String.Equals("professor", (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
+{
+    <form action="/Course/CreateSection" method="post">
+        <input type="hidden" name="courseID" value="@Model.ID">
+        <button type="submit" value="Submit">Create a Section</button>
+    </form>
+}
 
 <script type="text/javascript">
     $(function () {
         $("#editBtn").click(function (e) {
-            var attrs = document.getElementsByClassName("attribute");
-            for (i = 0; i < attrs.length; i++) {
-                attrs[i].removeAttribute("disabled");
-            }
-        });
-        $("#deleteBtn").click(function (e) {
-            xhr.open("POST", "/Course/RemoveCourse", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            xhr.send({"courseID": @Model.ID});
-
-        });
+        var attrs = document.getElementsByClassName("attribute");
+        for (i = 0; i < attrs.length; i++) {
+            attrs[i].removeAttribute("disabled");
+        }
     });
+        $("#deleteBtn").click(function (e) {
+        xhr.open("POST", "/Course/RemoveCourse", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        xhr.send({"courseID": @Model.ID});
+
+    });
+});
 </script>

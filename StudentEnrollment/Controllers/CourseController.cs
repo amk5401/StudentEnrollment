@@ -17,9 +17,9 @@ namespace StudentEnrollment.Controllers
             if (Session["user"] == null) return false; else return true;
         }
 
-        private bool isAdmin()
+        private bool checkPermission(string role)
         {
-            if (Session["user"] != null && Session["role"] != null && String.Equals("admin", (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
+            if (Session["user"] != null && Session["role"] != null && String.Equals(role, (string)Session["Role"], StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -36,15 +36,51 @@ namespace StudentEnrollment.Controllers
 
         public ActionResult CourseDetail(int courseID)
         {
-            if (Session["user"] == null)
+            if (!loggedIn())
             {
                 return RedirectToAction("Index", "Login", new { redirectAction = "CourseList", redirectController = "Course"});
             }
-            ViewData["Title"] = "Course Detail";
+
             Course course = proxy.getCourse(courseID);
+            ViewData["Title"] = "Course Detail"; 
             ViewData["Role"] = Session["role"];
-            //CourseAndSectionModel courseAndSectionModel = new CourseAndSectionModel(course, p.getCourseSections(course));
             return View(course);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult CreateSection(string courseID)
+        {
+            if(!loggedIn())
+            {
+                return RedirectToAction("Index", "Login", new { redirectAction = "CourseList", redirectController = "Course"});
+            }
+            if(!checkPermission("professor") && !checkPermission("admin"))
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            int id;
+            try
+            {
+                id = Convert.ToInt32(courseID);
+            }
+            catch(Exception e)
+            {
+                id = -1;
+            }
+
+            if (id != -1 && proxy.getCourse(id) != null)
+            {
+                return RedirectToAction("Create", "Section", new { courseID = courseID });
+            }
+            else
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         [HttpPost]
@@ -64,7 +100,7 @@ namespace StudentEnrollment.Controllers
         public ActionResult RemoveCourse(int courseID)
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "CourseList", redirectController = "Course"});
-            if (!isAdmin()) return RedirectToAction("AccessDenied", "Home");
+            if (!checkPermission("admin")) return RedirectToAction("AccessDenied", "Home");
 
             //proxy.deleteCourse(courseID);
             // Check?
