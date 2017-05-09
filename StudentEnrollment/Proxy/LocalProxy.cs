@@ -326,9 +326,10 @@ namespace StudentEnrollment.Proxy
 
         #region Creation Methods
         //Methods for adding data to the database
-        public void createCourse(Course course)
+        public int createCourse(Course course)
         {
             this.coursesList.Add(course);
+            return course.ID;
         }
 
         public int createSection(Section section)

@@ -4,7 +4,7 @@
 @if ((string)@ViewData["Role"] == "ADMIN" || (string)@ViewData["Role"] == "Admin" || (string)@ViewData["Role"] == "admin")
 {
 <div class="col-md-12 course-container">
-    @using (Html.BeginForm("EditCourse", "Course", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 course-details" }))
+    @using (Html.BeginForm("SubmitCourse", "Course", FormMethod.Post, new { @class = "col-md-10 col-md-offset-1 course-details" }))
     {
         @Html.ValidationSummary(true)
         <div class="form-group col-md-6">
@@ -38,8 +38,8 @@
         @Html.HiddenFor(model => model.ID)
         <div class="form-group col-md-6 text-right">
             <button id="editBtn" type="button" value="Edit">Edit</button>
-            <button class="attribute" type="submit" value="Submit" disabled>Save</button>
-            <button id="deleteBtn" type="button" value=     "Delete">Delete</button>
+            <button class="attribute" type="submit" name="operation" value="save" disabled>Save</button>
+            <button type="submit" name="operation" value="delete">Delete</button>
         </div>
     }
 </div>
@@ -90,15 +90,17 @@ else
 <script type="text/javascript">
     $(function () {
         $("#editBtn").click(function (e) {
-        var attrs = document.getElementsByClassName("attribute");
-        for (i = 0; i < attrs.length; i++) {
-            attrs[i].removeAttribute("disabled");
-        }
-    });
-        $("#deleteBtn").click(function (e) {
-        xhr.open("POST", "/Course/RemoveCourse", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        xhr.send({"courseID": @Model.ID});
+            var attrs = document.getElementsByClassName("attribute");
+            for (i = 0; i < attrs.length; i++) {
+                attrs[i].removeAttribute("disabled");
+            }
+        });
+        @*$("#deleteBtn").click(function (e) {
+            xhr.open("POST", "/Course/RemoveCourse", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            xhr.send({"courseID": @Model.ID});
+
+        });*@
 
     });
 });
