@@ -360,7 +360,7 @@ namespace StudentEnrollment.Proxy
         {
             this.termsList.Add(term);
         }
-        public void createBook(Book book)
+        public void createBook(Book book, String authorFirstName, String authorLastName, String publisher)
         {
             this.booksList.Add(book);
         }

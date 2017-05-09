@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -127,6 +127,12 @@ namespace StudentEnrollment.Controllers
             ViewData["Message"] = "Student Enrollment System for SWEN-344";
 
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index", "Login");
         }
 
         public ActionResult Error()

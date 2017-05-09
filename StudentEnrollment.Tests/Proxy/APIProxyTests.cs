@@ -29,12 +29,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void APIProxyLoginTest()
         {
-            User user = this.proxy.login("mars", "hi");
-            Assert.IsNotNull(user);
-            Assert.AreEqual(user.FirstName, "mars");
-            Assert.AreEqual(user.LastName, "ballantyne");
-            Assert.AreEqual(user.Role, "Student");
-            Assert.AreEqual(user.Username, "mars");
+           
+            //User user = this.proxy.login("
         }
 
         [TestMethod]
@@ -47,6 +43,8 @@ namespace StudentEnrollment.Proxy.Tests
             Assert.IsNotNull(admin.ID);
             Assert.IsNotNull(admin.FirstName);
             Assert.IsNotNull(admin.LastName);
+            Assert.AreEqual(admin.FirstName, "John");
+            Assert.AreEqual(admin.LastName, "Doe");
         }
 
         [TestMethod]
@@ -78,7 +76,9 @@ namespace StudentEnrollment.Proxy.Tests
                 Assert.IsNotNull(course.Credits);
                 Assert.IsNotNull(course.MinGPA);
                 Assert.IsNotNull(course.Name);
+
             }
+            Assert.AreEqual("SWEN-345", courseList[0].CourseCode);
         }
 
         [TestMethod]
@@ -216,7 +216,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void createSectionAPITest()
         {
-            Section section = new Section(11, 1, 1, 1, 1, 1, false);
+            Assert.Fail();
+            Section section = new Section(11, 1, 1, 1, 1, 1, false); // Properly check it was created to pass
             this.proxy.createSection(section);
         }
 
@@ -240,8 +241,8 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void createBookAPITest()
         {
-            Book book = new Book(11, 11111111, "Test Book");
-            this.proxy.createBook(book);
+            Book book = new Book(100000, "Test Book", 555, "http://www.rd.com/wp-content/uploads/sites/2/2016/04/01-cat-wants-to-tell-you-laptop.jpg", 5051.000, true, 5);
+            this.proxy.createBook(book, "Me", "MyselfAndI", "Addison");
         }
 
         
@@ -254,15 +255,27 @@ namespace StudentEnrollment.Proxy.Tests
 
             this.proxy.enrollStudent(student, section);
             Section[] sections = this.proxy.getStudentSections(student);
-
-            Console.Write(sections);
-            Assert.AreEqual(sections[1].ID, section.ID);
+            Assert.IsTrue(sections.Contains(section));
+            //Console.Write(sections);
+            //Assert.AreEqual(sections[1].ID, section.ID);
         }
 
         [TestMethod]
         [TestCategory("APIProxy")]
         public void toggleCourseAPITest()
         {
+            Course course = this.proxy.getCourse(1);
+            bool avail = course.Availability;
+            this.proxy.toggleCourse(1);
+            if (avail)
+            {
+               
+                Assert.IsFalse(this.proxy.getCourse(1).Availability);
+            }
+            else
+            {
+                Assert.IsTrue(this.proxy.getCourse(1).Availability);
+            }
             this.proxy.toggleCourse(1);
         }
 
@@ -270,7 +283,21 @@ namespace StudentEnrollment.Proxy.Tests
         [TestCategory("APIProxy")]
         public void toggleSectionAPITest()
         {
+
+            Section section = this.proxy.getSection(1);
+            bool avail = section.Availability;
             this.proxy.toggleSection(1);
+            if (avail)
+            {
+
+                Assert.IsFalse(this.proxy.getSection(1).Availability);
+            }
+            else
+            {
+                Assert.IsTrue(this.proxy.getSection(1).Availability);
+            }
+            this.proxy.toggleSection(1);
+
         }
 
         [TestMethod]
@@ -320,13 +347,28 @@ namespace StudentEnrollment.Proxy.Tests
             updateSection = this.proxy.getSection(1);
             Assert.AreEqual(section, updateSection);
         }
+        [TestMethod]
+        [TestCategory("APIProxy")]
+        public void getSectionWaitlistAPITest()
+        {
+            Section section = this.proxy.getSection(1);
+            Student student = this.proxy.getStudent(1);
+            Student[] students = this.proxy.getSectionWaitlist(section);
+            Assert.IsNotNull(students);
+            Assert.AreEqual(student.FirstName, students[0].FirstName);
+        }
 
-        [Ignore]
+       
         [TestMethod]
         [TestCategory("APIProxy")]
         public void waitlistStudentAPITest()
         {
-            Assert.Fail();
+            Student student = this.proxy.getStudent(1);
+            Section section = this.proxy.getSection(1);
+
+            this.proxy.waitlistStudent(student, section);
+
+            Assert.IsTrue(this.proxy.getSectionWaitlist(section).Contains(student));
         }
 
         [Ignore]

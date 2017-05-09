@@ -195,7 +195,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
-    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
@@ -293,8 +292,7 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\QOD.cshtml" />
     <Content Include="Views\Section\Detail.cshtml" />
-    <Content Include="Views\Admin\_CreateBook.cshtml" />
-    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Admin\CreateBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
