@@ -106,7 +106,7 @@ namespace StudentEnrollment.Controllers
             {
                 
                 Student student = this.proxy.getStudent(user.ID);
-
+                ViewData["Student"] = student;
 
                 if (numStudents >= section.MaxStudents)
                 {
