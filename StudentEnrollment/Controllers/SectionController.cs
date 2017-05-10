@@ -50,7 +50,7 @@ namespace StudentEnrollment.Controllers
                 ViewData["courseID"] = courseID;
                 if (checkPermission("professor"))
                 {
-                    ViewData["instructorID"] = ((Instructor)Session["user"]).ID;
+                    ViewData["instructorID"] = ((User)Session["user"]).ID;
                 }
                 if (message != null && message != "") ViewData["message"] = message;
                 return View();
@@ -86,12 +86,12 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpGet]
-        public ActionResult Detail(int sectionID)
+        public ActionResult Detail(int SectionID)
         {
 
-            ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
+ViewData["Title"] = (proxy.getSection(SectionID).CourseID + " - Section " + SectionID);
             ViewData["Role"] = Session["role"];
-            Section section = proxy.getSection(sectionID);
+            Section section = proxy.getSection(SectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
             Student[] students = proxy.getSectionStudents(section);
@@ -134,16 +134,17 @@ namespace StudentEnrollment.Controllers
             ViewData["CourseCode"] = c.CourseCode;
             ViewData["CourseName"] = c.Name;
             ViewData["Waitlist"] = waitlistStudents;
+            ViewData["SectionID"] = section.ID;
             return View(section);
         }
 
         [HttpPost]
-        public ActionResult EditSection(Section model)
+        public ActionResult EditSection(Section sectionModel)
         {
             if (ModelState.IsValid)
             {
-                proxy.updateSection(model);//p.createCourse(model);
-                return RedirectToAction("Detail", new { sectionID = model.ID });
+                proxy.updateSection(sectionModel);//p.createCourse(model);
+                return RedirectToAction("Detail", new { sectionID = sectionModel.ID });
             }
 
             else
