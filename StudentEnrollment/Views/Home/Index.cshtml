@@ -1,47 +1,128 @@
-﻿@{
-    ViewData["Title"] = "API Tester";
-    var testInstructor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
-    var list = ViewData["InstructorList"] as List<StudentEnrollment.Models.Instructor>;
-    var functions = ViewData["Functions"] as Dictionary<string, string>;
+﻿@model StudentEnrollment.Controllers.SectionDisplay[]
+@{
+    var sectionsList = ViewData["SectionsList"] as StudentEnrollment.Models.Section[];
+    var sectionsData = ViewData["SectionsData"] as List<List<object>>;
+    string classesTitle = ViewData["SectionsTitle"] as string;
+
+    var waitlists = ViewData["StudentWaitlists"] as StudentEnrollment.Controllers.SectionDisplay[];
+    //var testInstructor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
+    //var list = ViewData["InstructorList"] as List<StudentEnrollment.Models.Instructor>;
+    //var functions = ViewData["Functions"] as Dictionary<string, string>;
 }
 @*
-<p>Test</p>
-@testInstructor.FirstName
-@testInstructor.LastName
+    <p>Test</p>
+    @testInstructor.FirstName
+    @testInstructor.LastName
 
-@foreach(var item in list)
-{
-    <div>
-        @item.FirstName
-      
-        @item.LastName
-    </div>
-
-}
-*@
-<h2>@ViewData["Title"].</h2>
-<form action="Home/TestApi" method="post">
-    <div class="form-group">
-        <input type="radio" name="proxyType" value="Local" checked="checked"> Local Proxy<br>
-        <input type="radio" name="proxyType" value="API"> API Proxy<br>
-    </div>
-    <div class="form-group">
-        <label for="function">Select function:</label>
-        <select class="form-control" id="function" name="function">
-            @foreach (var item in functions)
-            {
-                <option>@item.Key</option>
-            }
-        </select>
-    </div>
-    @foreach (var item in functions)
+    @foreach(var item in list)
     {
-    <div class="form-group @item.Key" style="display: none;">
-        <label for="parameters">Parameters (@item.Value):</label>
-    </div>
+        <div>
+            @item.FirstName
+
+            @item.LastName
+        </div>
+
     }
-    <button type="submit" id="submit" value="Submit" class="btn btn-default">Submit</button>
-</form>
+*@
+
+<h2>@ViewData["Title"]</h2>
+<h3>@classesTitle</h3>
+<table class="table myTable" style="cursor:pointer">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Section</th>
+            <th>Instructor</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr id="@item.sectionID">
+                <td>@item.courseName</td>
+                <td>@item.sectionID</td>
+                <td>@item.instructorName</td>
+                <td>@item.locationName</td>
+                <td><button type="button" data-toggle="modal" data-target="#withdrawConfirmationModal" class="btn alert-warning">Withdraw</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (waitlists != null && waitlists.Length > 0)
+{
+    <h3>Waitlisted Classes</h3>
+
+    <table class="table myTable" style="cursor:pointer">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Section</th>
+                <th>Instructor</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var item in @waitlists)
+            {
+            <tr id="@item.sectionID">
+                <td>@item.courseName</td>
+                <td>@item.sectionID</td>
+                <td>@item.instructorName</td>
+                <td>@item.locationName</td>
+                <td><button type="button" data-toggle="modal" data-target="#withdrawConfirmationModal" class="btn alert-warning">Withdraw from Waitlist</button></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    foreach (var item in @waitlists)
+    {
+        <div id="withdrawConfirmationModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Confirm Withdraw</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You will be removed from this waitlist. </p>
+                    </div>
+                    <div class="modal-footer">
+                        <form method="post" action="/Home/WithdrawFromWaitlist">
+                            <input type="hidden" name="sectionID" value="@item.sectionID">
+                            <button type="submit" value="Submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@foreach (var item in @Model)
+            {
+    <div id="withdrawConfirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirm Withdraw</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You will be withdrawn from this section. </p>
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="/Home/Withdraw">
+                        <input type="hidden" name="sectionID" value="@item.sectionID">
+                        <button type="submit" value="Submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script type="text/javascript">

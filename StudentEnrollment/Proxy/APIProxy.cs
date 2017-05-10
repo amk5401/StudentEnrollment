@@ -123,6 +123,12 @@ namespace StudentEnrollment.Proxy
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
             return instructor;
         }
+        public User getUser(int ID)
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
+            User user = (User)ModelFactory.createModelFromJson("user", json);
+            return user;
+        }
         public Location getLocation(int ID) // TODO: Wait for a getRoom location in the API
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=facility_management&function=getClassroom&id={1}", API_URL, ID)).Result;
@@ -207,13 +213,39 @@ namespace StudentEnrollment.Proxy
         public Section[] getInstructorSections(Instructor instructor)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, instructor.ID)).Result;
-            Section[] sections = (Section[])ModelFactory.createModelArrayFromJson("section", json);
-
-            return sections;
+            String[] ids = ModelFactory.createIDListFromJson("sectionInstructor", json);
+            List<Section> sections = new List<Section>();
+            foreach (String str in ids)
+            {
+                sections.Add(this.getSection(Convert.ToInt32(str)));
+            }
+            return sections.ToArray();
+        }
+        public Section[] getInstructorSectionsByID(int id)
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, id)).Result;
+            String[] ids = ModelFactory.createIDListFromJson("section", json);
+            List<Section> sections = new List<Section>();
+            foreach (String str in ids)
+            {
+                sections.Add(this.getSection(Convert.ToInt32(str)));
+            }
+            return sections.ToArray();
         }
         public Section[] getStudentSections(Student student)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentSections&studentID={1}", API_URL, student.ID)).Result;
+            String[] ids = ModelFactory.createIDListFromJson("section", json);
+            List<Section> sections = new List<Section>();
+            foreach (String str in ids)
+            {
+                sections.Add(this.getSection(Convert.ToInt32(str)));
+            }
+            return sections.ToArray();
+        }
+        public Section[] getStudentWaitlists(Student student)
+        {
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getStudentWaitlist&studentID={1}", API_URL, student.ID)).Result;
             String[] ids = ModelFactory.createIDListFromJson("section", json);
             List<Section> sections = new List<Section>();
             foreach (String str in ids)
@@ -393,12 +425,29 @@ namespace StudentEnrollment.Proxy
             postData.Add("sectionID", Convert.ToString(section.ID));
             String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=withdrawStudent", API_URL), postData).Result;
             // See what comes back from the API
+
+            //If the section has a waitlist, add a student to the classlist
+            Student[] waitlistStudents = getSectionWaitlist(section);
+            if(waitlistStudents.Length > 0)
+            {
+                //Add first student
+                enrollStudent(waitlistStudents[0], section);
+            }
         }
+        public void withdrawWaitlistStudent(Student student, Section section)
+        {
+            Dictionary<String, String> postData = new Dictionary<string, string>();
+            postData.Add("studentID", Convert.ToString(student.ID));
+            postData.Add("sectionID", Convert.ToString(section.ID));
+            String json = APIProxy.PostToAPI(String.Format("{0}?team=student_enrollment&function=withdrawFromWaitlist", API_URL), postData).Result;
+
+        }
+
         #endregion
 
-        #region Delete Methods
+                #region Delete Methods
 
-       public bool deleteUser(int userID)
+        public bool deleteUser(int userID)
         {
             Dictionary<String, String> postData = new Dictionary<string, string>();
             postData.Add("userID", Convert.ToString(userID));
