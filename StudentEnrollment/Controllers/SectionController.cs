@@ -50,7 +50,7 @@ namespace StudentEnrollment.Controllers
                 ViewData["courseID"] = courseID;
                 if (checkPermission("professor"))
                 {
-                    ViewData["instructorID"] = ((User)Session["user"]).ID;
+                    ViewData["instructorID"] = ((Instructor)Session["user"]).ID;
                 }
                 if (message != null && message != "") ViewData["message"] = message;
                 return View();
