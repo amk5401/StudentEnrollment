@@ -64,12 +64,17 @@ namespace StudentEnrollment.Controllers
                     Student student = proxy.getStudent(currentUser.ID);
                     currentSections = proxy.getStudentSections(student);
 
-                    //Section[] currentWaitlists; = proxy.get(student);
+                    Section[] currentWaitlists = proxy.getStudentWaitlists(student);
+                    List<SectionDisplay> waitlists = new List<SectionDisplay>(); 
+                    for (int i = 0; i < currentWaitlists.Length; i++)
+                    {
+                        waitlists.Add(getSectionData(currentWaitlists[i]));
+                    }
+                    ViewData["Waitlists"] = waitlists.ToArray();
                 }
                 //If the user is an instructor
                 else if (checkPermission("professor"))
                 {
-                    //Instructor instructor = proxy.getInstructor(currentUser.ID);
                     currentSections = proxy.getInstructorSectionsByID(currentUser.ID);
                     
                 }
@@ -93,8 +98,8 @@ namespace StudentEnrollment.Controllers
 
         private SectionDisplay getSectionData(Section section)
         {
-            string fName = proxy.getInstructor(section.InstructorID).FirstName;
-            string lName = proxy.getInstructor(section.InstructorID).LastName;
+            string fName = proxy.getUser(section.InstructorID).FirstName;
+            string lName = proxy.getUser(section.InstructorID).LastName;
             int buildingNum = proxy.getLocation(section.LocationID).BuildingID;
             int roomNum = proxy.getLocation(section.LocationID).RoomNumber;
 
@@ -118,6 +123,20 @@ namespace StudentEnrollment.Controllers
             Section section = this.proxy.getSection(sectionID);
             Student student = this.proxy.getStudent(currentUser.ID);
             this.proxy.withdrawStudent(student, section);
+
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public ActionResult WithdrawFromWaitlist(int sectionID)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Home" });
+            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
+
+            currentUser = (User)Session["user"];
+
+            Section section = this.proxy.getSection(sectionID);
+            Student student = this.proxy.getStudent(currentUser.ID);
+            this.proxy.withdrawWaitlistStudent(student, section);
 
             return RedirectToAction("Index", "Home");
         }

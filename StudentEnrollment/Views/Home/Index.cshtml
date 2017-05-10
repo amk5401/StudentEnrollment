@@ -2,6 +2,8 @@
 @{
     var sectionsList = ViewData["SectionsList"] as StudentEnrollment.Models.Section[];
     var sectionsData = ViewData["SectionsData"] as List<List<object>>;
+
+    StudentEnrollment.Controllers.SectionDisplay[] waitlists = new StudentEnrollment.Controllers.SectionDisplay[] { };
     //var testInstructor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
     //var list = ViewData["InstructorList"] as List<StudentEnrollment.Models.Instructor>;
     //var functions = ViewData["Functions"] as Dictionary<string, string>;
@@ -22,6 +24,7 @@
 }
 *@
 <h2>@ViewData["Title"]</h2>
+<h3>Enrolled Classes</h3>
 <table class="table myTable" style="cursor:pointer">
     <thead>
         <tr>
@@ -44,6 +47,44 @@
         }
     </tbody>
 </table>
+
+@if (waitlists.Length > 0)
+{
+    <h3>Waitlisted Classes</h3>
+    foreach (var item in waitlists)
+    {
+        <tr id="item.sectionID">
+            <td>item.courseName</td>
+            <td>item.sectionID</td>
+            <td>item.instructorName</td>
+            <td>item.locationName</td>
+            <td><button type="button" data-toggle="modal" data-target="#withdrawConfirmationModal" class="btn alert-warning">Withdraw from Waitlist</button></td>
+        </tr>
+    }
+
+    foreach (var item in waitlists)
+    {
+        <div id="withdrawConfirmationModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Confirm Withdraw</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You will be removed from this waitlist. </p>
+                    </div>
+                    <div class="modal-footer">
+                        <form method="post" action="/Home/WithdrawFromWaitlist">
+                            <input type="hidden" name="sectionID" value="item.sectionID">
+                            <button type="submit" value="Submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
 
 @foreach (var item in @Model)
 {
