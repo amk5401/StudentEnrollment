@@ -317,20 +317,20 @@ namespace StudentEnrollment.Proxy
             postData.Add("role", "STUDENT");
             String json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=createUser", API_URL), postData).Result;
 
-            int studentID;
-            if (json == null || !int.TryParse(json, out studentID)) return false;
-            else studentID = int.Parse(json);
+            int userID = extractIDFromJson(json);
+            if (json == null || userID == -1) return false;
 
             // Create the student
             postData = new Dictionary<string, string>();
-            postData.Add("userID", Convert.ToString(studentID));
+            postData.Add("userID", Convert.ToString(userID));
             postData.Add("yearLevel", Convert.ToString(student.YearLevel));
             postData.Add("gpa", Convert.ToString(student.GPA));
             json = APIProxy.PostToAPI(String.Format("{0}?team=general&function=postStudent", API_URL), postData).Result;
 
-            if (json == null || !int.TryParse(json, out studentID))
+            int studentID = extractIDFromJson(json);
+            if (json == null || studentID == -1)
             {
-                this.deleteUser(studentID);
+                this.deleteUser(userID);
                 return false;
             }
             return true;

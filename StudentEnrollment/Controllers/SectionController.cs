@@ -204,7 +204,7 @@ ViewData["Title"] = (proxy.getSection(SectionID).CourseID + " - Section " + Sect
             Student student = this.proxy.getStudent(user.ID);
            
             this.proxy.waitlistStudent(student, section);
-            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
+            return RedirectToAction("Index", "Home", new { courseID = section.CourseID });
         }
         public ActionResult Withdraw(int sectionID)
         {
@@ -215,7 +215,7 @@ ViewData["Title"] = (proxy.getSection(SectionID).CourseID + " - Section " + Sect
 
             Student student = this.proxy.getStudent(user.ID);
             this.proxy.withdrawStudent(student, section);
-            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
+            return RedirectToAction("Index", "Home", new { courseID = section.CourseID });
         }
     }
 }
