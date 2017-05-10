@@ -55,7 +55,7 @@ namespace StudentEnrollment.Controllers
                 if (message != null && message != "") ViewData["message"] = message;
                 return View();
             }
-            else return RedirectToAction("Home", "Index");
+            else return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -81,7 +81,7 @@ namespace StudentEnrollment.Controllers
             }
             else success = false;
 
-            if (success) return RedirectToAction("SectionList", "Section", new { courseID = courseID });
+            if (success) return RedirectToAction("Index", "Home");
             else return RedirectToAction("Create", new { courseID = courseID, message = "There was an error creating the section" });
         }
 
