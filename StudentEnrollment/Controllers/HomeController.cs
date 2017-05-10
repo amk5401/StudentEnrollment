@@ -61,6 +61,7 @@ namespace StudentEnrollment.Controllers
                 //If the user is a student
                 if (checkPermission("student")) 
                 {
+                    ViewData["SectionsTitle"] = "Enrolled Sections";
                     Student student = proxy.getStudent(currentUser.ID);
                     currentSections = proxy.getStudentSections(student);
 
@@ -70,11 +71,12 @@ namespace StudentEnrollment.Controllers
                     {
                         waitlists.Add(getSectionData(currentWaitlists[i]));
                     }
-                    ViewData["Waitlists"] = waitlists.ToArray();
+                    ViewData["StudentWaitlists"] = waitlists.ToArray();
                 }
                 //If the user is an instructor
                 else if (checkPermission("professor"))
                 {
+                    ViewData["SectionsTitle"] = "Instructor Sections";
                     currentSections = proxy.getInstructorSectionsByID(currentUser.ID);
                     
                 }

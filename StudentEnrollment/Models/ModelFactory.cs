@@ -53,6 +53,7 @@ namespace StudentEnrollment.Models
             {
                 case "course": idList = createPrereqIDList(json); break;
                 case "section": idList = createSectionIDList(json); break;
+                case "sectionInstructor": idList = createSectionInstructorIDList(json); break;
                 case "student": idList = createStudentIDList(json); break;
             }
             return idList;
@@ -113,6 +114,17 @@ namespace StudentEnrollment.Models
             foreach (var entry in contents)
             {
                 ids.Add(Convert.ToString(entry.SECTION_ID.Value));
+            }
+            return ids.ToArray();
+        }
+
+        private static String[] createSectionInstructorIDList(String json)
+        {
+            dynamic contents = JsonConvert.DeserializeObject(json);
+            List<String> ids = new List<string>();
+            foreach (var entry in contents)
+            {
+                ids.Add(Convert.ToString(entry.ID.Value));
             }
             return ids.ToArray();
         }

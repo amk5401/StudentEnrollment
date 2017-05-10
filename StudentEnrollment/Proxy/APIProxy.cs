@@ -198,7 +198,7 @@ namespace StudentEnrollment.Proxy
         public Section[] getInstructorSections(Instructor instructor)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, instructor.ID)).Result;
-            String[] ids = ModelFactory.createIDListFromJson("section", json);
+            String[] ids = ModelFactory.createIDListFromJson("sectionInstructor", json);
             List<Section> sections = new List<Section>();
             foreach (String str in ids)
             {
