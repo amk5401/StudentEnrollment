@@ -36,6 +36,7 @@ namespace StudentEnrollment.Controllers
         }
 
         [HttpGet]
+       
         public ActionResult Create(int courseID, string message = null)
         {
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "Index", redirectController = "Section" });
@@ -84,24 +85,26 @@ namespace StudentEnrollment.Controllers
             else return RedirectToAction("Create", new { courseID = courseID, message = "There was an error creating the section" });
         }
 
-
         [HttpGet]
         public ActionResult Detail(int sectionID)
         {
+
             ViewData["Title"] = (proxy.getSection(sectionID).CourseID + " - Section " + sectionID);
             ViewData["Role"] = Session["role"];
             Section section = proxy.getSection(sectionID);
             Course c = proxy.getCourse(section.CourseID);
             Instructor instructor = proxy.getInstructor(section.InstructorID);
             Student[] students = proxy.getSectionStudents(section);
+            Student[] waitlist = proxy.getSectionWaitlist(section);
             int numStudents = students.Length;
-            Student[] waitlistStudents = proxy.getSectionWaitlist(section);
-            int waitlistStudentsCount = waitlistStudents.Length;
-            User user = (User)Session["user"];
             ViewData["Enrolled"] = numStudents;
             ViewData["Student"] = this.proxy.getStudent(1);
+            User user = (User)Session["user"];
+
+            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
             if (checkPermission("student") || checkPermission("Student"))
             {
+                
                 Student student = this.proxy.getStudent(user.ID);
                 ViewData["Student"] = student;
 
@@ -112,24 +115,35 @@ namespace StudentEnrollment.Controllers
                 else
                 {
                     ViewData["Enroll"] = "Enroll";
+                }
 
+                foreach (Student s in students)
+                {
+                    if (s.ID == student.ID)
+                    {
+                        ViewData["Enroll"] = "Already Enrolled";
+                    }
                 }
             }
+
+
+
+
             ViewData["Instructor"] = instructor;
             ViewData["Course"] = c;
             ViewData["CourseCode"] = c.CourseCode;
             ViewData["CourseName"] = c.Name;
-            ViewData["Waitlist"] = waitlistStudentsCount;
+            ViewData["Waitlist"] = waitlistStudents;
             return View(section);
         }
 
         [HttpPost]
-        public ActionResult EditSection(Section section)
+        public ActionResult EditSection(Section model)
         {
             if (ModelState.IsValid)
             {
-                proxy.updateSection(section);//p.createCourse(model);
-                return RedirectToAction("Detail", new { sectionID = section.ID });
+                proxy.updateSection(model);//p.createCourse(model);
+                return RedirectToAction("Detail", new { sectionID = model.ID });
             }
 
             else
@@ -176,7 +190,6 @@ namespace StudentEnrollment.Controllers
             }
 
         }
-
 
         [HttpPost]
         public ActionResult Waitlist(int sectionID)
