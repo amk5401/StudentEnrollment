@@ -178,7 +178,7 @@
             </div>
             <div class="modal-footer">
                 <form method="post" action="/Section/Waitlist">
-                    <input type="hidden" name="studentID" value="@student.ID" />
+                    
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>
@@ -199,8 +199,8 @@
                 <p>You will be withdrawn from this section. </p>
             </div>
             <div class="modal-footer">
-                <form method="post" action="/Section/">
-                    <input type="hidden" name="studentID" value="@student.ID" />
+                <form method="post" action="/Section/Withdraw">
+                    
                     <input type="hidden" name="sectionID" value="@Model.ID">
                     <button type="submit" value="Submit" class="btn btn-default">Submit</button>
                 </form>

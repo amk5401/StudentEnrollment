@@ -197,8 +197,22 @@ namespace StudentEnrollment.Controllers
             if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
             if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
             Section section = this.proxy.getSection(sectionID);
-            Student student = this.proxy.getStudent(4); // TODO: Figure this out
+            User user = (User)Session["user"];
+
+            Student student = this.proxy.getStudent(user.ID);
+           
             this.proxy.waitlistStudent(student, section);
+            return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
+        }
+        public ActionResult Withdraw(int sectionID)
+        {
+            if (!loggedIn()) return RedirectToAction("Index", "Login", new { redirectAction = "List", redirectController = "Section" });
+            if (!checkPermission("student")) return RedirectToAction("AccessDenied", "Home");
+            Section section = this.proxy.getSection(sectionID);
+            User user = (User)Session["user"];
+
+            Student student = this.proxy.getStudent(user.ID);
+            this.proxy.withdrawStudent(student, section);
             return RedirectToAction("SectionList", "Section", new { courseID = section.CourseID });
         }
     }
