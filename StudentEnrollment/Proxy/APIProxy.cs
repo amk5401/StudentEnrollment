@@ -119,7 +119,7 @@ namespace StudentEnrollment.Proxy
         }
         public Instructor getInstructor(int ID)
         {
-            String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorUser&userID={1}", API_URL, ID)).Result;
+            String json = APIProxy.GetFromAPI(String.Format("{0}?team=general&function=getUser&userID={1}", API_URL, ID)).Result;
             Instructor instructor = (Instructor)ModelFactory.createModelFromJson("instructor", json);
             return instructor;
         }
@@ -213,7 +213,7 @@ namespace StudentEnrollment.Proxy
         public Section[] getInstructorSections(Instructor instructor)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, instructor.ID)).Result;
-            String[] ids = ModelFactory.createIDListFromJson("sectionInstructor", json);
+            String[] ids = ModelFactory.createIDListFromJson("section", json);
             List<Section> sections = new List<Section>();
             foreach (String str in ids)
             {
@@ -224,7 +224,7 @@ namespace StudentEnrollment.Proxy
         public Section[] getInstructorSectionsByID(int id)
         {
             String json = APIProxy.GetFromAPI(String.Format("{0}?team=student_enrollment&function=getProfessorSections&professorID={1}", API_URL, id)).Result;
-            String[] ids = ModelFactory.createIDListFromJson("section", json);
+            String[] ids = ModelFactory.createIDListFromJson("sectionInstructor", json);
             List<Section> sections = new List<Section>();
             foreach (String str in ids)
             {

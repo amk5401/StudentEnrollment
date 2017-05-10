@@ -198,6 +198,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
+    <Compile Include="Controllers\TestAPIController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -271,7 +272,7 @@
     <Content Include="Views\Course\CourseList.cshtml" />
     <Content Include="Views\Section\SectionList.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\TestApi.cshtml" />
+    <Content Include="Views\TestAPI\TestApi.cshtml" />
     <Content Include="Views\jsonData\admins.json" />
     <Content Include="Views\jsonData\books.json" />
     <Content Include="Views\jsonData\courses.json" />

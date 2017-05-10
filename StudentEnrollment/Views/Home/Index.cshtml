@@ -3,6 +3,7 @@
     var sectionsList = ViewData["SectionsList"] as StudentEnrollment.Models.Section[];
     var sectionsData = ViewData["SectionsData"] as List<List<object>>;
     string classesTitle = ViewData["SectionsTitle"] as string;
+    string role = ViewData["Role"] as string;
 
     var waitlists = ViewData["StudentWaitlists"] as StudentEnrollment.Controllers.SectionDisplay[];
     //var testInstructor = ViewData["Instructor"] as StudentEnrollment.Models.Instructor;
@@ -27,7 +28,7 @@
 
 <h2>@ViewData["Title"]</h2>
 <h3>@classesTitle</h3>
-<table class="table myTable" style="cursor:pointer">
+<table class="table myTable">
     <thead>
         <tr>
             <th>Course</th>
@@ -44,7 +45,11 @@
                 <td>@item.sectionID</td>
                 <td>@item.instructorName</td>
                 <td>@item.locationName</td>
-                <td><button type="button" data-toggle="modal" data-target="#withdrawConfirmationModal" class="btn alert-warning">Withdraw</button></td>
+                @if (String.Equals("student", role, StringComparison.OrdinalIgnoreCase))
+                {
+                    <td><button type="button" data-toggle="modal" data-target="#withdrawConfirmationModal" class="btn alert-warning">Withdraw</button></td>
+                }
+                
             </tr>
         }
     </tbody>
@@ -54,7 +59,7 @@
 {
     <h3>Waitlisted Classes</h3>
 
-    <table class="table myTable" style="cursor:pointer">
+    <table class="table myTable">
         <thead>
             <tr>
                 <th>Course</th>

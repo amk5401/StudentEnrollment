@@ -52,11 +52,14 @@ namespace StudentEnrollment.Controllers
             }
 
             ViewData["title"] = "Enrollment Dashboard";
+            
 
 
             //If the user and role aren't null
             if (Session["role"] != null)
             {
+                ViewData["Role"] = Session["role"];
+
                 currentUser = (User)Session["user"];
                 //If the user is a student
                 if (checkPermission("student")) 
@@ -83,7 +86,7 @@ namespace StudentEnrollment.Controllers
                 //If the user is an admin
                 else if (checkPermission("admin"))
                 {
-
+                    return RedirectToAction("Index", "Admin");
                 }
             }
 
