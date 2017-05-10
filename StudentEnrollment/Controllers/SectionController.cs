@@ -47,7 +47,7 @@ namespace StudentEnrollment.Controllers
                 ViewData["role"] = Session["role"];
                 ViewData["title"] = "Create a Section of " + course.Name;
                 ViewData["courseID"] = courseID;
-                if(checkPermission("professor"))
+                if (checkPermission("professor"))
                 {
                     ViewData["instructorID"] = ((Instructor)Session["user"]).ID;
                 }
@@ -76,12 +76,12 @@ namespace StudentEnrollment.Controllers
                 if (id == -1 || proxy.getSection(id) == null)
                 {
                     success = false;
-                }                
+                }
             }
             else success = false;
 
-            if(success) return RedirectToAction("SectionList", "Section", new { courseID = courseID });
-            else return RedirectToAction("Create", new { courseID = courseID, message = "There was an error creating the section"});
+            if (success) return RedirectToAction("SectionList", "Section", new { courseID = courseID });
+            else return RedirectToAction("Create", new { courseID = courseID, message = "There was an error creating the section" });
         }
 
 
@@ -100,23 +100,20 @@ namespace StudentEnrollment.Controllers
             User user = (User)Session["user"];
             ViewData["Enrolled"] = numStudents;
             ViewData["Student"] = this.proxy.getStudent(1);
-            int waitlistStudents = proxy.getSectionWaitlist(section).Length;
-            if (checkPermission("student") || checkPermission("Student")) {
-                User user = (User)Session["user"];
+            if (checkPermission("student") || checkPermission("Student"))
+            {
                 Student student = this.proxy.getStudent(user.ID);
                 ViewData["Student"] = student;
-    
-                    if (numStudents >= section.MaxStudents)
-                    {
-                        ViewData["Enroll"] = "Waitlist";
-                    }
-                    else
-                    {
-                        ViewData["Enroll"] = "Enroll";
 
-                    }
+                if (numStudents >= section.MaxStudents)
+                {
+                    ViewData["Enroll"] = "Waitlist";
                 }
+                else
+                {
+                    ViewData["Enroll"] = "Enroll";
 
+                }
             }
             ViewData["Instructor"] = instructor;
             ViewData["Course"] = c;
@@ -166,7 +163,7 @@ namespace StudentEnrollment.Controllers
             if (checkPermission("admin"))
             {
                 Section section = this.proxy.getSection(sectionID);
-                
+
                 Student student = this.proxy.getStudent(studentID);
                 this.proxy.enrollStudent(student, section);
                 return RedirectToAction("Detail", "Section", new { sectionID = section.ID });
@@ -177,7 +174,7 @@ namespace StudentEnrollment.Controllers
             {
                 return RedirectToAction("AccessDenied", "Home");
             }
-            
+
         }
 
 
