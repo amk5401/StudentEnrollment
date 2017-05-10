@@ -143,6 +143,7 @@ ViewData["Title"] = (proxy.getSection(SectionID).CourseID + " - Section " + Sect
         {
             if (ModelState.IsValid)
             {
+
                 proxy.updateSection(sectionModel);//p.createCourse(model);
                 return RedirectToAction("Detail", new { sectionID = sectionModel.ID });
             }
